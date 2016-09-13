@@ -157,7 +157,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
-        //igaster\laravelTheme\themeServiceProvider::class,
+        igaster\laravelTheme\themeServiceProvider::class,
 
     ],
 
@@ -204,7 +204,7 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
-        //'Theme' => igaster\laravelTheme\Facades\Theme::class,
+        'Theme' => igaster\laravelTheme\Facades\Theme::class,
 
     ],
 

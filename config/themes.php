@@ -6,38 +6,70 @@
  * Time: 16:18
  */
 // Select a name for your theme
-return array(
-  'zara' => [
+return [
 
     /*
     |--------------------------------------------------------------------------
-    | Theme to extend. Defaults to null (=none)
+    | Switch this package on/off. Usefull for testing...
     |--------------------------------------------------------------------------
     */
-    'extends' => null,
+
+    'enabled' => TRUE,
 
     /*
     |--------------------------------------------------------------------------
-    | The path where the view are stored. Defaults to 'theme-name'
-    | It is relative to 'themes_path' ('/resources/views' by default)
+    | File path where themes will be located.
+    | Can be outside default views path EG: resources/themes
+    | Leave it null if you place your themes in the default views folder
+    | (as defined in config\views.php)
     |--------------------------------------------------------------------------
     */
-    'views-path' => '/public/themes/zara/views',
+
+    'themes_path' => NULL, // eg: realpath(base_path('resources/themes'))
 
     /*
     |--------------------------------------------------------------------------
-    | The path where the assets are stored. Defaults to 'theme-name'
-    | It is relative to laravels public folder (/public)
+    | Set behavior if an asset is not found in a Theme hierarcy.
+    | Available options: THROW_EXCEPTION | LOG_ERROR | ASSUME_EXISTS | IGNORE
     |--------------------------------------------------------------------------
     */
-    'asset-path' => '/public/',
+
+    'asset_not_found' => 'LOG_ERROR',
 
     /*
     |--------------------------------------------------------------------------
-    | Custom configuration. You can add your own custom keys.
-    | Retrieve these values with Theme::config('key'). e.g.:
+    | Set the Active Theme. Can be set at runtime with:
+    |  Themes::set('theme-name');
     |--------------------------------------------------------------------------
     */
-    'key' => 'value',
-  ],
-);
+
+    'active' => 'default',
+
+    /*
+    |--------------------------------------------------------------------------
+    | Define available themes. Format:
+    |
+    | 	'theme-name' => [
+    | 		'extends'	 	=> 'theme-to-extend',  // optional
+    | 		'views-path' 	=> 'path-to-views',    // defaults to: resources/views/theme-name
+    | 		'asset-path' 	=> 'path-to-assets',   // defaults to: public/theme-name
+    |
+    |		// you can add your own custom keys and retrieve them with Theme::config('key');
+    | 		'key' 			=> 'value',
+    | 	],
+    |
+    |--------------------------------------------------------------------------
+    */
+
+    'themes' => [
+        'default' => [
+            'extends' => NULL,
+            'views-path' => 'resources/views/default',
+            'asset-path' => 'public/default',
+        ],
+        'larach' => [
+            'key' => 'value',
+        ],
+    ],
+
+];
