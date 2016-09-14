@@ -52,6 +52,5 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'auth.admin' => \App\Http\Middleware\Admin::class,
         'setTheme' => \igaster\laravelTheme\Middleware\setTheme::class,
-        'larach.mw' => \App\Http\Middleware\LarachMW::class,
     ];
 }

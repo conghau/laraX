@@ -22,12 +22,14 @@ Route::get('/', function () {
  * |--------------------------------------------------------------------------
  */
 
-Route::group(['prefix' => 'cpAdmin', 'middleware' => ['web'], 'namespace' => 'App\Http\Controllers\Admin'], function ($router) {
+Route::group(['prefix' => 'cpadmin', 'middleware' => ['web'], 'namespace' => 'App\Http\Controllers\Admin'], function ($router) {
 
     Route::get('/login', 'AuthController@showFormLogin');
 
     /*Settings*/
     $router->controller('settings', 'SettingController');
+    /*Menus*/
+    $router->controller('menus', 'MenuController');
 });
 
 /**
