@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateSettingsTable extends Migration
+class CreatePostMetasTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,11 +12,14 @@ class CreateSettingsTable extends Migration
      */
     public function up()
     {
-        Schema::create('settings', function (Blueprint $table) {
+        Schema::create('post_metas', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('option_key')->unique();
-            $table->string('option_value');
-            $table->boolean('status');
+            $table->integer('post_id')->unsigned()
+                ->index()
+                ->references('id')
+                ->on('posts');
+            $table->string('meta_key')->index();
+            $table->string('meta_value',500);
             $table->timestamps();
         });
     }
@@ -28,6 +31,6 @@ class CreateSettingsTable extends Migration
      */
     public function down()
     {
-        Schema::drop('settings');
+        Schema::drop('post_metas');
     }
 }

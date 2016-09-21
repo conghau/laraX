@@ -3,16 +3,17 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models;
+use App\Repositories\MenuRepositoryInterface;
+use App\Repositories\SettingRepositoryInterface;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\Paginator;
-use App\Repositories\SettingRepository;
 
 class SettingController extends BaseAdminController {
     public $bodyClass = 'setting-controller', $routeLink = 'settings';
     protected $repoSetting;
 
-    public function __construct(SettingRepository $repoSetting) {
-        parent::__construct();
+    public function __construct(SettingRepositoryInterface $repoSetting) {
+        parent::__construct(app(MenuRepositoryInterface::class));
         $this->repoSetting = $repoSetting;
         // $this->middleware('is_webmaster');
 
@@ -37,7 +38,7 @@ class SettingController extends BaseAdminController {
         ]);
         $data['construction_mode'] = ($request->has('construction_mode')) ? 1 : 0;
         $data['show_admin_bar'] = ($request->has('show_admin_bar')) ? 1 : 0;
-        $result = Models\Setting::updateSettings($data);
+        $result = $this->repoSetting->updateSetting($data);
         if ($result['error']) {
             $this->_setFlashMessage($result['message'], 'error');
             $this->_setFlashMessage(implode(', ', $result['errors']), 'error');

@@ -27,6 +27,7 @@ Route::group(['prefix' => 'cpadmin', 'middleware' => ['web'], 'namespace' => 'Ap
     Route::get('/login', 'AuthController@showFormLogin');
 
     /*Settings*/
+//    Route::get('/settings', 'SettingController@getIndex');
     $router->controller('settings', 'SettingController');
     /*Menus*/
     $router->controller('menus', 'MenuController');
@@ -38,6 +39,6 @@ Route::group(['prefix' => 'cpadmin', 'middleware' => ['web'], 'namespace' => 'Ap
  * |--------------------------------------------------------------------------
  */
 
-Event::listen('illuminate.query',function($query){
-    var_dump($query);
-});
+//Event::listen('illuminate.query',function($query){
+//    var_dump($query);
+//});

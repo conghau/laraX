@@ -6,13 +6,13 @@
  * Time: 12:26 PM
  */
 
-namespace App\Repositories;
+namespace App\Repositories\Base;
 
 /**
  * Interface CriteriaInterface
  * @package App\Repositories
  */
-interface CriteriaInterface {
+interface BaseCriteriaInterface {
     /**
      * Push Criteria for filter the query
      *

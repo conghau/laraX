@@ -7,13 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 class Setting extends Model
 {
     protected $editableFields = [
-        'key',
-        'value',
+        'option_key',
+        'option_value',
     ];
 
     protected $fillable = [
-        'key',
-        'value',
+        'option_key',
+        'option_value',
     ];
 
     protected $table = 'settings';

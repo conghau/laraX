@@ -6,11 +6,11 @@
  * Date: 12/09/2016
  * Time: 17:43
  */
-namespace App\Repositories;
+namespace App\Repositories\Base;
 /**
- * Interface RepositoryInterface
+ * Interface BaseRepositoryInterface
  */
-interface RepositoryInterface {
+interface BaseRepositoryInterface {
     public function all($columns = array('*'));
 
     public function paginate($perPage = 10, $columns = array('*'));
