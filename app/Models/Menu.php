@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Menu extends Model {
     public function menuContent() {
-        return $this->hasMany('App\Models\MenuContent');
+        return $this->hasMany('App\Models\MenuContent', 'menu_id');
     }
 
     public function menuContentNode() {

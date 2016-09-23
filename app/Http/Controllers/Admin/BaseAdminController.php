@@ -21,7 +21,7 @@ class BaseAdminController extends Controller {
 //        $this->menuRepository = $menuRepository;
         $this->setMenuRepository(app(MenuRepositoryInterface::class));
 //        $this->setMenuRepository(app(MenuRepositoryInterface::class));
-//        $this->_loadAdminMenu();
+        $this->_loadAdminMenu();
     }
 
     protected function setPageTitle($title, $subTitle = '') {
@@ -36,7 +36,11 @@ class BaseAdminController extends Controller {
     }
 
     protected function _loadAdminMenu($menuActive = '') {
-        $menu = new TCHMenu();
+//        $menu = new TCHMenu();
+        $menu = app(TCHMenu::class);
+     //   $re = TCHMenu::generateMenu();
+        $re = $menu->generateMenu('admin-menu');
+        var_dump($re);
 //        $menu->localeObj = $this->defaultLanguage;
 //        $menu->languageCode = $this->defaultLanguage->language_code;
         $menu->args = array(
@@ -57,10 +61,10 @@ class BaseAdminController extends Controller {
             'activeClass' => 'active',
             'isAdminMenu' => true,
         );
-//        $menu_parent = $this->menuRepository->has('menuContent')->toArray();
-        $t = $this->menuRepository->getItems();
-        var_dump($t);
-        $data = $menu->getNavMenu();
+////        $menu_parent = $this->menuRepository->has('menuContent')->toArray();
+////        $t = $this->menuRepository->getItems();
+//        var_dump($t);
+        $data = $menu->getNavMenu($menu->args);
         view()->share('CMSMenuHtml', $data);
     }
 }

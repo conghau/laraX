@@ -212,6 +212,8 @@ return [
         'Theme' => igaster\laravelTheme\Facades\Theme::class,
         'Debugbar' => Barryvdh\Debugbar\Facade::class,
 
+        'TCHMenu' => App\Facades\TCHMenu::class,
+
     ],
 
     /**

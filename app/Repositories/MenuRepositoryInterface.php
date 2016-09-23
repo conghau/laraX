@@ -16,5 +16,9 @@ use App\Repositories\Base\BaseRepositoryInterface;
  * @package App\Repositories
  */
 interface MenuRepositoryInterface extends BaseRepositoryInterface {
-    public function getItems();
+  public function getItems();
+
+  public function getMenuNodes($menu_content_id, $parent_id = 0, $column = array('*'));
+
+  public function getMenuNodesChild($menu_content_id, $parent_id = 0, $column = array('*'));
 }

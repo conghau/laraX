@@ -12,11 +12,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 
 class MenuContent extends Model {
-    public function menu() {
-        return $this->belongsTo('App\Models\Menu');
-    }
+  protected $table = 'menu_contents';
+    
+  public function menu() {
+    return $this->belongsTo('App\Models\Menu', 'menu_id');
+  }
 
-    public function menuNode() {
-        return $this->hasMany('App\Models\MenuNode');
-    }
+  public function menuNode() {
+    return $this->hasMany('App\Models\MenuNode', 'menu_content_id');
+  }
 }
