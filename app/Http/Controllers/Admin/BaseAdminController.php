@@ -39,8 +39,9 @@ class BaseAdminController extends Controller {
 //        $menu = new TCHMenu();
         $menu = app(TCHMenu::class);
      //   $re = TCHMenu::generateMenu();
-        $re = $menu->generateMenu('admin-menu');
-        var_dump($re);
+//        $re = $menu->generateMenu('admin-menu');
+//        $re = $this->menuRepository->getMenuContents('admin-menu', ['*']);
+//        var_dump($re);
 //        $menu->localeObj = $this->defaultLanguage;
 //        $menu->languageCode = $this->defaultLanguage->language_code;
         $menu->args = array(
@@ -64,7 +65,7 @@ class BaseAdminController extends Controller {
 ////        $menu_parent = $this->menuRepository->has('menuContent')->toArray();
 ////        $t = $this->menuRepository->getItems();
 //        var_dump($t);
-        $data = $menu->getNavMenu($menu->args);
+        $data = $menu->getNavMenu1($menu->args);
         view()->share('CMSMenuHtml', $data);
     }
 }
