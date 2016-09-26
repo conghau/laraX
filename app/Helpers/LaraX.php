@@ -57,7 +57,7 @@ class LaraXHelper {
         // check arrays contained in this array
         foreach ($menus as &$element) {
             if (is_array($element)) {
-                if (self::buildMenus($element, $child, $dept)) {
+                if (self::buildItem($element, $child, $dept)) {
                     $dept += 1;
                     return TRUE;
                 }

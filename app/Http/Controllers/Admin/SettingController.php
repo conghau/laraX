@@ -14,20 +14,13 @@ class SettingController extends BaseAdminController {
 
     public function __construct(SettingRepositoryInterface $repoSetting) {
         parent::__construct(app(MenuRepositoryInterface::class));
-        $this->repoSetting = $repoSetting;
-        // $this->middleware('is_webmaster');
-
+        
+      $this->repoSetting = $repoSetting;
         $this->setPageTitle('Settings', 'manage website settings');
-//        $this->_setBodyClass($this->bodyClass);
-//
-//        $this->_loadAdminMenu($this->routeLink);
     }
 
     public function getIndex(Request $request) {
         $settings = $this->repoSetting->getAllSetting();
-//        $dis['pages'] = Models\Page::getBy([
-//            'status' => 1,
-//        ], ['global_title' => 'ASC'], true);
 
         return view('admin.settings.index', array('settings' => $settings));
     }

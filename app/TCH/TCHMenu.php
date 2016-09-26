@@ -721,7 +721,7 @@ class TCHMenu {
                 break;
             case 'custom-link': {
                 if ($isAdminMenu == TRUE) {
-                    $result = asset(\Config::get('app.adminCpAccess') . '/' . $item->url);
+                    $result = asset(\Config::get('app.admin_path') . '/' . $item->url);
                 } else {
                     $result = $item->url;
                 }
@@ -729,7 +729,7 @@ class TCHMenu {
                 break;
             default: {
                 if ($isAdminMenu == TRUE) {
-                    $result = asset(\Config::get('app.adminCpAccess') . '/' . $item->url);
+                    $result = asset(\Config::get('app.admin_path') . '/' . $item->url);
                 } else {
                     $result = $item->url;
                 }

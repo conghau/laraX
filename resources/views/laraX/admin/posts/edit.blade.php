@@ -1,31 +1,28 @@
-@extends('admin._master')
+@extends('admin.master')
 
 @section('page-toolbar')
 
 @endsection
 
 @section('css')
-    <link rel="stylesheet" href="/admin/core/third_party/bootstrap-tagsinput/bootstrap-tagsinput.css">
+    {!! Theme::css('admin/core/third_party/bootstrap-tagsinput/bootstrap-tagsinput.css') !!}
 @endsection
 
 @section('js')
-    <script type="text/javascript"
-            src="/admin/core/third_party/bootstrap-tagsinput/bootstrap-tagsinput.min.js"></script>
-    <script type="text/javascript" src="/admin/core/third_party/ckeditor/ckeditor.js"></script>
-    <script type="text/javascript" src="/admin/core/third_party/ckeditor/adapters/jquery.js"></script>
-    <script type="text/javascript" src="/admin/core/third_party/ckeditor/config.js"></script>
+    {!! Theme::js('admin/core/third_party/bootstrap-tagsinput/bootstrap-tagsinput.min.js') !!}
+    {!! Theme::js('admin/core/third_party/ckeditor/ckeditor.js') !!}
+    {!! Theme::js('admin/core/third_party/ckeditor/adapters/jquery.js') !!}
+    {!! Theme::js('admin/core/third_party/ckeditor/config.js') !!}
 
     {{--Custom field templates--}}
-    @include('admin._shared._custom-field-templates')
+    {{--@include('admin._shared._custom-field-templates')--}}
 
 @endsection
 
 @section('js-init')
     <script type="text/javascript">
         $(document).ready(function () {
-            $('.js-ckeditor').ckeditor({
-
-            });
+            $('.js-ckeditor').ckeditor({});
 
             $('.js-tags-editor').tagsinput({
                 'tagClass': 'label label-default'
@@ -78,13 +75,17 @@
     <div class="row">
         <div class="col-lg-12">
             <div class="note note-danger">
-                <p><label class="label label-danger">NOTE</label> You need to enable javascript.</p>
+                <p><label class="label label-danger">NOTE</label> You need to
+                    enable javascript.</p>
             </div>
             <div class="row">
-                <form class="js-validate-form" method="POST" accept-charset="utf-8" action="" novalidate>
+                <form class="js-validate-form" method="POST"
+                      accept-charset="utf-8" action="" novalidate>
                     {{ csrf_field() }}
-                    <textarea name="custom_fields" id="custom_fields_container" class="hidden form-control"
-                              style="display: none !important;" cols="30" rows="10"></textarea>
+                    <textarea name="custom_fields" id="custom_fields_container"
+                              class="hidden form-control"
+                              style="display: none !important;" cols="30"
+                              rows="10"></textarea>
                     <div class="col-md-9">
                         <div class="portlet light bordered">
                             <div class="portlet-title">
@@ -99,36 +100,48 @@
                             <div class="portlet-body">
                                 <div class="form-group">
                                     <label><b>Title <span class="text-danger">(*)</span></b></label>
-                                    <input required type="text" name="title" class="form-control the-object-title"
-                                           value="{{ $object->title or '' }}" autocomplete="off">
+                                    <input required type="text" name="title"
+                                           class="form-control the-object-title"
+                                           value="{{ $object->title or '' }}"
+                                           autocomplete="off">
                                 </div>
                                 <div class="form-group">
-                                    <label><b>Friendly slug <span class="text-danger">(*)</span></b></label>
-                                    <input type="text" name="slug" class="form-control the-object-slug"
-                                           value="{{ $object->slug or '' }}" autocomplete="off">
+                                    <label><b>Friendly slug <span
+                                                    class="text-danger">(*)</span></b></label>
+                                    <input type="text" name="slug"
+                                           class="form-control the-object-slug"
+                                           value="{{ $object->slug or '' }}"
+                                           autocomplete="off">
                                 </div>
-                                @if(isset($object) && $object->slug)
+                                @if(isset($object) && isset($object->slug))
                                     <div class="form-group">
-                                        <a target="_blank" href="{{ _getPostLink($object, $currentEditLanguage->language_code) }}" class="btn btn-default" type="button">{{ asset(_getPostLink($object, $currentEditLanguage->language_code)) }}</a>
+                                        <a target="_blank"
+                                           href="{{ _getPostLink($object, $currentEditLanguage->language_code) }}"
+                                           class="btn btn-default"
+                                           type="button">{{ asset(_getPostLink($object, $currentEditLanguage->language_code)) }}</a>
                                     </div>
                                 @endif
                                 <div class="form-group">
                                     <label><b>Description</b></label>
-                                    <textarea name="description" class="form-control"
+                                    <textarea name="description"
+                                              class="form-control"
                                               rows="5">{{ $object->description or '' }}</textarea>
                                 </div>
                                 <div class="form-group">
                                     <label><b>Tags (use for search)</b></label>
-                                    <input type="text" name="tags" class="form-control js-tags-editor"
-                                           value="{{ $object->tags or '' }}" autocomplete="off">
+                                    <input type="text" name="tags"
+                                           class="form-control js-tags-editor"
+                                           value="{{ $object->tags or '' }}"
+                                           autocomplete="off">
                                 </div>
                                 <div class="form-group">
                                     <label><b>Page template</b></label>
-                                    <select name="page_template" class="form-control">
+                                    <select name="page_template"
+                                            class="form-control">
                                         <option value=""></option>
-                                        @foreach (_getPageTemplate('Post') as $key => $row)
-                                            <option {{ (isset($object) && $object->page_template == $row) ? 'selected="selected"' : '' }} value="{{ $row }}">{{ $row }}</option>
-                                        @endforeach
+                                        {{--@foreach (_getPageTemplate('Post') as $key => $row)--}}
+                                            {{--<option {{ (isset($object) && $object->page_template == $row) ? 'selected="selected"' : '' }} value="{{ $row }}">{{ $row }}</option>--}}
+                                        {{--@endforeach--}}
                                     </select>
                                 </div>
                                 <div class="form-group">
@@ -157,23 +170,24 @@
                             <div class="portlet-body">
                                 <div class="form-group">
                                     <label><b>Language</b></label>
-                                    <select name="language_id" data-href="{{ $rawUrlChangeLanguage }}"
+                                    <select name="language_id"
+                                            data-href="{{ $rawUrlChangeLanguage or '' }}"
                                             class="form-control js-change-content-language">
-                                        @foreach($activatedLanguages as $key => $row)
-                                            <option value="{{ $row->id }}" {{ ($currentEditLanguage->id == $row->id) ? 'selected' : '' }}>{{ $row->language_name }}</option>
-                                        @endforeach
+                                        {{--@foreach($activatedLanguages as $key => $row)--}}
+                                            {{--<option value="{{ $row->id or '' }}" {{ ($currentEditLanguage->id == $row->id) ? 'selected' : '' }}>{{ $row->language_name }}</option>--}}
+                                        {{--@endforeach--}}
                                     </select>
                                 </div>
                                 <div class="form-group">
                                     <label><b>Status</b></label>
                                     <select name="status" class="form-control">
-                                        <option value="1" {{ (isset($object) && $object->status == 1) ? 'selected' : '' }}>
+                                        <option value="1" {{ (isset($object->status) && ($object->status or -1) == 1) ? 'selected' : '' }}>
                                             Published
                                         </option>
-                                        <option value="0" {{ (isset($object) && $object->status == 0) ? 'selected' : '' }}>
+                                        <option value="0" {{ (isset($object->status) && ($object->status or -1) == 0) ? 'selected' : '' }}>
                                             Disabled
                                         </option>
-                                        <option value="2" {{ (isset($object) && $object->status == 2) ? 'selected' : '' }}>
+                                        <option value="2" {{ (isset($object->status) && ($object->status or -1) == 2) ? 'selected' : '' }}>
                                             Draft
                                         </option>
                                     </select>
@@ -181,13 +195,18 @@
                                 <div class="form-group">
                                     <label><b>Thumbnail image</b></label>
                                     <div class="select-media-box">
-                                        <button type="button" class="btn blue show-add-media-popup">Choose image
+                                        <button type="button"
+                                                class="btn blue show-add-media-popup">
+                                            Choose image
                                         </button>
                                         <div class="clearfix"></div>
-                                        <a title="" class="show-add-media-popup"><img
-                                                    src="{{ (isset($object) && trim($object->thumbnail != '')) ? $object->thumbnail : '/admin/images/no-image.png' }}"
-                                                    alt="Thumbnail" class="img-responsive"></a>
-                                        <input type="hidden" name="thumbnail" value="{{ $object->thumbnail or '' }}"
+                                        <a title=""
+                                           class="show-add-media-popup"><img
+                                                    src="{{ (isset($object->thumbnail) && trim($object->thumbnail != '')) ? $object->thumbnail : '/admin/images/no-image.png' }}"
+                                                    alt="Thumbnail"
+                                                    class="img-responsive"></a>
+                                        <input type="hidden" name="thumbnail"
+                                               value="{{ $object->thumbnail or '' }}"
                                                class="input-file">
                                         <a title="" class="remove-image"><span>&nbsp;</span></a>
                                     </div>
@@ -196,7 +215,9 @@
                                     <div class="form-group">
                                         <label><b>Categories</b></label>
                                         <div class="form-control height-auto">
-                                            <div class="scroller" style="max-height: 300px;" data-always-visible="1"
+                                            <div class="scroller"
+                                                 style="max-height: 300px;"
+                                                 data-always-visible="1"
                                                  data-rail-visible1="1">
                                                 {!! $categoriesHtml !!}
                                             </div>
@@ -207,7 +228,8 @@
                             <div class="portlet-title portlet-footer">
                                 <div class="actions">
                                     <div class="btn-group btn-group-devided">
-                                        <button class="btn btn-transparent btn-success active btn-circle" type="submit">
+                                        <button class="btn btn-transparent btn-success active btn-circle"
+                                                type="submit">
                                             <i class="fa fa-check"></i> Save
                                         </button>
                                     </div>

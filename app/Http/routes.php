@@ -31,6 +31,8 @@ Route::group(['prefix' => 'cpadmin', 'middleware' => ['web'], 'namespace' => 'Ap
     $router->controller('settings', 'SettingController');
     /*Menus*/
     $router->controller('menus', 'MenuController');
+    /*Post*/
+    $router->controller('posts', 'PostController');
 });
 
 /**

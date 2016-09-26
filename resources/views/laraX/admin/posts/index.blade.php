@@ -1,4 +1,4 @@
-@extends('admin._master')
+@extends('admin.master')
 
 @section('page-toolbar')
 
@@ -9,30 +9,30 @@
 @endsection
 
 @section('js')
-    <script src="/admin/theme/assets/global/scripts/datatable.js"></script>
-    <script src="/admin/theme/assets/global/plugins/datatables/datatables.min.js"></script>
-    <script src="/admin/theme/assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js"></script>
+    {!! Theme::js('admin/theme/assets/global/scripts/datatable.js') !!}
+    {!! Theme::js('admin/theme/assets/global/plugins/datatables/datatables.min.js') !!}
+    {!! Theme::js('admin/theme/assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js') !!}
 @endsection
 
 @section('js-init')
-    <script src="/admin/dist/pages/table-datatables-ajax.js"></script>
+    {!! Theme::js('admin/dist/pages/table-datatables-ajax.js') !!}
     <script>
-        $(document).ready(function(){
+        $(document).ready(function () {
             TableDatatablesAjax.init({
-                ajaxGet: '{{ asset($adminCpAccess.'/posts') }}',
+                ajaxGet: '{{ asset($adminPath.'/posts') }}',
                 src: $('#datatable_ajax'),
-                onSuccess: function(grid, response){
+                onSuccess: function (grid, response) {
 
                 },
-                onError: function(grid){
+                onError: function (grid) {
 
                 },
-                onDataLoad: function(grid){
+                onDataLoad: function (grid) {
 
                 },
                 editableFields: [2, 4],
                 actionPosition: 7,
-                ajaxUrlSaveRow: '{{ asset($adminCpAccess.'/posts/fast-edit') }}'
+                ajaxUrlSaveRow: '{{ asset($adminPath.'/posts/fast-edit') }}'
             });
         });
     </script>
@@ -42,7 +42,8 @@
     <div class="row">
         <div class="col-lg-12">
             <div class="note note-danger">
-                <p><label class="label label-danger">NOTE</label> You need to enable javascript.</p>
+                <p><label class="label label-danger">NOTE</label> You need to
+                    enable javascript.</p>
             </div>
 
             <!-- Begin: life time stats -->
@@ -54,7 +55,9 @@
                     </div>
                     <div class="actions">
                         <div class="btn-group btn-group-devided">
-                            <a class="btn btn-transparent btn-success btn-circle btn-sm active" href="{{ asset($adminCpAccess.'/posts/edit/0/'.$defaultLanguageId) }}"><i class="fa fa-plus"></i> Create</a>
+                            <a class="btn btn-transparent btn-success btn-circle btn-sm active"
+                               href="{{ asset($adminPath.'/posts/edit/0/'.$defaultLanguageId) }}"><i
+                                        class="fa fa-plus"></i> Create</a>
                         </div>
                     </div>
                 </div>
@@ -66,18 +69,24 @@
                                 <option value="">Select...</option>
                                 <option value="1">Activated</option>
                                 <option value="0">Disabled</option>
-                                <option value="set_as_popular">Set as popular</option>
-                                <option value="unset_as_popular">Unset as popular</option>
+                                <option value="set_as_popular">Set as popular
+                                </option>
+                                <option value="unset_as_popular">Unset as
+                                    popular
+                                </option>
                             </select>
-                            <button class="btn btn-sm green table-group-action-submit" data-toggle="confirmation">
+                            <button class="btn btn-sm green table-group-action-submit"
+                                    data-toggle="confirmation">
                                 <i class="fa fa-check"></i> Submit
                             </button>
                         </div>
-                        <table class="table table-striped table-bordered table-hover table-checkable vertical-middle" id="datatable_ajax">
+                        <table class="table table-striped table-bordered table-hover table-checkable vertical-middle"
+                               id="datatable_ajax">
                             <thead>
                             <tr role="row" class="heading">
                                 <th width="1%">
-                                    <input type="checkbox" class="group-checkable">
+                                    <input type="checkbox"
+                                           class="group-checkable">
                                 </th>
                                 <th width="5%">
                                     #
@@ -94,10 +103,13 @@
                                 <td></td>
                                 <td></td>
                                 <td>
-                                    <input placeholder="Search..." type="text" class="form-control form-filter input-sm" name="global_title">
+                                    <input placeholder="Search..." type="text"
+                                           class="form-control form-filter input-sm"
+                                           name="global_title">
                                 </td>
                                 <td>
-                                    <select class="form-control form-filter input-small input-sm" name="status">
+                                    <select class="form-control form-filter input-small input-sm"
+                                            name="status">
                                         <option value="">Select...</option>
                                         <option value="1">Activated</option>
                                         <option value="0">Disabled</option>

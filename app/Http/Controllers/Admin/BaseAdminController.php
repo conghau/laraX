@@ -11,61 +11,61 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Repositories\MenuRepositoryInterface;
+use Illuminate\Support\Facades\Config;
 use TCH\TCHMenu;
 
 class BaseAdminController extends Controller {
 
-    protected $menuRepository;
+  protected $menuRepository;
 
-    public function __construct() {
-//        $this->menuRepository = $menuRepository;
-        $this->setMenuRepository(app(MenuRepositoryInterface::class));
-//        $this->setMenuRepository(app(MenuRepositoryInterface::class));
-        $this->_loadAdminMenu();
-    }
+  protected $adminPath;
+  protected $defaultLanguageId;
+  
+  protected $data = [];
 
-    protected function setPageTitle($title, $subTitle = '') {
-        view()->share([
-            'pageTitle' => $title,
-            'subPageTitle' => $subTitle,
-        ]);
-    }
+  public function __construct() {
+    $this->adminPath = Config::get('app.admin_path');
+    //$this->setMenuRepository(app(MenuRepositoryInterface::class));
+    $this->_loadAdminMenu();
+    
+    view()->share([
+      'adminPath' => $this->adminPath,
+      'defaultLanguageId' => 1
+    ]);
+  }
 
-    protected function setMenuRepository(MenuRepositoryInterface $_menuRepository) {
-        return $this->menuRepository = $_menuRepository;
-    }
+  protected function setPageTitle($title, $subTitle = '') {
+    view()->share([
+      'pageTitle' => $title,
+      'subPageTitle' => $subTitle,
+    ]);
+  }
 
-    protected function _loadAdminMenu($menuActive = '') {
-//        $menu = new TCHMenu();
-        $menu = app(TCHMenu::class);
-     //   $re = TCHMenu::generateMenu();
-//        $re = $menu->generateMenu('admin-menu');
-//        $re = $this->menuRepository->getMenuContents('admin-menu', ['*']);
-//        var_dump($re);
-//        $menu->localeObj = $this->defaultLanguage;
-//        $menu->languageCode = $this->defaultLanguage->language_code;
-        $menu->args = array(
+  protected function setMenuRepository(MenuRepositoryInterface $_menuRepository) {
+    return $this->menuRepository = $_menuRepository;
+  }
+
+  protected function _loadAdminMenu($menuActive = '') {
+    $menu = app(TCHMenu::class);
+    $menu->args = array(
 //            'languageId' => $this->_getSetting('dashboard_language', $this->defaultLanguageId),
-            'menuName' => 'admin-menu',
-            'menuClass' => 'page-sidebar-menu page-header-fixed',
-            'container' => 'div',
-            'containerClass' => 'page-sidebar navbar-collapse collapse',
-            'containerId' => '',
-            'containerTag' => 'ul',
-            'childTag' => 'li',
-            'itemHasChildrenClass' => 'menu-item-has-children',
-            'subMenuClass' => 'sub-menu',
-            'menuActive' => [
-                'type' => 'custom-link',
-                'related_id' => $menuActive,
-            ],
-            'activeClass' => 'active',
-            'isAdminMenu' => true,
-        );
-////        $menu_parent = $this->menuRepository->has('menuContent')->toArray();
-////        $t = $this->menuRepository->getItems();
-//        var_dump($t);
-        $data = $menu->getNavMenu1($menu->args);
-        view()->share('CMSMenuHtml', $data);
-    }
+      'menuName' => 'admin-menu',
+      'menuClass' => 'page-sidebar-menu page-header-fixed',
+      'container' => 'div',
+      'containerClass' => 'page-sidebar navbar-collapse collapse',
+      'containerId' => '',
+      'containerTag' => 'ul',
+      'childTag' => 'li',
+      'itemHasChildrenClass' => 'menu-item-has-children',
+      'subMenuClass' => 'sub-menu',
+      'menuActive' => [
+        'type' => 'custom-link',
+        'related_id' => $menuActive,
+      ],
+      'activeClass' => 'active',
+      'isAdminMenu' => TRUE,
+    );
+    $data = $menu->getNavMenu1($menu->args);
+    view()->share('CMSMenuHtml', $data);
+  }
 }

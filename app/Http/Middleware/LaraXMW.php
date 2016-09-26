@@ -4,7 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 
-class LarachMW
+class LaraXMV
 {
     /**
      * Handle an incoming request.
@@ -15,7 +15,7 @@ class LarachMW
      */
     public function handle($request, Closure $next)
     {
-        $themeName = \Session::get('themeName', 'larach');
+        $themeName = \Session::get('themeName', 'laraX');
         if(\Theme::exists($themeName))
             \Theme::set($themeName);
         return $next($request);

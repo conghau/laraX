@@ -67,7 +67,7 @@ return [
             'views-path' => 'resources/views/default',
             'asset-path' => 'public/default',
         ],
-        'larach' => [
+        'laraX' => [
             'key' => 'value',
         ],
     ],
