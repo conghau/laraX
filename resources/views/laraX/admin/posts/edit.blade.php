@@ -100,20 +100,20 @@
                             <div class="portlet-body">
                                 <div class="form-group">
                                     <label><b>Title <span class="text-danger">(*)</span></b></label>
-                                    <input required type="text" name="title"
+                                    <input required type="text" name="post_title"
                                            class="form-control the-object-title"
-                                           value="{{ $object->title or '' }}"
+                                           value="{{ $object->post_title or '' }}"
                                            autocomplete="off">
                                 </div>
                                 <div class="form-group">
                                     <label><b>Friendly slug <span
                                                     class="text-danger">(*)</span></b></label>
-                                    <input type="text" name="slug"
+                                    <input type="text" name="post_slug"
                                            class="form-control the-object-slug"
-                                           value="{{ $object->slug or '' }}"
+                                           value="{{ $object->post_slug or '' }}"
                                            autocomplete="off">
                                 </div>
-                                @if(isset($object) && isset($object->slug))
+                                @if(isset($object) && isset($object->post_slug))
                                     <div class="form-group">
                                         <a target="_blank"
                                            href="{{ _getPostLink($object, $currentEditLanguage->language_code) }}"
@@ -122,10 +122,10 @@
                                     </div>
                                 @endif
                                 <div class="form-group">
-                                    <label><b>Description</b></label>
-                                    <textarea name="description"
+                                    <label><b>Excerpt</b></label>
+                                    <textarea name="post_excerpt"
                                               class="form-control"
-                                              rows="5">{{ $object->description or '' }}</textarea>
+                                              rows="5">{{ $object->post_excerpt or '' }}</textarea>
                                 </div>
                                 <div class="form-group">
                                     <label><b>Tags (use for search)</b></label>
@@ -146,8 +146,8 @@
                                 </div>
                                 <div class="form-group">
                                     <label><b>Content</b></label>
-                                    <textarea name="content"
-                                              class="form-control js-ckeditor">{{ $object->content or '' }}</textarea>
+                                    <textarea name="post_content"
+                                              class="form-control js-ckeditor">{{ $object->post_content or '' }}</textarea>
                                 </div>
                             </div>
                         </div>
@@ -181,7 +181,7 @@
                                 <div class="form-group">
                                     <label><b>Status</b></label>
                                     <select name="status" class="form-control">
-                                        <option value="1" {{ (isset($object->status) && ($object->status or -1) == 1) ? 'selected' : '' }}>
+                                        <option value="1" {{ (laraX_get_value($object,'post_status',-1) == 1) ? 'selected' : '' }}>
                                             Published
                                         </option>
                                         <option value="0" {{ (isset($object->status) && ($object->status or -1) == 0) ? 'selected' : '' }}>

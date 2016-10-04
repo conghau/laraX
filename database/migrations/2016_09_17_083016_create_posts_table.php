@@ -29,6 +29,8 @@ class CreatePostsTable extends Migration {
             $table->string('post_type', 10)->default('post')->index();
             $table->integer('comment_count')->default(0);
             $table->string('guid')->index();
+            $table->tinyInteger('post_status')->default(1);
+            $table->boolean('is_popular')->default(0);
             $table->timestamps();
         });
     }
