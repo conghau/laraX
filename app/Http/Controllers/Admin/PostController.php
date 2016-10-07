@@ -8,20 +8,28 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Repositories\LanguageRepositoryInterface;
 use Illuminate\Http\Request;
 use App\Repositories\PostRepositoryInterface;
+use TCH\TCHConfig;
 
 class PostController extends BaseAdminController {
 
   protected $postRepo;
+  protected $languageRepo;
 
-  public function __construct(PostRepositoryInterface $postRepositoryInterface) {
+  public function __construct(PostRepositoryInterface $postRepositoryInterface , LanguageRepositoryInterface $languageRepositoryInterface) {
     parent::__construct();
     $this->postRepo = $postRepositoryInterface;
+    $this->languageRepo = $languageRepositoryInterface;
+    $this->data['activatedLanguages'] = $this->languageRepo->getManyBy('status', TCHConfig::STATUS_ACTIVE, [], ['id', 'language_name']);
+    $this->data['postStatus'] = TCHConfig::postStatus();
   }
 
   public function getIndex(Request $request) {
-    return view('admin.posts.index');
+    $this->setFlashMessages(TCHConfig::MESSAGE_TYPE_INFO, 'Go to posts');
+    $this->showFlashMessages();
+    return view('admin.posts.index', $this->data);
   }
 
   public function postIndex(Request $request) {
@@ -54,8 +62,28 @@ class PostController extends BaseAdminController {
     return response()->json($records);
   }
 
-  public function getEdit(Request $request, $id) {
+  /**
+   * Init page create/edit post
+   * 
+   * @param \Illuminate\Http\Request $request
+   * @param $post_id
+   * @param $language_id
+   * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+   */
+  public function getEdit(Request $request, $post_id, $language_id) {
     $this->data['object'] = new \stdClass();
+    $item = new \stdClass();
+    
+    //case create
+    if($post_id == 0) {
+      return;
+    }
+
+    $item = $this->postRepo->getById($post_id);
+    if(!$item) {
+      //todo set message no find post
+    }
+
     return view('admin.posts.edit', $this->data);
   }
 

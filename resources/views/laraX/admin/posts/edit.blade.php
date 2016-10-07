@@ -100,7 +100,8 @@
                             <div class="portlet-body">
                                 <div class="form-group">
                                     <label><b>Title <span class="text-danger">(*)</span></b></label>
-                                    <input required type="text" name="post_title"
+                                    <input required type="text"
+                                           name="post_title"
                                            class="form-control the-object-title"
                                            value="{{ $object->post_title or '' }}"
                                            autocomplete="off">
@@ -140,7 +141,7 @@
                                             class="form-control">
                                         <option value=""></option>
                                         {{--@foreach (_getPageTemplate('Post') as $key => $row)--}}
-                                            {{--<option {{ (isset($object) && $object->page_template == $row) ? 'selected="selected"' : '' }} value="{{ $row }}">{{ $row }}</option>--}}
+                                        {{--<option {{ (isset($object) && $object->page_template == $row) ? 'selected="selected"' : '' }} value="{{ $row }}">{{ $row }}</option>--}}
                                         {{--@endforeach--}}
                                     </select>
                                 </div>
@@ -173,23 +174,18 @@
                                     <select name="language_id"
                                             data-href="{{ $rawUrlChangeLanguage or '' }}"
                                             class="form-control js-change-content-language">
-                                        {{--@foreach($activatedLanguages as $key => $row)--}}
-                                            {{--<option value="{{ $row->id or '' }}" {{ ($currentEditLanguage->id == $row->id) ? 'selected' : '' }}>{{ $row->language_name }}</option>--}}
-                                        {{--@endforeach--}}
+                                        @foreach($activatedLanguages as $key => $row)
+                                            <option value="{{ $row->id or '' }}" {{ ($currentUserLanguageId == $row->id) ? 'selected' : '' }}>{{ $row->language_name }}</option>
+                                        @endforeach
                                     </select>
                                 </div>
                                 <div class="form-group">
                                     <label><b>Status</b></label>
                                     <select name="status" class="form-control">
-                                        <option value="1" {{ (laraX_get_value($object,'post_status',-1) == 1) ? 'selected' : '' }}>
-                                            Published
-                                        </option>
-                                        <option value="0" {{ (isset($object->status) && ($object->status or -1) == 0) ? 'selected' : '' }}>
-                                            Disabled
-                                        </option>
-                                        <option value="2" {{ (isset($object->status) && ($object->status or -1) == 2) ? 'selected' : '' }}>
-                                            Draft
-                                        </option>
+                                        @foreach($postStatus as $status=>$text)
+                                            <option value="{{$status}}" {{ (laraX_get_value($object,'post_status',-1) == $status) ? 'selected' : '' }}>
+                                            {{$text}}
+                                        @endforeach
                                     </select>
                                 </div>
                                 <div class="form-group">

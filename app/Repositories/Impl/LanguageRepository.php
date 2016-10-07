@@ -9,9 +9,20 @@
 namespace App\Repositories\Impl;
 
 
+use App\Models\Language;
 use App\Repositories\Base\BaseRepositoryImpl;
 use App\Repositories\LanguageRepositoryInterface;
 
-class LanguageRepository extends BaseRepositoryImpl implements LanguageRepositoryInterface{
+/**
+ * Class LanguageRepository
+ * 
+ * @package App\Repositories\Impl
+ */
+class LanguageRepository extends BaseRepositoryImpl implements LanguageRepositoryInterface {
+  protected $model;
+
+  public function __construct(Language $model) {
+    return $this->model = $model;
+  }
 
 }

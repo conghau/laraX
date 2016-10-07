@@ -13,8 +13,16 @@ use App\Http\Controllers\Controller;
 use App\Repositories\MenuRepositoryInterface;
 use Illuminate\Support\Facades\Config;
 use TCH\TCHMenu;
+use App\Http\Foundation;
 
+/**
+ * Class BaseAdminController
+ *
+ * @package App\Http\Controllers\Admin
+ */
 class BaseAdminController extends Controller {
+
+  use Foundation\FlashMessage;
 
   protected $menuRepository;
 
@@ -27,10 +35,11 @@ class BaseAdminController extends Controller {
     $this->adminPath = Config::get('app.admin_path');
     //$this->setMenuRepository(app(MenuRepositoryInterface::class));
     $this->_loadAdminMenu();
-    
+    $this->data['currentUserLanguageId'] = 1;
     view()->share([
       'adminPath' => $this->adminPath,
-      'defaultLanguageId' => 1
+      'defaultLanguageId' => 1,
+      'currentUserLanguageId' => 1,
     ]);
   }
 

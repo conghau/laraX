@@ -27,5 +27,5 @@ class RepositoryServiceProvider extends ServiceProvider {
         }
     }
 
-    protected $models = ['Setting', 'Menu', 'Post'];
+    protected $models = ['Setting', 'Menu', 'Post', 'Language', 'Country', 'City'];
 }
