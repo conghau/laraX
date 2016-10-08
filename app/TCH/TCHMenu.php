@@ -183,7 +183,7 @@ class TCHMenu {
             'defaultActiveClass' => $item_args['defaultActiveClass'],
             'isAdminMenu' => $item_args['isAdminMenu'],
         );
-        $activeClass = $this->getActiveItems($active_args);
+        $active_class = $this->getActiveItems($active_args);
 //            if ($this->checkChildItemIsActive1(array(
 //                    'parent' => $row['value'],
 //                    'menuActive' => $item_args['menuActive'],
@@ -202,9 +202,9 @@ class TCHMenu {
 
         $menu_title = $this->getMenuItemTitle($items['value']);
         $menu_link = $this->getMenuItemLink($items['value'], $item_args['isAdminMenu']);
-        $parent_class = $items['value']->css_class . ' ';
-        if ($this->checkItemHasChildren1($items)) {
-            $parent_class .= $item_args['itemHasChildrenClass'];
+        $parent_class = $items['value']->css_class;
+        if ($this->checkItemHasChildren($items)) {
+            $parent_class .= ' ' . $item_args['itemHasChildrenClass'];
         }
 
         $child_args = array(
@@ -225,9 +225,9 @@ class TCHMenu {
         $linkClass = '';
         if ($item_args['isAdminMenu'] == TRUE) {
             $linkClass = ' nav-link nav-toggle ';
-            $activeClass .= ' nav-item ';
+            $active_class .= ' nav-item ';
             $menu_icon = '<i class="' . $items['value']->icon_font . '"></i> <span class="title">' . $menu_title . '</span><span class="selected"></span>';
-            if ($this->checkItemHasChildren1($items)) {
+            if ($this->checkItemHasChildren($items)) {
                 $menu_icon .= $arrow;
             }
         } else {
@@ -237,9 +237,10 @@ class TCHMenu {
             $menu_icon = '<span>' . $menu_icon . '</span>';
         }
 
-        $output .= '<' . $item_args['childTag'] . ' class="' . $parent_class . ' ' . $activeClass . '">'; #<li>
+        $output .= '<' . $item_args['childTag'] . ' class="' . $parent_class . ' ' . $active_class . '">'; #<li>
         $output .= '<a class="' . $linkClass . '" href="' . $menu_link . '" title="' . $menu_title . '">' . $menu_icon . '</a>';
-        if ($this->checkItemHasChildren1($items)) {
+
+        if ($this->checkItemHasChildren($items)) {
             $output .= $this->getMenuItems($child_args, $items['child']);
         }
 
@@ -250,128 +251,35 @@ class TCHMenu {
 
     // Menu active
     private function getActiveItems($args) {
-        $temp = $args['menuActive'];
-        $result = '';
-        if ($args['item']->type == $args['menuActive']['type']) {
-            if (is_array($args['menuActive']['related_id'])) {
-                switch ($args['menuActive']['type']) {
-                    case 'category': {
-                        if (in_array($args['item']->related_id, $args['menuActive']['related_id'])) {
-                            $result = $args['defaultActiveClass'];
-                        }
-                    }
-                        break;
-                    case 'product-category': {
-                        if (in_array($args['item']->related_id, $args['menuActive']['related_id'])) {
-                            $result = $args['defaultActiveClass'];
-                        }
-                    }
-                        break;
-                    default: {
-                        if (in_array($args['item']->related_id, $args['menuActive']['related_id'])) {
-                            $result = $args['defaultActiveClass'];
-                        }
-                    }
-                        break;
-                }
-            } else {
-                switch ($args['menuActive']['type']) {
-                    case 'category': {
-                        if ($args['menuActive']['related_id'] == $args['item']->related_id) {
-                            $result = $args['defaultActiveClass'];
-                        }
-                    }
-                        break;
-                    case 'product-category': {
-                        if ($args['menuActive']['related_id'] == $args['item']->related_id) {
-                            $result = $args['defaultActiveClass'];
-                        }
-                    }
-                        break;
-                    case 'custom-link': {
-                        $currentUrl = \Request::url();
-                        if ($args['isAdminMenu']) {
-                            if ($args['menuActive']['related_id'] == $args['item']->url) {
-                                $result = $args['defaultActiveClass'];
-                            }
-                        } else {
-                            if (asset($args['item']->url) == asset($currentUrl) || asset($args['item']->url) == asset($currentUrl . '/')) {
-                                $result = $args['defaultActiveClass'];
-                            }
-                        }
-                    }
-                        break;
-                    default: {
-                        if ($args['menuActive']['related_id'] == $args['item']->related_id) {
-                            $result = $args['defaultActiveClass'];
-                        }
-                    }
-                        break;
-                }
+        $menuActiveType = $args['menuActive']['type'];
+
+        if ($args['item']->type !== $menuActiveType) {
+            return '';
+        }
+
+        $menuRelatedId = $args['menuActive']['related_id'];
+        $defaultActiveClass = $args['defaultActiveClass'];
+
+        if (is_array($menuRelatedId)) {
+            if (!in_array($args['item']->related_id, $menuRelatedId)) {
+                return '';
+            }
+            return $defaultActiveClass;
+        }
+
+        if ('custom-link' === $menuActiveType) {
+            $currentUrl = \Request::url();
+            if ($args['isAdminMenu'] && $menuRelatedId == $args['item']->url) {
+                return $defaultActiveClass;
+            }
+            if (asset($args['item']->url) == asset($currentUrl) || asset($args['item']->url) == asset($currentUrl . '/')) {
+                return $defaultActiveClass;
             }
         }
-        return $result;
-    }
-
-    // Check children active
-    private function checkChildItemIsActive($args) {
-        return $this->_recursiveIsChildItemActive($args);
-    }
-
-    private function checkChildItemIsActive1($args) {
-        return $this->_recursiveIsChildItemActive1($args);
-    }
-
-    private function _recursiveIsChildItemActive($args) {
-        if ($this->getActiveItems(array(
-                'menuActive' => $args['menuActive'],
-                'item' => $args['parent'],
-                'defaultActiveClass' => $args['defaultActiveClass'],
-                'isAdminMenu' => $args['isAdminMenu']
-            )) != ''
-        ) {
-            return TRUE;
+        if ($menuRelatedId !== $args['item']->related_id) {
+            return '';
         }
-        $result = FALSE;
-        $menuNodes = MenuNode::where([
-            'parent_id' => $args['parent']->id,
-        ], ['position' => 'ASC'], TRUE);
-        foreach ($menuNodes as $key => $row) {
-            $childArgs = $args;
-            $childArgs['parent'] = $row;
-            $result = $this->_recursiveIsChildItemActive($childArgs);
-            if ($result) {
-                return TRUE;
-            }
-
-        }
-        return $result;
-    }
-
-    private function _recursiveIsChildItemActive1($args) {
-        if ($this->getActiveItems(array(
-                'menuActive' => $args['menuActive'],
-                'item' => $args['parent'],
-                'defaultActiveClass' => $args['defaultActiveClass'],
-                'isAdminMenu' => $args['isAdminMenu']
-            )) != ''
-        ) {
-            return TRUE;
-        }
-        $result = FALSE;
-        $menuNodes = MenuNode::where([
-            'parent_id' => $args['parent']->id,
-        ], ['position' => 'ASC'], TRUE);
-        foreach ($menuNodes as $key => $row) {
-            $childArgs = $args;
-            $childArgs['parent'] = $row;
-            $result = $this->_recursiveIsChildItemActive($childArgs);
-            if ($result) {
-                return TRUE;
-            }
-
-        }
-        return $result;
+        return $defaultActiveClass;;
     }
 
     // Get item title
@@ -524,7 +432,7 @@ class TCHMenu {
     }
 
     // Check menu has children or not
-    private function checkItemHasChildren1($item) {
+    private function checkItemHasChildren($item) {
         if (isset($item['child']) && count($item['child']) > 0) {
             return TRUE;
         }
