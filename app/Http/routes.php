@@ -24,15 +24,16 @@ Route::get('/', function () {
 
 Route::group(['prefix' => 'cpadmin', 'middleware' => ['web'], 'namespace' => 'App\Http\Controllers\Admin'], function ($router) {
 
-    Route::get('/login', 'AuthController@showFormLogin');
+    $router->controller('auth', 'AuthController');
 
     /*Settings*/
-//    Route::get('/settings', 'SettingController@getIndex');
     $router->controller('settings', 'SettingController');
     /*Menus*/
     $router->controller('menus', 'MenuController');
     /*Post*/
     $router->controller('posts', 'PostController');
+    /*Dashboard*/
+    $router->controller('dashboard', 'DashboardController');
 });
 
 /**

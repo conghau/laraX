@@ -13,7 +13,7 @@ class SettingController extends BaseAdminController {
     protected $repoSetting;
 
     public function __construct(SettingRepositoryInterface $repoSetting) {
-        parent::__construct(app(MenuRepositoryInterface::class));
+        parent::__construct('settings');
         
       $this->repoSetting = $repoSetting;
         $this->setPageTitle('Settings', 'manage website settings');

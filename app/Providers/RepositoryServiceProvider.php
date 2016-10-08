@@ -11,6 +11,11 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 
+/**
+ * Class RepositoryServiceProvider
+ *
+ * @package App\Providers
+ */
 class RepositoryServiceProvider extends ServiceProvider {
 
     /**
@@ -19,6 +24,7 @@ class RepositoryServiceProvider extends ServiceProvider {
      * @return void
      */
     public function register() {
+        $this->models = ['Setting', 'Menu', 'Post', 'AdminUser'];
         foreach ($this->models as $model) {
             $this->app->bind(
                 "App\\Repositories\\{$model}RepositoryInterface",
@@ -28,4 +34,5 @@ class RepositoryServiceProvider extends ServiceProvider {
     }
 
     protected $models = ['Setting', 'Menu', 'Post'];
+
 }

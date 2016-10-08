@@ -134,10 +134,7 @@ class TCHMenu {
         );
         if ($defaultArgs['isAdminMenu'] == TRUE) {
             $child_args['isAdminMenu'] = TRUE;
-            $output .= '<li class="sidebar-toggler-wrapper">
-										<div class="sidebar-toggler">
-										</div>
-									</li>';
+            $output .= '<li class="sidebar-toggler-wrapper"><div class="sidebar-toggler"></div></li>';
         }
         $menuItems = $this->menuRepo->getMenuNodesToArray($child_args['menuContentId'], [
             'id',
@@ -150,8 +147,7 @@ class TCHMenu {
             'title',
             'type'
         ]);
-        $output .= $this->getMenuItems1($child_args, $menuItems);
-        // $output.= '<div class="clearfix"></div></'.$defaultArgs['containerTag'].'>'; //</ul>
+        $output .= $this->getMenuItems($child_args, $menuItems);
         $output .= '</' . $defaultArgs['containerTag'] . '>'; //</ul>
         if ($defaultArgs['container'] != '') {
             $output .= '</' . $defaultArgs['container'] . '>';
@@ -160,7 +156,7 @@ class TCHMenu {
         return $output;
     }
 
-    public function getMenuItems1($item_args, $menuItems) {
+    public function getMenuItems($item_args, $menuItems) {
         $output = '';
         if (!$menuItems) {
             return NULL;
@@ -187,7 +183,7 @@ class TCHMenu {
             'defaultActiveClass' => $item_args['defaultActiveClass'],
             'isAdminMenu' => $item_args['isAdminMenu'],
         );
-        $activeClass = '';//$this->getActiveItems1($active_args);
+        $activeClass = $this->getActiveItems($active_args);
 //            if ($this->checkChildItemIsActive1(array(
 //                    'parent' => $row['value'],
 //                    'menuActive' => $item_args['menuActive'],
@@ -244,228 +240,16 @@ class TCHMenu {
         $output .= '<' . $item_args['childTag'] . ' class="' . $parent_class . ' ' . $activeClass . '">'; #<li>
         $output .= '<a class="' . $linkClass . '" href="' . $menu_link . '" title="' . $menu_title . '">' . $menu_icon . '</a>';
         if ($this->checkItemHasChildren1($items)) {
-            $output .= $this->getMenuItems1($child_args, $items['child']);
+            $output .= $this->getMenuItems($child_args, $items['child']);
         }
 
         $output .= '</' . $item_args['childTag'] . '>'; #</li>
         return $output;
     }
 
-    public function getNavMenu() {
-        $defaultArgs = array(
-            'languageId' => 0,
-            'menuName' => '',
-            'menuClass' => 'my-menu',
-            'container' => 'nav',
-            'containerClass' => '',
-            'containerId' => '',
-            'containerTag' => 'ul',
-            'childTag' => 'li',
-            'itemHasChildrenClass' => 'menu-item-has-children',
-            'subMenuClass' => 'sub-menu',
-            'menuActive' => [
-                'type' => 'custom-link',
-                'related_id' => 0,
-            ],
-            'activeClass' => 'active',
-            'isAdminMenu' => FALSE,
-        );
-        $defaultArgs = array_merge($defaultArgs, $this->args);
-
-        $output = '';
-        $menu = Menu::join('menu_contents', 'menus.id', '=', 'menu_contents.menu_id')//            ->join('languages', 'languages.id', '=', 'menu_contents.language_id')
-        ->where('menus.slug', '=', ltrim($defaultArgs['menuName']))//            ->where('menu_contents.language_id', '=', $defaultArgs['languageId'])
-        ->select('menus.*', 'menu_contents.id as menu_content_id')->first();
-        // Menu exists
-        if (!is_null($menu)) {
-            if ($defaultArgs['container'] != '') {
-                $output .= '<' . $defaultArgs['container'] . ' class="' . $defaultArgs['containerClass'] . '" id="' . $defaultArgs['containerId'] . '">';
-            }
-            //<nav>
-            $output .= '<' . $defaultArgs['containerTag'] . ' class="' . $defaultArgs['menuClass'] . '"' . (($defaultArgs['isAdminMenu']) ? ' data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200"' : '') . '>'; //<ul>
-            $child_args = array(
-                'menuContentId' => $menu->menu_content_id,
-                'parentId' => 0,
-                'isAdminMenu' => FALSE,
-                'containerTag' => $defaultArgs['containerTag'],
-                'childTag' => $defaultArgs['childTag'],
-                'itemHasChildrenClass' => $defaultArgs['itemHasChildrenClass'],
-                'subMenuClass' => $defaultArgs['subMenuClass'],
-                'containerTagAttr' => '',
-                'menuActive' => $defaultArgs['menuActive'],
-                'defaultActiveClass' => $defaultArgs['activeClass'],
-                //default active class
-            );
-            if ($defaultArgs['isAdminMenu'] == TRUE) {
-                $child_args['isAdminMenu'] = TRUE;
-                $output .= '<li class="sidebar-toggler-wrapper">
-										<div class="sidebar-toggler">
-										</div>
-									</li>';
-            }
-            $output .= $this->getMenuItems($child_args);
-            // $output.= '<div class="clearfix"></div></'.$defaultArgs['containerTag'].'>'; //</ul>
-            $output .= '</' . $defaultArgs['containerTag'] . '>'; //</ul>
-            if ($defaultArgs['container'] != '') {
-                $output .= '</' . $defaultArgs['container'] . '>';
-            }
-            //</nav>
-        }
-        return $output;
-    }
-
-    // Function get all menu items
-    private function getMenuItems($item_args) {
-        $output = '';
-        $menuItems = MenuNode::where([
-            'menu_content_id' => $item_args['menuContentId'],
-            'parent_id' => $item_args['parentId'],
-        ], ['position' => 'ASC'], TRUE)->get();
-        if ($menuItems) {
-            (sizeof($menuItems) > 0 && $item_args['parentId'] != 0) ? $output .= '<' . $item_args['containerTag'] . ' class="' . $item_args['subMenuClass'] . '"' . $item_args['containerTagAttr'] . '>' : $output .= ''; // <ul> will be printed if current is not level 0
-            foreach ($menuItems as $key => $row) {
-                $arrow = '';
-                if (count($row->child) > 0) {
-                    $arrow = '<span class="arrow"></span>';
-                }
-
-                // Get menu active class
-                $active_args = array(
-                    'menuActive' => $item_args['menuActive'],
-                    'item' => $row,
-                    'defaultActiveClass' => $item_args['defaultActiveClass'],
-                    'isAdminMenu' => $item_args['isAdminMenu'],
-                );
-                $activeClass = $this->getActiveItems($active_args);
-                if ($this->checkChildItemIsActive(array(
-                        'parent' => $row,
-                        'menuActive' => $item_args['menuActive'],
-                        'defaultActiveClass' => $item_args['defaultActiveClass'],
-                        'isAdminMenu' => $item_args['isAdminMenu']
-                    )) == TRUE
-                ) {
-                    if (trim($activeClass) == '') {
-                        $activeClass = ' current-parent-item';
-                        if ($item_args['isAdminMenu'] == TRUE) {
-                            $activeClass .= ' active';
-                        }
-                    }
-                    $arrow = '<span class="arrow open"></span>';
-                }
-
-                $menu_title = $this->getMenuItemTitle($row);
-                $menu_link = $this->getMenuItemLink($row, $item_args['isAdminMenu']);
-                $parent_class = $row->css_class . ' ';
-                if ($this->checkItemHasChildren($row)) {
-                    $parent_class .= $item_args['itemHasChildrenClass'];
-                }
-
-                $child_args = array(
-                    'menuContentId' => $item_args['menuContentId'],
-                    'parentId' => $row->id,
-                    'isAdminMenu' => $item_args['isAdminMenu'],
-                    'containerTag' => $item_args['containerTag'],
-                    'childTag' => $item_args['childTag'],
-                    'itemHasChildrenClass' => $item_args['itemHasChildrenClass'],
-                    'subMenuClass' => $item_args['subMenuClass'],
-                    'containerTagAttr' => '',
-                    'menuActive' => $item_args['menuActive'],
-                    'defaultActiveClass' => $item_args['defaultActiveClass'],
-                    //default active class
-                );
-
-                $menu_icon = $menu_title;
-                $linkClass = '';
-                if ($item_args['isAdminMenu'] == TRUE) {
-                    $linkClass = ' nav-link nav-toggle ';
-                    $activeClass .= ' nav-item ';
-                    $menu_icon = '<i class="' . $row->icon_font . '"></i> <span class="title">' . $menu_title . '</span><span class="selected"></span>';
-                    if ($this->checkItemHasChildren($row)) {
-                        $menu_icon .= $arrow;
-                    }
-                } else {
-                    if ($row->icon_font) {
-                        $menu_icon = '<i class="' . $row->icon_font . '"></i>' . $menu_icon;
-                    }
-                    $menu_icon = '<span>' . $menu_icon . '</span>';
-                }
-
-                $output .= '<' . $item_args['childTag'] . ' class="' . $parent_class . ' ' . $activeClass . '">'; #<li>
-                $output .= '<a class="' . $linkClass . '" href="' . $menu_link . '" title="' . $menu_title . '">' . $menu_icon . '</a>';
-                $output .= $this->getMenuItems($child_args, $menuItems);
-                $output .= '</' . $item_args['childTag'] . '>'; #</li>
-            }
-            (sizeof($menuItems) > 0 && $item_args['parentId'] != 0) ? $output .= '</' . $item_args['containerTag'] . '>' : $output .= ''; // </ul>
-        }
-        return $output;
-    }
 
     // Menu active
     private function getActiveItems($args) {
-        $temp = $args['menuActive'];
-        $result = '';
-        if ($args['item']->type == $args['menuActive']['type']) {
-            if (is_array($args['menuActive']['related_id'])) {
-                switch ($args['menuActive']['type']) {
-                    case 'category': {
-                        if (in_array($args['item']->related_id, $args['menuActive']['related_id'])) {
-                            $result = $args['defaultActiveClass'];
-                        }
-                    }
-                        break;
-                    case 'product-category': {
-                        if (in_array($args['item']->related_id, $args['menuActive']['related_id'])) {
-                            $result = $args['defaultActiveClass'];
-                        }
-                    }
-                        break;
-                    default: {
-                        if (in_array($args['item']->related_id, $args['menuActive']['related_id'])) {
-                            $result = $args['defaultActiveClass'];
-                        }
-                    }
-                        break;
-                }
-            } else {
-                switch ($args['menuActive']['type']) {
-                    case 'category': {
-                        if ($args['menuActive']['related_id'] == $args['item']->related_id) {
-                            $result = $args['defaultActiveClass'];
-                        }
-                    }
-                        break;
-                    case 'product-category': {
-                        if ($args['menuActive']['related_id'] == $args['item']->related_id) {
-                            $result = $args['defaultActiveClass'];
-                        }
-                    }
-                        break;
-                    case 'custom-link': {
-                        $currentUrl = \Request::url();
-                        if ($args['isAdminMenu']) {
-                            if ($args['menuActive']['related_id'] == $args['item']->url) {
-                                $result = $args['defaultActiveClass'];
-                            }
-                        } else {
-                            if (asset($args['item']->url) == asset($currentUrl) || asset($args['item']->url) == asset($currentUrl . '/')) {
-                                $result = $args['defaultActiveClass'];
-                            }
-                        }
-                    }
-                        break;
-                    default: {
-                        if ($args['menuActive']['related_id'] == $args['item']->related_id) {
-                            $result = $args['defaultActiveClass'];
-                        }
-                    }
-                        break;
-                }
-            }
-        }
-        return $result;
-    }
-
-    private function getActiveItems1($args) {
         $temp = $args['menuActive'];
         $result = '';
         if ($args['item']->type == $args['menuActive']['type']) {
@@ -737,15 +521,6 @@ class TCHMenu {
                 break;
         }
         return $result;
-    }
-
-    // Check menu has children or not
-    private function checkItemHasChildren($item) {
-        if (count($item->child) > 0) {
-            return TRUE;
-        }
-
-        return FALSE;
     }
 
     // Check menu has children or not
