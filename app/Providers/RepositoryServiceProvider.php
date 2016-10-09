@@ -24,7 +24,7 @@ class RepositoryServiceProvider extends ServiceProvider {
      * @return void
      */
     public function register() {
-        $this->models = ['Setting', 'Menu', 'Post', 'AdminUser'];
+        $this->models = ['Setting', 'Menu', 'Post', 'AdminUser', 'User'];
         foreach ($this->models as $model) {
             $this->app->bind(
                 "App\\Repositories\\{$model}RepositoryInterface",

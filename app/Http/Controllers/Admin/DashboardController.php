@@ -8,20 +8,38 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Repositories\PostRepositoryInterface;
+use App\Repositories\UserRepositoryInterface;
+
 /**
  * Class DashboardController
  *
  * @package App\Http\Controllers\Admin
  */
 class DashboardController extends BaseAdminController {
-    public function __construct() {
-        parent::__construct('Dashboard');
-        $this->setPageTitle('Dashboard', 'dashboard & statistics');
+    private $postRepository;
+    private $userRepository;
+
+    public function __construct(PostRepositoryInterface $postRepository, UserRepositoryInterface $userRepository) {
+        parent::__construct('dashboard');
+        $this->setPageTitle('dashboard', 'dashboard & statistics');
         $this->setBodyClass($this->bodyClass);
 
+        $this->postRepository = $postRepository;
+        $this->userRepository = $userRepository;
     }
 
     public function getIndex() {
-        echo 'Welcome Admin';
+        $posts = $this->postRepository->count();
+        $this->data['postsCount'] = $posts;
+
+        $this->data['pagesCount'] = $posts;
+
+        $this->data['productsCount'] = $posts;
+
+        $users = $this->userRepository->count();
+        $this->data['usersCount'] = $users;
+
+        return view('admin.dashboard.index', $this->data);
     }
 }
