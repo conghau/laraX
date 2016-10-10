@@ -33,6 +33,8 @@ interface BaseRepositoryInterface {
 
     public function has($relation, array $with = array());
 
+    public function count($with = array());
+
     /**
      * make_array
      * @param array $arrItems , list of item

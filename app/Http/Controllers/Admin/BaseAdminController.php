@@ -8,7 +8,6 @@
 
 namespace App\Http\Controllers\Admin;
 
-
 use App\Http\Controllers\Controller;
 use App\Repositories\MenuRepositoryInterface;
 use Illuminate\Support\Facades\Config;
@@ -24,57 +23,103 @@ class BaseAdminController extends Controller {
 
   use Foundation\FlashMessage;
 
-  protected $menuRepository;
+    protected $menuRepository;
+    protected $adminPath;
+    protected $defaultLanguageId;
+    protected $bodyClass;
+    protected $currentMenuActive;
+    protected $data = [];
 
-  protected $adminPath;
-  protected $defaultLanguageId;
-  
-  protected $data = [];
+    public function __construct($currentMenuActive = '') {
+        $this->adminPath = Config::get('app.admin_path');
+        //$this->setMenuRepository(app(MenuRepositoryInterface::class));
+        $this->currentMenuActive = $currentMenuActive;
+        $this->loadAdminMenu($currentMenuActive);
 
-  public function __construct() {
-    $this->adminPath = Config::get('app.admin_path');
-    //$this->setMenuRepository(app(MenuRepositoryInterface::class));
-    $this->_loadAdminMenu();
-    $this->data['currentUserLanguageId'] = 1;
-    view()->share([
-      'adminPath' => $this->adminPath,
-      'defaultLanguageId' => 1,
-      'currentUserLanguageId' => 1,
-    ]);
-  }
+        view()->share([
+            'adminPath' => $this->adminPath,
+            'defaultLanguageId' => 1
+        ]);
+    }
 
-  protected function setPageTitle($title, $subTitle = '') {
-    view()->share([
-      'pageTitle' => $title,
-      'subPageTitle' => $subTitle,
-    ]);
-  }
+    protected function initVariable() {
+        $this->adminPath = Config::get('app.admin_path');
+        $this->defaultLanguageId = 1;
+        $this->bodyClass = '';
+        $this->currentMenuActive = 'Dashboard';
+    }
 
-  protected function setMenuRepository(MenuRepositoryInterface $_menuRepository) {
-    return $this->menuRepository = $_menuRepository;
-  }
 
-  protected function _loadAdminMenu($menuActive = '') {
-    $menu = app(TCHMenu::class);
-    $menu->args = array(
-//            'languageId' => $this->_getSetting('dashboard_language', $this->defaultLanguageId),
-      'menuName' => 'admin-menu',
-      'menuClass' => 'page-sidebar-menu page-header-fixed',
-      'container' => 'div',
-      'containerClass' => 'page-sidebar navbar-collapse collapse',
-      'containerId' => '',
-      'containerTag' => 'ul',
-      'childTag' => 'li',
-      'itemHasChildrenClass' => 'menu-item-has-children',
-      'subMenuClass' => 'sub-menu',
-      'menuActive' => [
-        'type' => 'custom-link',
-        'related_id' => $menuActive,
-      ],
-      'activeClass' => 'active',
-      'isAdminMenu' => TRUE,
-    );
-    $data = $menu->getNavMenu1($menu->args);
-    view()->share('CMSMenuHtml', $data);
-  }
+    /**
+     * Set current menu active
+     *
+     * @param string $menuClassActive
+     * @return string
+     */
+    protected function setCurrentMenuActive($menuClassActive = '') {
+        return $this->currentMenuActive = $menuClassActive;
+    }
+
+    /**
+     * Set custom body class
+     *
+     * @param string $class
+     *
+     * @return string
+     */
+    protected function setBodyClass($class = '') {
+        return $this->bodyClass = $class;
+    }
+
+    /**
+     * Set page title
+     *
+     * @param $title
+     * @param string $subTitle
+     */
+    protected function setPageTitle($title, $subTitle = '') {
+        view()->share([
+            'pageTitle' => $title,
+            'subPageTitle' => $subTitle,
+        ]);
+    }
+
+    /**
+     * Set menu Repository
+     *
+     * @param MenuRepositoryInterface $_menuRepository
+     * @return MenuRepositoryInterface
+     */
+    protected function setMenuRepository(MenuRepositoryInterface $_menuRepository) {
+        return $this->menuRepository = $_menuRepository;
+    }
+
+    /**
+     * Load admin menu
+     *
+     * @param string $menuActive
+     */
+    protected function loadAdminMenu($menuActive = '') {
+        $menu = app(TCHMenu::class);
+        $menu->args = array(
+            'languageId' => 1,
+            'menuName' => 'admin-menu',
+            'menuClass' => 'page-sidebar-menu page-header-fixed',
+            'container' => 'div',
+            'containerClass' => 'page-sidebar navbar-collapse collapse',
+            'containerId' => '',
+            'containerTag' => 'ul',
+            'childTag' => 'li',
+            'itemHasChildrenClass' => 'menu-item-has-children',
+            'subMenuClass' => 'sub-menu',
+            'menuActive' => [
+                'type' => 'custom-link',
+                'related_id' => $menuActive,
+            ],
+            'activeClass' => 'active',
+            'isAdminMenu' => TRUE,
+        );
+        $data = $menu->getNavMenu1($menu->args);
+        view()->share('CMSMenuHtml', $data);
+    }
 }

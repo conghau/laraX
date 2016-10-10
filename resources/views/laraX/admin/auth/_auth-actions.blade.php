@@ -49,7 +49,7 @@
 <div class="content">
     @yield('content')
 </div>
-<div class="copyright">2015 &copy; LaraWebEd. All rights reserved.</div>
+<div class="copyright">2016 &copy; LaraX. All rights reserved.</div>
 
 @include('admin/_shared/_body-js')
 
