@@ -8,6 +8,7 @@
 
 namespace App\Http\Foundation;
 
+use Illuminate\Support\Facades\Session;
 use TCH\TCHConfig;
 
 /**
@@ -31,7 +32,7 @@ trait FlashMessage {
    * @param string $messages
    * @return int
    */
-  protected function setFlashMessages($type = TCHConfig::MESSAGE_TYPE_SUCCESS , $messages = '') {
+  protected function setFlashMessages($type = TCHConfig::MESSAGE_TYPE_SUCCESS, $messages = '') {
     if (!array_key_exists($type, $this->laraXMessages)) {
       $this->laraXMessages[$type] = [];
     }
@@ -39,8 +40,9 @@ trait FlashMessage {
       foreach ($messages as $key => $value) {
         array_push($this->laraXMessages[$type], $value);
       }
-      return array_push($this->laraXMessages[$type], $value);
+      return $this->laraXMessages;
     }
+    return array_push($this->laraXMessages[$type], $messages);
   }
 
   /**
@@ -57,7 +59,7 @@ trait FlashMessage {
    */
   protected function showFlashMessages() {
     foreach (TCHConfig::messageType() as $type) {
-      session()->flash($type.'Messages', laraX_get_value($this->laraXMessages, $type, []));
+      Session::flash($type . 'Messages', laraX_get_value($this->laraXMessages, $type, []));
     }
   }
 }

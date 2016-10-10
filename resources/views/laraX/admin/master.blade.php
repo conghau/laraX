@@ -133,8 +133,9 @@
 @yield('js-init')
 <!-- JS INIT -->
 
+<!-- Flash Message -->
 @include('admin/_shared/_flash-messages')
-
+<!-- End Flash Message -->
 </body>
 
 </html>

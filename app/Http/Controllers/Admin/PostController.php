@@ -13,6 +13,11 @@ use Illuminate\Http\Request;
 use App\Repositories\PostRepositoryInterface;
 use TCH\TCHConfig;
 
+/**
+ * Class PostController
+ * 
+ * @package App\Http\Controllers\Admin
+ */
 class PostController extends BaseAdminController {
 
   protected $postRepo;
