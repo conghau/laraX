@@ -1,4 +1,4 @@
-@extends('admin._master')
+@extends('admin.master')
 
 @section('page-toolbar')
 
@@ -19,7 +19,7 @@
     <script>
         $(document).ready(function(){
             TableDatatablesAjax.init({
-                ajaxGet: '{{ asset($adminCpAccess.'/admin-users') }}',
+                ajaxGet: '{{ asset($adminPath.'/admin-users') }}',
                 src: $('#datatable_ajax'),
                 onSuccess: function(grid, response){
 
@@ -32,7 +32,7 @@
                 },
                 editableFields: [2],
                 actionPosition: 6,
-                ajaxUrlSaveRow: '{{ asset($adminCpAccess.'/admin-users/fast-edit') }}'
+                ajaxUrlSaveRow: '{{ asset($adminPath.'/admin-users/fast-edit') }}'
             });
         });
     </script>
@@ -54,13 +54,13 @@
                     </div>
                     <div class="actions">
                         <div class="btn-group btn-group-devided">
-                            <a class="btn btn-transparent btn-success btn-circle btn-sm active" href="{{ asset($adminCpAccess.'/admin-users/edit/0/'.$defaultLanguageId) }}"><i class="fa fa-plus"></i> Create</a>
+                            <a class="btn btn-transparent btn-success btn-circle btn-sm active" href="{{ asset($adminPath.'/admin-users/edit/0/'.$defaultLanguageId) }}"><i class="fa fa-plus"></i> Create</a>
                         </div>
                     </div>
                 </div>
                 <div class="portlet-body">
                     <div class="table-container">
-                        @if($loggedInAdminUserRole->slug == 'webmaster')
+                        @if(isset($loggedInAdminUserRole) && $loggedInAdminUserRole->slug == 'webmaster')
                             <div class="table-actions-wrapper">
                                 <span></span>
                                 <select class="table-group-action-input form-control input-inline input-small input-sm">

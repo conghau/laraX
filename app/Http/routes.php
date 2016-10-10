@@ -34,6 +34,10 @@ Route::group(['prefix' => 'cpadmin', 'middleware' => ['web'], 'namespace' => 'Ap
     $router->controller('posts', 'PostController');
     /*Dashboard*/
     $router->controller('dashboard', 'DashboardController');
+    /*User*/
+    $router->controller('users', 'UserController');
+    /*AdminUser*/
+    $router->controller('admin-users', 'AdminUserController');
 });
 
 /**
