@@ -9,9 +9,9 @@
 @endsection
 
 @section('js')
-    <script src="/admin/theme/assets/global/scripts/datatable.js"></script>
-    <script src="/admin/theme/assets/global/plugins/datatables/datatables.min.js"></script>
-    <script src="/admin/theme/assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js"></script>
+    {!! Theme::js('admin/theme/assets/global/scripts/datatable.js') !!}
+    {!! Theme::js('admin/theme/assets/global/plugins/datatables/datatables.min.js') !!}
+    {!! Theme::js('admin/theme/assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js') !!}
 @endsection
 
 @section('js-init')

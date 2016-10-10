@@ -25,6 +25,7 @@ class BaseAdminController extends Controller {
 
     protected $menuRepository;
     protected $adminPath;
+    protected $routeLink;
     protected $defaultLanguageId;
     protected $bodyClass;
     protected $currentMenuActive;

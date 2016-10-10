@@ -32,6 +32,7 @@ class CreatePostsTable extends Migration {
             $table->tinyInteger('post_status')->default(1);
             $table->boolean('is_popular')->default(0);
             $table->timestamps();
+            $table->text('meta');
         });
     }
 

@@ -1,15 +1,16 @@
-@extends('admin._master')
+@extends('admin.master')
 
 @section('page-toolbar')
 
 @endsection
 
 @section('css')
-    <link rel="stylesheet" href="/admin/core/third_party/bootstrap-datepicker/css/bootstrap-datepicker3.min.css">
+    {!! Theme::css('admin/core/third_party/bootstrap-datepicker/css/bootstrap-datepicker3.min.css') !!}
+
 @endsection
 
 @section('js')
-    <script type="text/javascript" src="/admin/core/third_party/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
+    {!! Theme::js('admin/core/third_party/bootstrap-datepicker/js/bootstrap-datepicker.min.js') !!}
 @endsection
 
 @section('js-init')
@@ -116,7 +117,7 @@
                 <div class="portlet light profile-sidebar-portlet pad-bot-20">
                     <!-- SIDEBAR USERPIC -->
                     <div class="profile-userpic">
-                        <img src="{{ (isset($object) && $object->avatar) ? $object->avatar : '/admin/images/no-image.png' }}" class="img-responsive" alt=""></div>
+                        <img src="{{ $object->avatar or '/admin/images/no-image.png' }}" class="img-responsive" alt=""></div>
                     <!-- END SIDEBAR USERPIC -->
                     <!-- SIDEBAR USER TITLE -->
                     <div class="profile-usertitle">
@@ -161,10 +162,10 @@
                                                 <input type="text" value="{{ $object->email or '' }}"
                                                        name="email"
                                                        autocomplete="off"
-                                                       {{ isset($object) && $object->id != 0 ? 'disabled' : '' }}
+                                                       {{ laraX_get_value($object,'id') != 0 ? 'disabled' : '' }}
                                                        class="form-control"/>
                                             </div>
-                                            @if($object->id == 0)
+                                            @if(laraX_get_value($object,'id') == 0)
                                                 <div class="form-group">
                                                     <label class="control-label "><b>Password</b></label>
                                                     <input type="text" value=""
@@ -208,15 +209,15 @@
                                                 <br>
                                                 <label>
                                                     <input type="radio" name="sex" value="1"
-                                                            {{ (isset($object) && $object->sex == 1) ? 'checked' : '' }}> Male
+                                                            {{ laraX_get_value($object,'sex') == 1 ? 'checked' : '' }}> Male
                                                 </label>
                                                 <label>
                                                     <input type="radio" name="sex" value="0"
-                                                            {{ (!isset($object) || $object->sex == 0 || !$object->sex) ? 'checked' : '' }}> Female
+                                                            {{ laraX_get_value($object,'sex') == 0 ? 'checked' : '' }}> Female
                                                 </label>
                                                 <label>
                                                     <input type="radio" name="sex" value="2"
-                                                            {{ (isset($object) && $object->sex == 2) ? 'checked' : '' }}> Other
+                                                            {{ laraX_get_value($object,'sex') == 2 ? 'checked' : '' }}> Other
                                                 </label>
                                             </div>
                                             <div class="form-group">
@@ -240,7 +241,7 @@
                                                 <div class="select-media-box">
                                                     <button type="button" class="btn blue show-add-media-popup">Choose image</button>
                                                     <div class="clearfix"></div>
-                                                    <a title="" class="show-add-media-popup"><img src="{{ (isset($object) && trim($object->avatar != '')) ? $object->avatar : '/admin/images/no-image.png' }}" alt="Thumbnail" class="img-responsive"></a>
+                                                    <a title="" class="show-add-media-popup"><img src="{{ $object->avatar or '/admin/images/no-image.png' }}" alt="Thumbnail" class="img-responsive"></a>
                                                     <input type="hidden" name="avatar" value="{{ $object->avatar or '' }}" class="input-file">
                                                     <a title="" class="remove-image"><span>&nbsp;</span></a>
                                                 </div>

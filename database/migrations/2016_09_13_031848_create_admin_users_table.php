@@ -25,6 +25,7 @@ class CreateAdminUsersTable extends Migration
             $table->boolean('status')->default(TRUE);
             $table->tinyInteger('user_role_id')->default(1);
             $table->timestamps();
+            $table->text('meta');
         });
     }
 

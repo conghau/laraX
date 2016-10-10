@@ -35,7 +35,7 @@ abstract class BaseRepositoryImpl {
     }
 
     public function create(array $data) {
-        $this->model->fill($data)->save();
+        return $this->model->fill($data)->save();
     }
 
     public function update(array $data, $id) {
