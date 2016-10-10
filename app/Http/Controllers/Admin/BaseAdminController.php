@@ -10,9 +10,11 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Repositories\MenuRepositoryInterface;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
 use TCH\TCHMenu;
 use App\Http\Foundation;
+use Carbon;
 
 /**
  * Class BaseAdminController
@@ -21,7 +23,7 @@ use App\Http\Foundation;
  */
 class BaseAdminController extends Controller {
 
-  use Foundation\FlashMessage;
+    use Foundation\FlashMessage;
 
     protected $menuRepository;
     protected $adminPath;
@@ -55,6 +57,7 @@ class BaseAdminController extends Controller {
      * Set current menu active
      *
      * @param string $menuClassActive
+     *
      * @return string
      */
     protected function setCurrentMenuActive($menuClassActive = '') {
@@ -89,6 +92,7 @@ class BaseAdminController extends Controller {
      * Set menu Repository
      *
      * @param MenuRepositoryInterface $_menuRepository
+     *
      * @return MenuRepositoryInterface
      */
     protected function setMenuRepository(MenuRepositoryInterface $_menuRepository) {
@@ -120,7 +124,16 @@ class BaseAdminController extends Controller {
             'activeClass' => 'active',
             'isAdminMenu' => TRUE,
         );
-        $data = $menu->getNavMenu1($menu->args);
+
+        $data = '';
+        $expiresAt = Carbon::now()->addMinutes(30);
+        if (Cache::has('cache_admin_menu')) {
+            $data = Cache::get('cache_admin_menu');;
+        } else {
+            $data = $menu->getNavMenu1($menu->args);
+            Cache::put('cache_admin_menu', $data, $expiresAt);
+        }
+
         view()->share('CMSMenuHtml', $data);
     }
 }

@@ -213,6 +213,7 @@ return [
         'Debugbar' => Barryvdh\Debugbar\Facade::class,
 
         'TCHMenu' => App\Facades\TCHMenu::class,
+        'Carbon' => 'Carbon\Carbon'
 
     ],
 
