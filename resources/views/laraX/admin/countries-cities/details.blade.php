@@ -19,7 +19,7 @@
     <script>
         $(document).ready(function(){
             TableDatatablesAjax.init({
-                ajaxGet: '{{ asset($adminCpAccess.'/countries-cities/details/'.$object->id) }}',
+                ajaxGet: '{{ asset($adminPath.'/countries-cities/details/'.$object->id) }}',
                 src: $('#datatable_ajax'),
                 onSuccess: function(grid, response){
 
@@ -32,7 +32,7 @@
                 },
                 editableFields: [2, 3, 4],
                 actionPosition: 5,
-                ajaxUrlSaveRow: '{{ asset($adminCpAccess.'/countries-cities/fast-edit-city/'.$object->id) }}'
+                ajaxUrlSaveRow: '{{ asset($adminPath.'/countries-cities/fast-edit-city/'.$object->id) }}'
             });
         });
     </script>

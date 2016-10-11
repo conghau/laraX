@@ -19,7 +19,7 @@
     <script>
         $(document).ready(function(){
             TableDatatablesAjax.init({
-                ajaxGet: '{{ asset($adminCpAccess.'/product-categories') }}',
+                ajaxGet: '{{ asset($adminPath.'/product-categories') }}',
                 src: $('#datatable_ajax'),
                 onSuccess: function(grid, response){
 
@@ -36,7 +36,7 @@
                 defaultPageLength: -1,
                 editableFields: [2, 5],
                 actionPosition: 7,
-                ajaxUrlSaveRow: '{{ asset($adminCpAccess.'/product-categories/fast-edit') }}'
+                ajaxUrlSaveRow: '{{ asset($adminPath.'/product-categories/fast-edit') }}'
             });
         });
     </script>
@@ -58,7 +58,7 @@
                     </div>
                     <div class="actions">
                         <div class="btn-group btn-group-devided">
-                            <a class="btn btn-transparent btn-success btn-circle btn-sm active" href="{{ asset($adminCpAccess.'/product-categories/edit/0/'.$defaultLanguageId) }}"><i class="fa fa-plus"></i> Create</a>
+                            <a class="btn btn-transparent btn-success btn-circle btn-sm active" href="{{ asset($adminPath.'/product-categories/edit/0/'.$defaultLanguageId) }}"><i class="fa fa-plus"></i> Create</a>
                         </div>
                     </div>
                 </div>

@@ -1,4 +1,4 @@
-@extends('admin._master')
+@extends('admin.master')
 
 @section('page-toolbar')
 
@@ -9,25 +9,25 @@
 @endsection
 
 @section('js')
-    <script src="/admin/theme/assets/global/scripts/datatable.js"></script>
-    <script src="/admin/theme/assets/global/plugins/datatables/datatables.min.js"></script>
-    <script src="/admin/theme/assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js"></script>
+    {!! Theme::js('admin/theme/assets/global/scripts/datatable.js') !!}
+    {!! Theme::js('admin/theme/assets/global/plugins/datatables/datatables.min.js') !!}
+    {!! Theme::js('admin/theme/assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js') !!}
 @endsection
 
 @section('js-init')
-    <script src="/admin/dist/pages/table-datatables-ajax.js"></script>
+    {!! Theme::js('admin/dist/pages/table-datatables-ajax.js') !!}
     <script>
-        $(document).ready(function(){
+        $(document).ready(function () {
             TableDatatablesAjax.init({
-                ajaxGet: '{{ asset($adminCpAccess.'/subscribed-emails') }}',
+                ajaxGet: '{{ asset($adminPath.'/subscribed-emails') }}',
                 src: $('#datatable_ajax'),
-                onSuccess: function(grid, response){
+                onSuccess: function (grid, response) {
 
                 },
-                onError: function(grid){
+                onError: function (grid) {
 
                 },
-                onDataLoad: function(grid){
+                onDataLoad: function (grid) {
 
                 },
                 editableFields: [2],
@@ -54,7 +54,8 @@
                 </div>
                 <div class="portlet-body">
                     <div class="table-container">
-                        <table class="table table-striped table-bordered table-hover table-checkable vertical-middle" id="datatable_ajax">
+                        <table class="table table-striped table-bordered table-hover table-checkable vertical-middle"
+                               id="datatable_ajax">
                             <thead>
                             <tr role="row" class="heading">
                                 <th width="1%">
@@ -70,7 +71,8 @@
                                 <td></td>
                                 <td></td>
                                 <td>
-                                    <input placeholder="Search..." type="text" class="form-control form-filter input-sm" name="email">
+                                    <input placeholder="Search..." type="text" class="form-control form-filter input-sm"
+                                           name="email">
                                 </td>
                                 <td></td>
                             </tr>

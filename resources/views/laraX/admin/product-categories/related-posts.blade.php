@@ -32,7 +32,7 @@
                 },
                 editableFields: [2, 4],
                 actionPosition: 7,
-                ajaxUrlSaveRow: '{{ asset($adminCpAccess.'/products/fast-edit') }}'
+                ajaxUrlSaveRow: '{{ asset($adminPath.'/products/fast-edit') }}'
             });
         });
     </script>
@@ -54,7 +54,7 @@
                     </div>
                     <div class="actions">
                         <div class="btn-group btn-group-devided">
-                            <a class="btn btn-transparent btn-success btn-circle btn-sm active" href="{{ asset($adminCpAccess.'/posts/edit/0/'.$defaultLanguageId) }}"><i class="fa fa-plus"></i> Create</a>
+                            <a class="btn btn-transparent btn-success btn-circle btn-sm active" href="{{ asset($adminPath.'/posts/edit/0/'.$defaultLanguageId) }}"><i class="fa fa-plus"></i> Create</a>
                         </div>
                     </div>
                 </div>

@@ -25,7 +25,7 @@
         @if(isset($object) && !$object->parent_id)
             <div class="portlet-title">
                 <div class="actions btn-set">
-                    <a type="button" href="/{{ $adminCpAccess }}/comments/reply/{{ $object->id }}" class="btn btn-secondary-outline default">
+                    <a type="button" href="/{{ $adminPath }}/comments/reply/{{ $object->id }}" class="btn btn-secondary-outline default">
                         <i class="fa fa-reply"></i> Reply
                     </a>
                 </div>
@@ -33,7 +33,7 @@
         @else
             <div class="portlet-title">
                 <div class="caption">
-                    Comment reply for <a href="/{{ $adminCpAccess }}/comments/edit/{{ $object->parent_id }}">#{{ $object->parent_id }}</a>
+                    Comment reply for <a href="/{{ $adminPath }}/comments/edit/{{ $object->parent_id }}">#{{ $object->parent_id }}</a>
                 </div>
             </div>
         @endif

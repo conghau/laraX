@@ -19,7 +19,7 @@
     <script>
         $(document).ready(function(){
             TableDatatablesAjax.init({
-                ajaxGet: '{{ asset($adminCpAccess.'/settings/languages') }}',
+                ajaxGet: '{{ asset($adminPath.'/settings/languages') }}',
                 src: $('#datatable_ajax'),
                 onSuccess: function(grid, response){
 
@@ -32,7 +32,7 @@
                 },
                 editableFields: [2, 3, 4, 5],
                 actionPosition: 7,
-                ajaxUrlSaveRow: '{{ asset($adminCpAccess.'/settings/fast-edit-languages') }}'
+                ajaxUrlSaveRow: '{{ asset($adminPath.'/settings/fast-edit-languages') }}'
             });
         });
     </script>

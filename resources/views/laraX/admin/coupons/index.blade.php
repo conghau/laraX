@@ -19,7 +19,7 @@
     <script>
         $(document).ready(function(){
             TableDatatablesAjax.init({
-                ajaxGet: '{{ asset($adminCpAccess.'/coupons') }}',
+                ajaxGet: '{{ asset($adminPath.'/coupons') }}',
                 src: $('#datatable_ajax'),
                 onSuccess: function(grid, response){
 
@@ -32,7 +32,7 @@
                 },
                 editableFields: [2],
                 actionPosition: 7,
-                ajaxUrlSaveRow: '{{ asset($adminCpAccess.'/coupons/fast-edit') }}'
+                ajaxUrlSaveRow: '{{ asset($adminPath.'/coupons/fast-edit') }}'
             });
         });
     </script>
@@ -54,7 +54,7 @@
                     </div>
                     <div class="actions">
                         <div class="btn-group btn-group-devided">
-                            <a class="btn btn-transparent btn-success btn-circle btn-sm active" href="{{ asset($adminCpAccess.'/coupons/edit/0/') }}"><i class="fa fa-plus"></i> Create</a>
+                            <a class="btn btn-transparent btn-success btn-circle btn-sm active" href="{{ asset($adminPath.'/coupons/edit/0/') }}"><i class="fa fa-plus"></i> Create</a>
                         </div>
                     </div>
                 </div>

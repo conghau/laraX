@@ -137,7 +137,7 @@
 
             @if(isset($object->id) && $object->id)
                 $('body').on('click', '.tab-change-url a[data-toggle=tab]', function (event) {
-                var currentLink = '{{ '/'.$adminCpAccess.'/products/edit/'.$object->id.'/'.$currentEditLanguage->id }}';
+                var currentLink = '{{ '/'.$adminPath.'/products/edit/'.$object->id.'/'.$currentEditLanguage->id }}';
                 window.history.pushState('', '', currentLink + $(this).attr('href'));
             });
             @endif
@@ -160,7 +160,7 @@
                                     <i class="fa fa-shopping-cart"></i>{{ $object->global_title or 'New product' }}
                                 </div>
                                 <div class="actions btn-set">
-                                    <a type="button" href="{{ asset($adminCpAccess.'/products') }}"
+                                    <a type="button" href="{{ asset($adminPath.'/products') }}"
                                        class="btn btn-secondary-outline default">
                                         <i class="fa fa-angle-left"></i> Back
                                     </a>

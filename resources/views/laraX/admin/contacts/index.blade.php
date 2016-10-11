@@ -19,7 +19,7 @@
     <script>
         $(document).ready(function(){
             TableDatatablesAjax.init({
-                ajaxGet: '{{ asset($adminCpAccess.'/contacts') }}',
+                ajaxGet: '{{ asset($adminPath.'/contacts') }}',
                 src: $('#datatable_ajax'),
                 onSuccess: function(grid, response){
 

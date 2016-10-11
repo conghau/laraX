@@ -19,7 +19,7 @@
     <script>
         $(document).ready(function(){
             TableDatatablesAjax.init({
-                ajaxGet: '{{ asset($adminCpAccess.'/menus') }}',
+                ajaxGet: '{{ asset($adminPath.'/menus') }}',
                 src: $('#datatable_ajax'),
                 onSuccess: function(grid, response){
 
@@ -32,7 +32,7 @@
                 },
                 editableFields: [2, 3],
                 actionPosition: 5,
-                ajaxUrlSaveRow: '{{ asset($adminCpAccess.'/menus/fast-edit') }}'
+                ajaxUrlSaveRow: '{{ asset($adminPath.'/menus/fast-edit') }}'
             });
         });
     </script>
@@ -54,7 +54,7 @@
                     </div>
                     <div class="actions">
                         <div class="btn-group btn-group-devided">
-                            <a class="btn btn-transparent btn-success btn-circle btn-sm" href="{{ asset($adminCpAccess.'/menus/edit/0/'.$currentLanguageId) }}"><i class="fa fa-plus"></i> Create</a>
+                            <a class="btn btn-transparent btn-success btn-circle btn-sm" href="{{ asset($adminPath.'/menus/edit/0/'.$currentLanguageId) }}"><i class="fa fa-plus"></i> Create</a>
                         </div>
                     </div>
                 </div>

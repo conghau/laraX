@@ -19,7 +19,7 @@
     <script>
         $(document).ready(function(){
             TableDatatablesAjax.init({
-                ajaxGet: '{{ asset($adminCpAccess.'/product-attribute-sets') }}',
+                ajaxGet: '{{ asset($adminPath.'/product-attribute-sets') }}',
                 src: $('#datatable_ajax'),
                 onSuccess: function(grid, response){
 
@@ -32,7 +32,7 @@
                 },
                 editableFields: [1, 2, 4],
                 actionPosition: 5,
-                ajaxUrlSaveRow: '{{ asset($adminCpAccess.'/product-attribute-sets/fast-edit') }}'
+                ajaxUrlSaveRow: '{{ asset($adminPath.'/product-attribute-sets/fast-edit') }}'
             });
         });
     </script>
@@ -54,7 +54,7 @@
                     </div>
                     <div class="actions">
                         <div class="btn-group btn-group-devided">
-                            <a class="btn btn-transparent btn-success btn-circle btn-sm active" href="{{ asset($adminCpAccess.'/product-attribute-sets/edit/0') }}"><i class="fa fa-plus"></i> Create</a>
+                            <a class="btn btn-transparent btn-success btn-circle btn-sm active" href="{{ asset($adminPath.'/product-attribute-sets/edit/0') }}"><i class="fa fa-plus"></i> Create</a>
                         </div>
                     </div>
                 </div>

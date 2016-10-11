@@ -16,7 +16,7 @@
         <ul class="nav navbar-nav pull-right">
             @if(isset($unreadMailCount) && $unreadMailCount)
                 <li class="dropdown dropdown-extended dropdown-inbox" id="header_inbox_bar">
-                    {{--<a title="You have {{ $unreadMailCount }} unread mail(s) in inbox" href="{{ '/'.$adminCpAccess.'/contacts' }}" class="dropdown-toggle" style="padding-right: 10px;">--}}
+                    {{--<a title="You have {{ $unreadMailCount }} unread mail(s) in inbox" href="{{ '/'.$adminPath.'/contacts' }}" class="dropdown-toggle" style="padding-right: 10px;">--}}
                         {{--<i class="icon-envelope-open"></i>--}}
                         {{--<span class="badge badge-default">{{ $unreadMailCount }}</span>--}}
                     {{--</a>--}}
@@ -28,53 +28,53 @@
                 </a>
                 <ul class="dropdown-menu dropdown-menu-default">
                     {{--<li>--}}
-                        {{--<a href="/{{ $adminCpAccess }}/pages/edit/0/{{ $defaultLanguageId }}">--}}
+                        {{--<a href="/{{ $adminPath }}/pages/edit/0/{{ $defaultLanguageId }}">--}}
                             {{--<i class="fa fa-tasks"></i> Page--}}
                         {{--</a>--}}
                     {{--</li>--}}
                     {{--<li>--}}
-                        {{--<a href="/{{ $adminCpAccess }}/posts/edit/0/{{ $defaultLanguageId }}">--}}
+                        {{--<a href="/{{ $adminPath }}/posts/edit/0/{{ $defaultLanguageId }}">--}}
                             {{--<i class="icon-layers"></i> Post--}}
                         {{--</a>--}}
                     {{--</li>--}}
                     {{--<li>--}}
-                        {{--<a href="/{{ $adminCpAccess }}/categories/edit/0/{{ $defaultLanguageId }}">--}}
+                        {{--<a href="/{{ $adminPath }}/categories/edit/0/{{ $defaultLanguageId }}">--}}
                             {{--<i class="fa fa-sitemap"></i> Category--}}
                         {{--</a>--}}
                     {{--</li>--}}
                     {{--<li>--}}
-                        {{--<a href="/{{ $adminCpAccess }}/products/edit/0/{{ $defaultLanguageId }}">--}}
+                        {{--<a href="/{{ $adminPath }}/products/edit/0/{{ $defaultLanguageId }}">--}}
                             {{--<i class="fa fa-cubes"></i> Product--}}
                         {{--</a>--}}
                     {{--</li>--}}
                     {{--<li>--}}
-                        {{--<a href="/{{ $adminCpAccess }}/product-categories/edit/0/{{ $defaultLanguageId }}">--}}
+                        {{--<a href="/{{ $adminPath }}/product-categories/edit/0/{{ $defaultLanguageId }}">--}}
                             {{--<i class="fa fa-sitemap"></i> Product category--}}
                         {{--</a>--}}
                     {{--</li>--}}
                     {{--<li>--}}
-                        {{--<a href="/{{ $adminCpAccess }}/coupons/edit/0/{{ $defaultLanguageId }}">--}}
+                        {{--<a href="/{{ $adminPath }}/coupons/edit/0/{{ $defaultLanguageId }}">--}}
                             {{--<i class="fa fa-code"></i> Coupon--}}
                         {{--</a>--}}
                     {{--</li>--}}
                     {{--<li>--}}
-                        {{--<a href="/{{ $adminCpAccess }}/brands/edit/0">--}}
+                        {{--<a href="/{{ $adminPath }}/brands/edit/0">--}}
                             {{--<i class="fa fa-umbrella"></i> Brands--}}
                         {{--</a>--}}
                     {{--</li>--}}
                     {{--<li class="divider"></li>--}}
                     {{--<li>--}}
-                        {{--<a href="/{{ $adminCpAccess }}/custom-fields/edit/0">--}}
+                        {{--<a href="/{{ $adminPath }}/custom-fields/edit/0">--}}
                             {{--<i class="fa fa-edit"></i> Custom field--}}
                         {{--</a>--}}
                     {{--</li>--}}
                     {{--<li>--}}
-                        {{--<a href="/{{ $adminCpAccess }}/users/edit/0">--}}
+                        {{--<a href="/{{ $adminPath }}/users/edit/0">--}}
                             {{--<i class="icon-users"></i> User--}}
                         {{--</a>--}}
                     {{--</li>--}}
                     {{--<li>--}}
-                        {{--<a href="/{{ $adminCpAccess }}/admin-users/edit/0">--}}
+                        {{--<a href="/{{ $adminPath }}/admin-users/edit/0">--}}
                             {{--<i class="icon-users"></i> Admin user--}}
                         {{--</a>--}}
                     {{--</li>--}}
@@ -88,13 +88,13 @@
                 </a>
                 <ul class="dropdown-menu dropdown-menu-default">
                     {{--<li>--}}
-                        {{--<a href="/{{ $adminCpAccess }}/admin-users/edit/{{ $loggedInAdminUser->id }}">--}}
+                        {{--<a href="/{{ $adminPath }}/admin-users/edit/{{ $loggedInAdminUser->id }}">--}}
                             {{--<i class="icon-key"></i> Change password--}}
                         {{--</a>--}}
                     {{--</li>--}}
                     {{--<li class="divider"></li>--}}
                     {{--<li>--}}
-                        {{--<a href="/{{ $adminCpAccess.'/auth/logout' }}">--}}
+                        {{--<a href="/{{ $adminPath.'/auth/logout' }}">--}}
                             {{--<i class="icon-logout"></i> Log Out--}}
                         {{--</a>--}}
                     {{--</li>--}}

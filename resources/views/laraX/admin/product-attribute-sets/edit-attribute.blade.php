@@ -68,7 +68,7 @@
                 <div class="portlet-title">
                     <div class="caption">
                         <i class="icon-note font-dark"></i>
-                        <span class="caption-subject font-dark sbold uppercase">Base attribute set: <a href="{{ '/' . $adminCpAccess . '/product-attribute-sets/edit/' . $attributeSet->id }}" class="font-red" title="{{ $attributeSet->title or '' }}">{{ $attributeSet->title or '' }}</a></span>
+                        <span class="caption-subject font-dark sbold uppercase">Base attribute set: <a href="{{ '/' . $adminPath . '/product-attribute-sets/edit/' . $attributeSet->id }}" class="font-red" title="{{ $attributeSet->title or '' }}">{{ $attributeSet->title or '' }}</a></span>
                     </div>
                 </div>
                 <div class="portlet-body clearfix">

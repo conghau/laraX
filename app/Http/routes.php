@@ -38,6 +38,8 @@ Route::group(['prefix' => 'cpadmin', 'middleware' => ['web'], 'namespace' => 'Ap
     $router->controller('users', 'UserController');
     /*AdminUser*/
     $router->controller('admin-users', 'AdminUserController');
+    /*SubscribeEmail*/
+    $router->controller('subscribed-emails', 'SubscribeEmailController');
 });
 
 /**

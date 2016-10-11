@@ -19,7 +19,7 @@
     <script>
         $(document).ready(function(){
             TableDatatablesAjax.init({
-                ajaxGet: '{{ asset($adminCpAccess.'/custom-fields') }}',
+                ajaxGet: '{{ asset($adminPath.'/custom-fields') }}',
                 src: $('#datatable_ajax'),
                 onSuccess: function(grid, response){
 
@@ -32,7 +32,7 @@
                 },
                 editableFields: [2],
                 actionPosition: 5,
-                ajaxUrlSaveRow: '{{ asset($adminCpAccess.'/custom-fields/fast-edit') }}'
+                ajaxUrlSaveRow: '{{ asset($adminPath.'/custom-fields/fast-edit') }}'
             });
         });
     </script>
@@ -54,7 +54,7 @@
                     </div>
                     <div class="actions">
                         <div class="btn-group btn-group-devided">
-                            <a class="btn btn-transparent btn-success btn-circle btn-sm active" href="{{ '/'.$adminCpAccess.'/custom-fields/edit/0' }}"><i class="fa fa-plus"></i> Create</a>
+                            <a class="btn btn-transparent btn-success btn-circle btn-sm active" href="{{ '/'.$adminPath.'/custom-fields/edit/0' }}"><i class="fa fa-plus"></i> Create</a>
                         </div>
                     </div>
                 </div>

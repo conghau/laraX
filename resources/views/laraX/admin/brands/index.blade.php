@@ -19,7 +19,7 @@
     <script>
         $(document).ready(function(){
             TableDatatablesAjax.init({
-                ajaxGet: '{{ asset($adminCpAccess.'/brands') }}',
+                ajaxGet: '{{ asset($adminPath.'/brands') }}',
                 src: $('#datatable_ajax'),
                 onSuccess: function(grid, response){
 
@@ -51,7 +51,7 @@
                     </div>
                     <div class="actions">
                         <div class="btn-group btn-group-devided">
-                            <a class="btn btn-transparent btn-success btn-circle btn-sm active" href="{{ asset($adminCpAccess.'/brands/edit/0') }}"><i class="fa fa-plus"></i> Create</a>
+                            <a class="btn btn-transparent btn-success btn-circle btn-sm active" href="{{ asset($adminPath.'/brands/edit/0') }}"><i class="fa fa-plus"></i> Create</a>
                         </div>
                     </div>
                 </div>

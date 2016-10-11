@@ -19,7 +19,7 @@
     <script>
         $(document).ready(function(){
             TableDatatablesAjax.init({
-                ajaxGet: '{{ asset($adminCpAccess.'/comments') }}',
+                ajaxGet: '{{ asset($adminPath.'/comments') }}',
                 src: $('#datatable_ajax'),
                 onSuccess: function(grid, response){
 

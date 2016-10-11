@@ -33,6 +33,6 @@ class RepositoryServiceProvider extends ServiceProvider {
         }
     }
 
-    protected $models = ['Setting', 'Menu', 'Post', 'Language', 'Country', 'City', 'AdminUser', 'User'];
+    protected $models = ['Setting', 'Menu', 'Post', 'Language', 'Country', 'City', 'AdminUser', 'User', 'SubscribeEmail'];
 
 }
