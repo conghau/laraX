@@ -18,7 +18,7 @@ interface BaseRepositoryInterface {
      *
      * @return mixed
      */
-    public function all($columns = array('*'));
+    public function all($columns = ['*']);
 
     /**
      * Get list object with pagination
@@ -28,7 +28,7 @@ interface BaseRepositoryInterface {
      *
      * @return mixed
      */
-    public function paginate($perPage = 10, $columns = array('*'));
+    public function paginate($perPage = 10, $columns = ['*']);
 
     /**
      * Insert/create object
@@ -67,7 +67,7 @@ interface BaseRepositoryInterface {
      *
      * @return mixed
      */
-    public function getById($id, array $with = array(), $columns = array('*'));
+    public function getById($id, array $with = array(), $columns = ['*']);
 
     /**
      * Make ...
@@ -99,7 +99,7 @@ interface BaseRepositoryInterface {
      *
      * @return mixed
      */
-    public function getFirstBy($key, $value, array $with = array(), $columns = array('*'));
+    public function getFirstBy($key, $value, array $with = array(), $columns = ['*']);
 
     /**
      * Get object with condition
@@ -111,7 +111,7 @@ interface BaseRepositoryInterface {
      *
      * @return mixed
      */
-    public function getManyBy($key, $value, array $with = array(), $columns = array('*'));
+    public function getManyBy($key, $value, array $with = array(), $columns = ['*']);
 
     /**
      * Check relation
