@@ -33,23 +33,23 @@ class SettingController extends BaseAdminController {
         $data['show_admin_bar'] = ($request->has('show_admin_bar')) ? 1 : 0;
         $result = $this->repoSetting->updateSetting($data);
         if ($result['error']) {
-            $this->_setFlashMessage($result['message'], 'error');
-            $this->_setFlashMessage(implode(', ', $result['errors']), 'error');
+            $this->setFlashMessages($result['message'], 'error');
+            $this->setFlashMessages(implode(', ', $result['errors']), 'error');
         } else {
-            $this->_setFlashMessage($result['message'], 'success');
+            $this->setFlashMessages($result['message'], 'success');
         }
-        $this->_showFlashMessages();
+        $this->showFlashMessages();
 
         return redirect()->back();
     }
 
     public function getLanguages(Request $request) {
-        $this->_setPageTitle('Languages', 'manage website languages');
-        $this->_setBodyClass($this->bodyClass . ' languages-setting-page');
+        $this->setPageTitle('Languages', 'manage website languages');
+        $this->setBodyClass($this->bodyClass . ' languages-setting-page');
 
-        $this->_loadAdminMenu($this->routeLink . '/languages');
+        $this->loadAdminMenu($this->routeLink . '/languages');
 
-        return $this->_viewAdmin('settings.languages');
+        return $this->viewAdmin('settings.languages');
     }
 
     public function postLanguages(Request $request, Models\Language $object) {
