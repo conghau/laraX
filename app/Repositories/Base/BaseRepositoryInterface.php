@@ -12,6 +12,13 @@ namespace App\Repositories\Base;
  */
 interface BaseRepositoryInterface {
     /**
+     * Get model
+     *
+     * @return mixed
+     */
+    public function getModel();
+
+    /**
      * get all object
      *
      * @param array $columns
@@ -134,41 +141,65 @@ interface BaseRepositoryInterface {
 
     /**
      * make_array
+     *
      * @param array $arrItems , list of item
      * @param $field_key
      * @param $field_value
+     *
      * @return mixed
      */
     public function make_array(array $arrItems, $field_key, $field_value);
 
     /**
      * Get object by where condition
-     * 
+     *
      * @param array $where
      * @param int $page
      * @param int $limit
+     * @param array $order_by
      * @param array $columns
+     *
      * @return mixed
      */
-    public function findWhere(array $where, $page = 1, $limit = 10, $columns = ['*']);
+    public function findWhere(array $where, $page = 1, $limit = 10, array $order_by = ['id' => 'asc'], $columns = ['*']);
 
     /**
      * Get object with condition in
-     * 
+     *
      * @param $field
      * @param array $values
      * @param array $columns
+     *
      * @return mixed
      */
     public function findWhereIn($field, array $values, $columns = ['*']);
 
     /**
      * Get object with condition not in
-     * 
+     *
      * @param $field
      * @param array $values
      * @param array $columns
+     *
      * @return mixed
      */
     public function findWhereNotIn($field, array $values, $columns = ['*']);
+
+    /**
+     * Apply condition
+     *
+     * @param array $condition
+     *
+     * @return $this
+     */
+    public function applyCondition(array $condition);
+
+    /**
+     * Apply order by
+     *
+     * @param array $order_by
+     *
+     * @return $this
+     */
+    public function applyOrderBy(array $order_by);
 }

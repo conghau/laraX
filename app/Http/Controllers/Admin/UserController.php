@@ -28,13 +28,45 @@ class UserController extends BaseAdminController {
         return view('admin.users.index');
     }
 
-    public function postIndex() {
-        //$result = $this->userRepository->getByPage(1, 2);
-        $result = $this->userRepository->findWhere(['status' => TRUE], 1,1);
+    public function postIndex(Request $request) {
+        $all = $request->all();
+        $offset = $request->get('start', 0);
+        $limit = $request->get('length', 10);
+        $paged = ceil(($offset + $limit) / $limit);
+        $target_like_filters = [
+            'email', 'first_name', 'last_name'
+        ];
+
+        $target_eq_filters = [
+            'status'
+        ];
+
+        $target_orderBy = [
+            2 => 'email', 3 => 'first_name', 4 => 'last_name', 5 => 'status', 6 => 'created_at', 7 => 'last_login_at'
+        ];
+        $conditions = [];
+        foreach ($target_like_filters as $like_filter) {
+            if ($fv = laraX_get_value($all, $like_filter, FALSE)) {
+                $conditions[] = [$like_filter, 'LIKE', "%$fv%"];
+            }
+        };
+        foreach ($target_eq_filters as $eq_filter) {
+            if ($fv = laraX_get_value($all, $eq_filter, FALSE)) {
+                $conditions[$eq_filter] = $fv;
+            }
+        };
+
+        $order_by = [];
+        foreach ($items = laraX_get_value($all, 'order', []) as $item) {
+            $order_by[array_key_exists($item['column'], $target_orderBy) ? $target_orderBy[$item['column']] : 'created_at'] = $item['dir'];
+        };
+        $result = $this->userRepository->findWhere($conditions, $paged, $limit, $order_by);
         $records = [];
+        $records['data'] = [];
         foreach ($items = $result->items as $item) {
             $records['data'][] = array(
                 '<input type="checkbox" name="id[]" value="' . $item->id . '">',
+                $item->id,
                 $item->email,
                 $item->first_name,
                 $item->last_name,
@@ -47,7 +79,7 @@ class UserController extends BaseAdminController {
         }
         $records["sEcho"] = 'echo';
         $records["iTotalRecords"] = $result->totalItems;
-        $records["iTotalDisplayRecords"] = 5;
+        $records["iTotalDisplayRecords"] = $result->totalItems;
         return response()->json($records);
     }
 

@@ -15,7 +15,7 @@ use Illuminate\Support\Collection;
  *
  * @package App\Repositories\Base
  */
-abstract class BaseRepositoryImpl implements BaseRepositoryInterface{
+abstract class BaseRepositoryImpl implements BaseRepositoryInterface {
 
     protected $model;
     protected $criteria;
@@ -23,6 +23,10 @@ abstract class BaseRepositoryImpl implements BaseRepositoryInterface{
     public function __construct() {
 //        $this->model = $model;
         $this->criteria = new Collection();
+    }
+
+    public function getModel() {
+        return $this->model;
     }
 
     public function all($columns = array('*')) {
@@ -104,23 +108,25 @@ abstract class BaseRepositoryImpl implements BaseRepositoryInterface{
         return $result;
     }
 
-    public function findWhere(array $where, $page = 1, $limit = 10, $columns = ['*']) {
-        // TODO: Implement findWhere() method.
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findWhere(array $where, $page = 1, $limit = 10, array $order_by = ['id' => 'asc'], $columns = ['*']) {
         $this->applyCondition($where);
-        return $this->parserResult($page, $limit);
+        $this->applyOrderBy($order_by);
+        return $this->buildResult($page, $limit);
     }
 
     public function findWhereIn($field, array $values, $columns = ['*']) {
-        // TODO: Implement findWhereIn() method.
         return $this->model->whereIn($field, $values)->get($columns);
     }
 
     public function findWhereNotIn($field, array $values, $columns = ['*']) {
-        // TODO: Implement findWhereNotIn() method.
         return $this->model->whereNotIn($field, $values)->get($columns);
     }
 
-    protected function applyCondition(array $where) {
+    public function applyCondition(array $where) {
         foreach ($where as $field => $value) {
             if (is_array($value)) {
                 list($field, $condition, $val) = $value;
@@ -131,7 +137,13 @@ abstract class BaseRepositoryImpl implements BaseRepositoryInterface{
         }
     }
 
-    protected function parserResult($page = 1, $limit = 10, $columns = ['*']) {
+    public function applyOrderBy(array $order_by) {
+        foreach ($order_by as $field => $value) {
+            $this->model = $this->model->orderBy($field, $value);
+        }
+    }
+
+    protected function buildResult($page = 1, $limit = 10, $columns = ['*']) {
         $result = new \stdClass();
         $result->page = $page;
         $result->limit = $limit;

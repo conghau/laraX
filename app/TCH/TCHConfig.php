@@ -42,4 +42,11 @@ class TCHConfig {
       TCHConfig::MESSAGE_TYPE_ERROR,
     ];
   }
+
+    public static function userStatus() {
+        return [
+            TCHConfig::STATUS_ACTIVE => trans('laraX.user.enabled'),
+            TCHConfig::STATUS_INACTIVE => trans('laraX.user.disabled'),
+        ];
+    }
 }
