@@ -147,10 +147,11 @@ interface BaseRepositoryInterface {
      * @param array $where
      * @param int $page
      * @param int $limit
+     * @param array $order_by
      * @param array $columns
      * @return mixed
      */
-    public function findWhere(array $where, $page = 1, $limit = 10, $columns = ['*']);
+    public function findWhere(array $where, $page = 1, $limit = 10, array $order_by=['id' => 'asc'],$columns = ['*']);
 
     /**
      * Get object with condition in

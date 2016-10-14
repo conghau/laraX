@@ -104,7 +104,7 @@ abstract class BaseRepositoryImpl implements BaseRepositoryInterface{
         return $result;
     }
 
-    public function findWhere(array $where, $page = 1, $limit = 10, $columns = ['*']) {
+    public function findWhere(array $where, $page = 1, $limit = 10,array $order_by=['id' => 'asc'], $columns = ['*']) {
         // TODO: Implement findWhere() method.
         $this->applyCondition($where);
         return $this->parserResult($page, $limit);
@@ -128,6 +128,12 @@ abstract class BaseRepositoryImpl implements BaseRepositoryInterface{
             } else {
                 $this->model = $this->model->where($field, '=', $value);
             }
+        }
+    }
+
+    protected function applyOrderBy(array $order_by) {
+        foreach ($order_by as $field => $value) {
+            $this->model = $this->model->orderBy($field, $value);
         }
     }
 
