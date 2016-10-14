@@ -140,4 +140,35 @@ interface BaseRepositoryInterface {
      * @return mixed
      */
     public function make_array(array $arrItems, $field_key, $field_value);
+
+    /**
+     * Get object by where condition
+     * 
+     * @param array $where
+     * @param int $page
+     * @param int $limit
+     * @param array $columns
+     * @return mixed
+     */
+    public function findWhere(array $where, $page = 1, $limit = 10, $columns = ['*']);
+
+    /**
+     * Get object with condition in
+     * 
+     * @param $field
+     * @param array $values
+     * @param array $columns
+     * @return mixed
+     */
+    public function findWhereIn($field, array $values, $columns = ['*']);
+
+    /**
+     * Get object with condition not in
+     * 
+     * @param $field
+     * @param array $values
+     * @param array $columns
+     * @return mixed
+     */
+    public function findWhereNotIn($field, array $values, $columns = ['*']);
 }

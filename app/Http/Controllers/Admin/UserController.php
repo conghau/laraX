@@ -29,17 +29,10 @@ class UserController extends BaseAdminController {
     }
 
     public function postIndex() {
-        $result = $this->userRepository->getByPage(1, 2);
+        //$result = $this->userRepository->getByPage(1, 2);
+        $result = $this->userRepository->findWhere(['status' => TRUE], 1,1);
         $records = [];
         foreach ($items = $result->items as $item) {
-            $status = '<span class="label label-success label-sm">Activated</span>';
-            if ($item->post_status != 1) {
-                $status = '<span class="label label-danger label-sm">Disabled</span>';
-            }
-            $popular = '';
-            if ($item->is_popular != 0) {
-                $popular = '<span class="label label-success label-sm">Popular</span>';
-            }
             $records['data'][] = array(
                 '<input type="checkbox" name="id[]" value="' . $item->id . '">',
                 $item->email,
@@ -47,6 +40,7 @@ class UserController extends BaseAdminController {
                 $item->last_name,
                 $item->status,
                 $item->created_at->toDateTimeString(),
+                $item->last_login_at,
                 '<a class="fast-edit" title="Fast edit">Fast edit</a>',
                 '<a href="' . '#lom' . '" class="btn btn-outline green btn-sm"><i class="icon-pencil"></i></a>' . '<button type="button" data-ajax="' . '#link' . '" data-method="DELETE" data-toggle="confirmation" class="btn btn-outline red-sunglo btn-sm ajax-link"><i class="fa fa-trash"></i></button>',
             );

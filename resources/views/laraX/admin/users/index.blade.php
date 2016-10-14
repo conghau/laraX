@@ -15,7 +15,7 @@
 @endsection
 
 @section('js-init')
-    <script src="/admin/dist/pages/table-datatables-ajax.js"></script>
+    {!! Theme::js('admin/dist/pages/table-datatables-ajax.js') !!}
     <script>
         $(document).ready(function(){
             TableDatatablesAjax.init({

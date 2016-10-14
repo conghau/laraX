@@ -15,7 +15,7 @@ use Illuminate\Support\Collection;
  *
  * @package App\Repositories\Base
  */
-abstract class BaseRepositoryImpl {
+abstract class BaseRepositoryImpl implements BaseRepositoryInterface{
 
     protected $model;
     protected $criteria;
@@ -101,6 +101,44 @@ abstract class BaseRepositoryImpl {
             }
             $result[$item[$field_key]] = isset($item[$field_value]) ? $item[$field_value] : '';
         }
+        return $result;
+    }
+
+    public function findWhere(array $where, $page = 1, $limit = 10, $columns = ['*']) {
+        // TODO: Implement findWhere() method.
+        $this->applyCondition($where);
+        return $this->parserResult($page, $limit);
+    }
+
+    public function findWhereIn($field, array $values, $columns = ['*']) {
+        // TODO: Implement findWhereIn() method.
+        return $this->model->whereIn($field, $values)->get($columns);
+    }
+
+    public function findWhereNotIn($field, array $values, $columns = ['*']) {
+        // TODO: Implement findWhereNotIn() method.
+        return $this->model->whereNotIn($field, $values)->get($columns);
+    }
+
+    protected function applyCondition(array $where) {
+        foreach ($where as $field => $value) {
+            if (is_array($value)) {
+                list($field, $condition, $val) = $value;
+                $this->model = $this->model->where($field, $condition, $val);
+            } else {
+                $this->model = $this->model->where($field, '=', $value);
+            }
+        }
+    }
+
+    protected function parserResult($page = 1, $limit = 10, $columns = ['*']) {
+        $result = new \stdClass();
+        $result->page = $page;
+        $result->limit = $limit;
+        $result->totalItems = 0;
+        $result->items = array();
+        $result->totalItems = $this->model->count();
+        $result->items = $this->model->skip($limit * ($page - 1))->take($limit)->get($columns);;
         return $result;
     }
 
