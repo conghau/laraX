@@ -12,7 +12,7 @@ namespace TCH;
  * Class TCHConfig
  * @package TCH
  */
-class TCHConfig {
+class LaraXConfig {
 
   const STATUS_ACTIVE = 1;
   const STATUS_INACTIVE = 0;
@@ -28,25 +28,25 @@ class TCHConfig {
 
   public static function postStatus() {
     return [
-      TCHConfig::POST_STATUS_DISABLED => trans('laraX.post.disabled'),
-      TCHConfig::POST_STATUS_PUBLISHED => trans('laraX.post.published'),
-      TCHConfig::POST_STATUS_DRAFT => trans('laraX.post.draft'),
+      LaraXConfig::POST_STATUS_DISABLED => trans('laraX.post.disabled'),
+      LaraXConfig::POST_STATUS_PUBLISHED => trans('laraX.post.published'),
+      LaraXConfig::POST_STATUS_DRAFT => trans('laraX.post.draft'),
     ];
   }
 
   public static function messageType() {
     return [
-      TCHConfig::MESSAGE_TYPE_INFO,
-      TCHConfig::MESSAGE_TYPE_SUCCESS,
-      TCHConfig::MESSAGE_TYPE_WARNING,
-      TCHConfig::MESSAGE_TYPE_ERROR,
+      LaraXConfig::MESSAGE_TYPE_INFO,
+      LaraXConfig::MESSAGE_TYPE_SUCCESS,
+      LaraXConfig::MESSAGE_TYPE_WARNING,
+      LaraXConfig::MESSAGE_TYPE_ERROR,
     ];
   }
 
     public static function userStatus() {
         return [
-            TCHConfig::STATUS_ACTIVE => trans('laraX.user.enabled'),
-            TCHConfig::STATUS_INACTIVE => trans('laraX.user.disabled'),
+            LaraXConfig::STATUS_ACTIVE => trans('laraX.user.enabled'),
+            LaraXConfig::STATUS_INACTIVE => trans('laraX.user.disabled'),
         ];
     }
 }

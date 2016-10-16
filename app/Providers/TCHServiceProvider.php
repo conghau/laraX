@@ -10,7 +10,7 @@ namespace App\Providers;
 
 
 use Illuminate\Support\ServiceProvider;
-use TCH\TCHMenu;
+use TCH\LaraXMenu;
 
 class TCHServiceProvider extends ServiceProvider {
 
@@ -20,8 +20,8 @@ class TCHServiceProvider extends ServiceProvider {
    * @return void
    */
   public function register() {
-    $this->app->bind('TCHMenu', function ($app) {
-      return $this->app->make(TCHMenu::class);
+    $this->app->bind('LaraXMenu', function ($app) {
+      return $this->app->make(LaraXMenu::class);
     });
   }
 }

@@ -13,6 +13,6 @@ use Illuminate\Support\Facades\Facade;
 
 class TCHMenu extends Facade {
   protected static function getFacadeAccessor() {
-    return 'TCHMenu';
+    return 'LaraXMenu';
   }
 }

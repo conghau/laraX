@@ -157,11 +157,14 @@ abstract class BaseRepositoryImpl implements BaseRepositoryInterface {
     public function createOrUpdate(array $data) {
         //create
         $id = laraX_get_value($data, 'id', 0);
-        if (0 === $id) {
-            return $this->create($data);
+        try {
+            if (0 === $id) {
+                return $this->create($data);
+            }
+            //update
+            return $this->update($data, $id);
+        } catch (\Exception $e) {
         }
-        //update
-        return $this->update($data, $id);
     }
 
 }

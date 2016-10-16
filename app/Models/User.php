@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use TCH\TCHConfig;
+use TCH\LaraXConfig;
 
 class User extends Authenticatable {
     /**
@@ -38,6 +38,6 @@ class User extends Authenticatable {
     }
 
     public function getStatusAttribute($value) {
-        return laraX_get_value(TCHConfig::userStatus(), $value, 'N/A');
+        return laraX_get_value(LaraXConfig::userStatus(), $value, 'N/A');
     }
 }

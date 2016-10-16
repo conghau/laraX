@@ -1,6 +1,6 @@
 <script type="text/javascript">
     //flash message;
-    @foreach(\TCH\TCHConfig::messageType() as $type)
+    @foreach(\TCH\LaraXConfig::messageType() as $type)
         <?php $messages = Session::get($type.'Messages')?>
         @continue(empty($messages))
         @foreach($messages as $key => $row)
