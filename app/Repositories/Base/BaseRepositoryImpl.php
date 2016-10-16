@@ -154,21 +154,14 @@ abstract class BaseRepositoryImpl implements BaseRepositoryInterface {
         return $result;
     }
 
-    public function pushCriteria($criteria) {
+    public function createOrUpdate(array $data) {
+        //create
+        $id = laraX_get_value($data, 'id', 0;
+        if (0 === $id) {
+            return $this->create($data);
+        }
+        //update
+        return $this->update($data, $id);
     }
 
-    public function popCriteria($criteria) {
-    }
-
-    public function getCriteria() {
-    }
-
-    public function getByCriteria(CriteriaInterface $criteria) {
-    }
-
-    public function skipCriteria($status = TRUE) {
-    }
-
-    public function resetCriteria() {
-    }
 }

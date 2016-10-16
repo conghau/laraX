@@ -202,4 +202,12 @@ interface BaseRepositoryInterface {
      * @return $this
      */
     public function applyOrderBy(array $order_by);
+
+    /**
+     * Create Or Update
+     *
+     * @param array $data
+     * @return mixed
+     */
+    public function createOrUpdate(array $data);
 }

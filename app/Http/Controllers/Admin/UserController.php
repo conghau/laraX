@@ -70,7 +70,7 @@ class UserController extends BaseAdminController {
                 $item->email,
                 $item->first_name,
                 $item->last_name,
-                $item->status,
+                '<span class="label label-success label-sm label-{{$item->status}}">'.$item->status.'</span>',
                 $item->created_at->toDateTimeString(),
                 $item->last_login_at,
                 '<a class="fast-edit" title="Fast edit">Fast edit</a>',
