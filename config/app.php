@@ -212,7 +212,7 @@ return [
         'Theme' => igaster\laravelTheme\Facades\Theme::class,
         'Debugbar' => Barryvdh\Debugbar\Facade::class,
 
-        'TCHMenu' => App\Facades\TCHMenu::class,
+        'LaraXMenu' => App\Facades\TCHMenu::class,
         'Carbon' => 'Carbon\Carbon'
 
     ],

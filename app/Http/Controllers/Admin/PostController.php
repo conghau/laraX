@@ -11,7 +11,7 @@ namespace App\Http\Controllers\Admin;
 use App\Repositories\LanguageRepositoryInterface;
 use Illuminate\Http\Request;
 use App\Repositories\PostRepositoryInterface;
-use TCH\TCHConfig;
+use TCH\LaraXConfig;
 
 /**
  * Class PostController
@@ -27,12 +27,12 @@ class PostController extends BaseAdminController {
     parent::__construct();
     $this->postRepo = $postRepositoryInterface;
     $this->languageRepo = $languageRepositoryInterface;
-    $this->data['activatedLanguages'] = $this->languageRepo->getManyBy('status', TCHConfig::STATUS_ACTIVE, [], ['id', 'language_name']);
-    $this->data['postStatus'] = TCHConfig::postStatus();
+    $this->data['activatedLanguages'] = $this->languageRepo->getManyBy('status', LaraXConfig::STATUS_ACTIVE, [], ['id', 'language_name']);
+    $this->data['postStatus'] = LaraXConfig::postStatus();
   }
 
   public function getIndex(Request $request) {
-    $this->setFlashMessages(TCHConfig::MESSAGE_TYPE_INFO, 'Go to posts');
+    $this->setFlashMessages(LaraXConfig::MESSAGE_TYPE_INFO, 'Go to posts');
     $this->showFlashMessages();
     return view('admin.posts.index', $this->data);
   }

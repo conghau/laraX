@@ -34,7 +34,7 @@
             </div>
             <div class="clearfix"></div>
             @if ($row->hasChild())
-                {!! TCHMenu::generateMenu($menu->slug, $row->id) !!}
+                {!! LaraXMenu::generateMenu($menu->slug, $row->id) !!}
             @endif
         </li>
     @endforeach

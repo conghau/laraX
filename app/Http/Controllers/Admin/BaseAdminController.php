@@ -12,7 +12,7 @@ use App\Http\Controllers\Controller;
 use App\Repositories\MenuRepositoryInterface;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
-use TCH\TCHMenu;
+use TCH\LaraXMenu;
 use App\Http\Foundation;
 use Carbon;
 
@@ -105,7 +105,7 @@ class BaseAdminController extends Controller {
      * @param string $menuActive
      */
     protected function loadAdminMenu($menuActive = '') {
-        $menu = app(TCHMenu::class);
+        $menu = app(LaraXMenu::class);
         $menu->args = array(
             'languageId' => 1,
             'menuName' => 'admin-menu',

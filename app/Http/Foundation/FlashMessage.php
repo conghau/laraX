@@ -9,7 +9,7 @@
 namespace App\Http\Foundation;
 
 use Illuminate\Support\Facades\Session;
-use TCH\TCHConfig;
+use TCH\LaraXConfig;
 
 /**
  * Custom Flash Messages
@@ -32,7 +32,7 @@ trait FlashMessage {
    * @param string $messages
    * @return int
    */
-  protected function setFlashMessages($type = TCHConfig::MESSAGE_TYPE_SUCCESS, $messages = '') {
+  protected function setFlashMessages($type = LaraXConfig::MESSAGE_TYPE_SUCCESS, $messages = '') {
     if (!array_key_exists($type, $this->laraXMessages)) {
       $this->laraXMessages[$type] = [];
     }
@@ -58,7 +58,7 @@ trait FlashMessage {
    * Show flash message
    */
   protected function showFlashMessages() {
-    foreach (TCHConfig::messageType() as $type) {
+    foreach (LaraXConfig::messageType() as $type) {
       Session::flash($type . 'Messages', laraX_get_value($this->laraXMessages, $type, []));
     }
   }

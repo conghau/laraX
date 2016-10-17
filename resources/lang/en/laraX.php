@@ -6,9 +6,13 @@
  * Time: 14:30
  */
 return [
-  'post' => [
-    'published' => 'Published',
-    'draft' => 'Draft',
-    'disabled' => 'Disabled'
-  ]
+    'post' => [
+        'published' => 'Published',
+        'draft' => 'Draft',
+        'disabled' => 'Disabled'
+    ],
+    'user' => [
+        'enabled' => 'Enabled',
+        'disabled' => 'Disabled'
+    ]
 ];

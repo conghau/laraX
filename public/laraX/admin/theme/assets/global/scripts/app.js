@@ -11,7 +11,7 @@ var App = function() {
 
     var resizeHandlers = [];
 
-    var assetsPath = '/admin/theme/assets/';
+    var assetsPath = '/laraX/admin/theme/assets/';
 
     var globalImgPath = 'global/img/';
 

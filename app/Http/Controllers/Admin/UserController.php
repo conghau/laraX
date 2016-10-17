@@ -29,35 +29,47 @@ class UserController extends BaseAdminController {
   }
 
   public function postIndex(Request $request) {
-    //$result = $this->userRepository->getByPage(1, 2);
     $all = $request->all();
     $offset = $request->get('start', 0);
     $limit = $request->get('length', 10);
-    
-    $target_orderBy = [
-      '1' => 'id',
-      '2' => 'email',
-      '3' => 'first_name',
-      '4' => 'last_name',
-      '5' => 'status',
-      '6' => 'created_at',
-      '7' => 'last_login_at'
-    ];
-    $target_filters = [
+    $paged = ceil(($offset + $limit) / $limit);
+    $target_like_filters = [
       'email',
       'first_name',
-      'last_name',
-      'status',
+      'last_name'
     ];
-    $filter_conditions = [];
-  foreach ($target_filters as $filter ) {
-    if($v = laraX_get_value($all, $filter, FALSE)) {
-      $filter_conditions[$filter] = $v;
-    }
-  }
 
-    $result = $this->userRepository->findWhere($filter_conditions, 1, $limit);
+    $target_eq_filters = [
+      'status'
+    ];
+
+    $target_orderBy = [
+      2 => 'email',
+      3 => 'first_name',
+      4 => 'last_name',
+      5 => 'status',
+      6 => 'created_at',
+      7 => 'last_login_at'
+    ];
+    $conditions = [];
+    foreach ($target_like_filters as $like_filter) {
+      if ($fv = laraX_get_value($all, $like_filter, FALSE)) {
+        $conditions[] = [$like_filter, 'LIKE', "%$fv%"];
+      }
+    };
+    foreach ($target_eq_filters as $eq_filter) {
+      if ($fv = laraX_get_value($all, $eq_filter, FALSE)) {
+        $conditions[$eq_filter] = $fv;
+      }
+    };
+
+    $order_by = [];
+    foreach ($items = laraX_get_value($all, 'order', []) as $item) {
+      $order_by[array_key_exists($item['column'], $target_orderBy) ? $target_orderBy[$item['column']] : 'created_at'] = $item['dir'];
+    };
+    $result = $this->userRepository->findWhere($conditions, $paged, $limit, $order_by);
     $records = [];
+    $records['data'] = [];
     foreach ($items = $result->items as $item) {
       $records['data'][] = array(
         '<input type="checkbox" name="id[]" value="' . $item->id . '">',
@@ -65,8 +77,8 @@ class UserController extends BaseAdminController {
         $item->email,
         $item->first_name,
         $item->last_name,
-        $item->status,
-        $item->created_at,
+        '<span class="label label-success label-sm label-{{$item->status}}">' . $item->status . '</span>',
+        $item->created_at->toDateTimeString(),
         $item->last_login_at,
         '<a class="fast-edit" title="Fast edit">Fast edit</a>',
         '<a href="' . '#lom' . '" class="btn btn-outline green btn-sm"><i class="icon-pencil"></i></a>' . '<button type="button" data-ajax="' . '#link' . '" data-method="DELETE" data-toggle="confirmation" class="btn btn-outline red-sunglo btn-sm ajax-link"><i class="fa fa-trash"></i></button>',
@@ -74,7 +86,7 @@ class UserController extends BaseAdminController {
     }
     $records["sEcho"] = 'echo';
     $records["iTotalRecords"] = $result->totalItems;
-    $records["iTotalDisplayRecords"] = count($items);
+    $records["iTotalDisplayRecords"] = $result->totalItems;
     return response()->json($records);
   }
 
@@ -82,7 +94,6 @@ class UserController extends BaseAdminController {
     $this->data['object'] = new \stdClass();
 
     if ($user_id !== 0) {
-
     }
 
     return view('admin.users.edit', $this->data);
