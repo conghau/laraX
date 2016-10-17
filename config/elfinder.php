@@ -10,7 +10,7 @@ return array(
     | The dir where to store the images (relative from public)
     |
     */
-    'dir' => ['files'],
+    'dir' => ['uploads'],
 
     /*
     |--------------------------------------------------------------------------
@@ -26,14 +26,6 @@ return array(
     |    ]
     */
     'disks' => [
-      'local',
-      'my-disk' => [
-        'URL' => url('to/disk'),
-        'alias' => 'Local storage',
-      ],
-      'public' => [
-        'glideURL' => '/glide',
-      ],
     ],
 
     /*
@@ -47,7 +39,7 @@ return array(
 
     'route' => [
         'prefix' => 'elfinder',
-        'middleware' => 'replace-this-with-your-middleware', //Set to null to disable middleware filter
+        'middleware' => NULL, //Set to null to disable middleware filter
     ],
 
     /*
@@ -71,7 +63,7 @@ return array(
     |
     */
 
-    'roots' => null,
+    'roots' => NULL,
 
     /*
     |--------------------------------------------------------------------------
@@ -84,7 +76,7 @@ return array(
     */
 
     'options' => array(),
-    
+
     /*
     |--------------------------------------------------------------------------
     | Root Options
@@ -94,8 +86,6 @@ return array(
     | See https://github.com/Studio-42/elFinder/wiki/Connector-configuration-options-2.1#root-options
     |
     */
-    'root_options' => array(
-
-    ),
+    'root_options' => array(),
 
 );

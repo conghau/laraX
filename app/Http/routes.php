@@ -42,6 +42,8 @@ Route::group(['prefix' => 'cpadmin', 'middleware' => ['web'], 'namespace' => 'Ap
     $router->controller('admin-users', 'AdminUserController');
     /*SubscribeEmail*/
     $router->controller('subscribed-emails', 'SubscribeEmailController');
+    /*File*/
+    $router->controller('files', 'FileController');
 });
 
 /**

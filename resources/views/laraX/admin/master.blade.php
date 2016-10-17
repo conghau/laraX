@@ -14,46 +14,17 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta content="Admin dashboard - Tedozi CMS" name="description"/>
     <meta content="" name="author"/>
-    {{--<!-- BEGIN GLOBAL MANDATORY STYLES -->--}}
-    {{--<link href="/admin/fonts/open-sans/font.css" rel="stylesheet">--}}
-    {{--<link href="/admin/core/third_party/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>--}}
-    {{--<link href="/admin/core/third_party/simple-line-icons/simple-line-icons.min.css" rel="stylesheet" type="text/css"/>--}}
-    {{--<link href="/admin/core/third_party/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>--}}
-    {{--<link href="/admin/core/third_party/uniform/css/uniform.default.css" rel="stylesheet" type="text/css"/>--}}
-    {{--<link href="/admin/core/third_party/bootstrap-switch/css/bootstrap-switch.min.css" rel="stylesheet" type="text/css"/>--}}
-    {{--<!-- END GLOBAL MANDATORY STYLES -->--}}
-
-    {{--<!-- BEGIN PAGE LEVEL PLUGINS -->--}}
-    {{--<link href="/admin/core/third_party/bootstrap-modal/css/bootstrap-modal-bs3patch.css" rel="stylesheet" type="text/css" />--}}
-    {{--<link href="/admin/core/third_party/bootstrap-modal/css/bootstrap-modal.css" rel="stylesheet" type="text/css" />--}}
-    {{--<link href="/admin/core/third_party/notific8/jquery.notific8.min.css" rel="stylesheet" type="text/css" />--}}
-    {{--<!-- END PAGE LEVEL PLUGINS -->--}}
 
     <!-- OTHER PLUGINS -->
     @yield('css')
-    <!-- END OTHER PLUGINS -->
-
-    {{--<!-- BEGIN THEME GLOBAL STYLES -->--}}
-    {{--<link href="/admin/theme/assets/global/css/components.min.css" rel="stylesheet" id="style_components" type="text/css"/>--}}
-    {{--<link href="/admin/theme/assets/global/css/plugins.min.css" rel="stylesheet" type="text/css"/>--}}
-    {{--<!-- END THEME GLOBAL STYLES -->--}}
-
-    {{--<!-- BEGIN THEME LAYOUT STYLES -->--}}
-    {{--<link href="/admin/theme/assets/layouts/layout/css/layout.min.css" rel="stylesheet" type="text/css"/>--}}
-    {{--<link href="/admin/theme/assets/layouts/layout/css/themes/darkblue.min.css" rel="stylesheet" type="text/css" id="style_color"/>--}}
-    {{--<link href="/admin/css/style.css" rel="stylesheet" type="text/css"/>--}}
-    {{--<!-- END THEME LAYOUT STYLES -->--}}
     @include('admin/_shared/_header-css-js')
     <link rel="shortcut icon" href="/images/logo/favicon.png"/>
 
     <script type="text/javascript">
-        var baseUrl = '{{ asset('') }}',
-            fileManagerUrl = '{{ asset('/files/file-manager') }}';
+        var baseUrl = '{{ asset('') }}';
+        var fileManagerUrl = '{{ asset($adminPath.'/files/file-manager') }}';
     </script>
 
-    {{--<!-- BEGIN CORE PLUGINS -->--}}
-    {{--<script src="/admin/dist/core.min.js" type="text/javascript"></script>--}}
-    {{--<!-- END CORE PLUGINS -->--}}
 </head>
 
 <body class="page-header-fixed page-container-bg-solid page-content-white on-loading {{ $bodyClass or '' }}">
@@ -110,25 +81,9 @@
 
 <!--Modals-->
 @include('admin/_shared/_modals')
-
-{{--<!--[if lt IE 9]>--}}
-{{--<script src="/admin/core/third_party/respond.min.js"></script>--}}
-{{--<script src="/admin/core/third_party/excanvas.min.js"></script>--}}
-{{--<![endif]-->--}}
-
 @include('admin/_shared/_body-js')
 <!-- OTHER PLUGINS -->
 @yield('js')
-<!-- END OTHER PLUGINS -->
-
-{{--<!-- BEGIN THEME GLOBAL SCRIPTS -->--}}
-{{--<script src="/admin/theme/assets/global/scripts/app.js" type="text/javascript"></script>--}}
-{{--<!-- END THEME GLOBAL SCRIPTS -->--}}
-
-{{--<!-- BEGIN THEME LAYOUT SCRIPTS -->--}}
-{{--<script src="/admin/dist/app.min.js" type="text/javascript"></script>--}}
-{{--<!-- END THEME LAYOUT SCRIPTS -->--}}
-
 <!-- JS INIT -->
 @yield('js-init')
 <!-- JS INIT -->
