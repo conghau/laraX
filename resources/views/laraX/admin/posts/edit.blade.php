@@ -1,0 +1,243 @@
+@extends('admin.master')
+
+@section('page-toolbar')
+
+@endsection
+
+@section('css')
+    {!! Theme::css('admin/core/third_party/bootstrap-tagsinput/bootstrap-tagsinput.css') !!}
+@endsection
+
+@section('js')
+    {!! Theme::js('admin/core/third_party/bootstrap-tagsinput/bootstrap-tagsinput.min.js') !!}
+    {!! Theme::js('admin/core/third_party/ckeditor/ckeditor.js') !!}
+    {!! Theme::js('admin/core/third_party/ckeditor/adapters/jquery.js') !!}
+    {!! Theme::js('admin/core/third_party/ckeditor/config.js') !!}
+
+    {{--Custom field templates--}}
+    {{--@include('admin._shared._custom-field-templates')--}}
+
+@endsection
+
+@section('js-init')
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.js-ckeditor').ckeditor({});
+
+            $('.js-tags-editor').tagsinput({
+                'tagClass': 'label label-default'
+            });
+
+            Utility.convertTitleToSlug('.the-object-title', '.the-object-slug');
+
+            $('.js-validate-form').validate({
+                errorElement: 'span', //default input error message container
+                errorClass: 'help-block help-block-error', // default input error message class
+                focusInvalid: false, // do not focus the last invalid input
+                ignore: "",  // validate all fields including form hidden input
+                messages: {},
+                rules: {
+                    title: {
+                        minlength: 3,
+                        maxlength: 255,
+                        required: true
+                    },
+                    slug: {
+                        required: true,
+                        minlength: 3,
+                        maxlength: 255
+                    },
+                    description: {
+                        maxlength: 255
+                    }
+                },
+
+                highlight: function (element) {
+                    $(element).closest('.form-group').addClass('has-error'); // set error class to the control group
+                },
+
+                unhighlight: function (element) {
+                    $(element).closest('.form-group').removeClass('has-error'); // set error class to the control group
+                },
+
+                success: function (label) {
+                    label.closest('.form-group').removeClass('has-error').addClass('has-success'); // set success class to the control group
+                }
+            });
+
+            /*Handle custom fields*/
+            Utility.handleCustomFields();
+        });
+    </script>
+@endsection
+
+@section('content')
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="note note-danger">
+                <p><label class="label label-danger">NOTE</label> You need to
+                    enable javascript.</p>
+            </div>
+            <div class="row">
+                <form class="js-validate-form" method="POST"
+                      accept-charset="utf-8" action="" novalidate>
+                    {{ csrf_field() }}
+                    <textarea name="custom_fields" id="custom_fields_container"
+                              class="hidden form-control"
+                              style="display: none !important;" cols="30"
+                              rows="10"></textarea>
+                    <div class="col-md-9">
+                        <div class="portlet light bordered">
+                            <div class="portlet-title">
+                                <div class="caption">
+                                    <i class="icon-note font-dark"></i>
+                                    <span class="caption-subject font-dark sbold uppercase">Basic information</span>
+                                </div>
+                                <div class="actions">
+
+                                </div>
+                            </div>
+                            <div class="portlet-body">
+                                <div class="form-group">
+                                    <label><b>Title <span class="text-danger">(*)</span></b></label>
+                                    <input required type="text"
+                                           name="post_title"
+                                           class="form-control the-object-title"
+                                           value="{{ $object->post_title or '' }}"
+                                           autocomplete="off">
+                                </div>
+                                <div class="form-group">
+                                    <label><b>Friendly slug <span
+                                                    class="text-danger">(*)</span></b></label>
+                                    <input type="text" name="post_slug"
+                                           class="form-control the-object-slug"
+                                           value="{{ $object->post_slug or '' }}"
+                                           autocomplete="off">
+                                </div>
+                                @if(isset($object) && isset($object->post_slug))
+                                    <div class="form-group">
+                                        <a target="_blank"
+                                           href="{{ _getPostLink($object, $currentEditLanguage->language_code) }}"
+                                           class="btn btn-default"
+                                           type="button">{{ asset(_getPostLink($object, $currentEditLanguage->language_code)) }}</a>
+                                    </div>
+                                @endif
+                                <div class="form-group">
+                                    <label><b>Excerpt</b></label>
+                                    <textarea name="post_excerpt"
+                                              class="form-control"
+                                              rows="5">{{ $object->post_excerpt or '' }}</textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label><b>Tags (use for search)</b></label>
+                                    <input type="text" name="tags"
+                                           class="form-control js-tags-editor"
+                                           value="{{ $object->tags or '' }}"
+                                           autocomplete="off">
+                                </div>
+                                <div class="form-group">
+                                    <label><b>Page template</b></label>
+                                    <select name="page_template"
+                                            class="form-control">
+                                        <option value=""></option>
+                                        {{--@foreach (_getPageTemplate('Post') as $key => $row)--}}
+                                        {{--<option {{ (isset($object) && $object->page_template == $row) ? 'selected="selected"' : '' }} value="{{ $row }}">{{ $row }}</option>--}}
+                                        {{--@endforeach--}}
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label><b>Content</b></label>
+                                    <textarea name="post_content"
+                                              class="form-control js-ckeditor">{{ $object->post_content or '' }}</textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="portlet light bordered">
+                            <div class="portlet-title">
+                                <div class="caption">
+                                    <i class="icon-note font-dark"></i>
+                                    <span class="caption-subject font-dark sbold uppercase">Other information</span>
+                                </div>
+                                <div class="actions">
+                                    <!--div class="btn-group btn-group-devided">
+                                        <button class="btn btn-transparent btn-success btn-circle btn-sm active" type="submit">
+                                            <i class="fa fa-check"></i> Save
+                                        </button>
+                                    </div-->
+                                </div>
+                            </div>
+                            <div class="portlet-body">
+                                <div class="form-group">
+                                    <label><b>Language</b></label>
+                                    <select name="language_id"
+                                            data-href="{{ $rawUrlChangeLanguage or '' }}"
+                                            class="form-control js-change-content-language">
+                                        @foreach($activatedLanguages as $key => $row)
+                                            <option value="{{ $row->id or '' }}" {{ ($currentUserLanguageId == $row->id) ? 'selected' : '' }}>{{ $row->language_name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label><b>Status</b></label>
+                                    <select name="status" class="form-control">
+                                        @foreach($postStatus as $status=>$text)
+                                            <option value="{{$status}}" {{ (laraX_get_value($object,'post_status',-1) == $status) ? 'selected' : '' }}>
+                                            {{$text}}
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label><b>Thumbnail image</b></label>
+                                    <div class="select-media-box">
+                                        <button type="button"
+                                                class="btn blue show-add-media-popup">
+                                            Choose image
+                                        </button>
+                                        <div class="clearfix"></div>
+                                        <a title=""
+                                           class="show-add-media-popup"><img
+                                                    src="{{ (isset($object->thumbnail) && trim($object->thumbnail != '')) ? $object->thumbnail : '/admin/images/no-image.png' }}"
+                                                    alt="Thumbnail"
+                                                    class="img-responsive"></a>
+                                        <input type="hidden" name="thumbnail"
+                                               value="{{ $object->thumbnail or '' }}"
+                                               class="input-file">
+                                        <a title="" class="remove-image"><span>&nbsp;</span></a>
+                                    </div>
+                                </div>
+                                @if(isset($categoriesHtml) && trim($categoriesHtml) != '')
+                                    <div class="form-group">
+                                        <label><b>Categories</b></label>
+                                        <div class="form-control height-auto">
+                                            <div class="scroller"
+                                                 style="max-height: 300px;"
+                                                 data-always-visible="1"
+                                                 data-rail-visible1="1">
+                                                {!! $categoriesHtml !!}
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endif
+                            </div>
+                            <div class="portlet-title portlet-footer">
+                                <div class="actions">
+                                    <div class="btn-group btn-group-devided">
+                                        <button class="btn btn-transparent btn-success active btn-circle"
+                                                type="submit">
+                                            <i class="fa fa-check"></i> Save
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <div class="col-md-9">
+                    {!! $customFieldBoxes or '' !!}
+                </div>
+            </div>
+        </div>
+    </div>
+@endsection

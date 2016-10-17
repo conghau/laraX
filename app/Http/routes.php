@@ -14,3 +14,40 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+
+/**
+ * |--------------------------------------------------------------------------
+ * | Admin route - START
+ * |--------------------------------------------------------------------------
+ */
+
+Route::group(['prefix' => 'cpadmin', 'middleware' => ['web'], 'namespace' => 'App\Http\Controllers\Admin'], function ($router) {
+
+    $router->controller('auth', 'AuthController');
+
+    /*Settings*/
+    $router->controller('settings', 'SettingController');
+    /*Menus*/
+    $router->controller('menus', 'MenuController');
+    /*Post*/
+    $router->controller('posts', 'PostController');
+    /*Dashboard*/
+    $router->controller('dashboard', 'DashboardController');
+    /*User*/
+    $router->controller('users', 'UserController');
+    /*AdminUser*/
+    $router->controller('admin-users', 'AdminUserController');
+    /*SubscribeEmail*/
+    $router->controller('subscribed-emails', 'SubscribeEmailController');
+});
+
+/**
+ * |--------------------------------------------------------------------------
+ * | Admin route - END
+ * |--------------------------------------------------------------------------
+ */
+
+//Event::listen('illuminate.query',function($query){
+//    var_dump($query);
+//});

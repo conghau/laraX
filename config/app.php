@@ -13,7 +13,8 @@ return [
     |
     */
 
-    'env' => env('APP_ENV', 'production'),
+    //'env' => env('APP_ENV', 'production'),
+    'env' => env('APP_ENV', 'local'),
 
     /*
     |--------------------------------------------------------------------------
@@ -26,7 +27,7 @@ return [
     |
     */
 
-    'debug' => env('APP_DEBUG', false),
+    'debug' => env('APP_DEBUG', TRUE),
 
     /*
     |--------------------------------------------------------------------------
@@ -108,7 +109,7 @@ return [
     |
     */
 
-    'log' => env('APP_LOG', 'single'),
+    'log' => env('APP_LOG', 'daily'),
 
     /*
     |--------------------------------------------------------------------------
@@ -156,6 +157,13 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
+        igaster\laravelTheme\themeServiceProvider::class,
+        Barryvdh\Debugbar\ServiceProvider::class,
+
+        //custom provider
+        App\Providers\RepositoryServiceProvider::class,
+
+
     ],
 
     /*
@@ -201,7 +209,19 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
+        'Theme' => igaster\laravelTheme\Facades\Theme::class,
+        'Debugbar' => Barryvdh\Debugbar\Facade::class,
+
+        'LaraXMenu' => App\Facades\TCHMenu::class,
+        'Carbon' => 'Carbon\Carbon'
 
     ],
+
+    /**
+     * |--------------------------------------------------------------------------
+     * | Custom Key
+     * |--------------------------------------------------------------------------
+     */
+    'admin_path' => env('APP_PATH_ADMIN', 'cpadmin')
 
 ];
