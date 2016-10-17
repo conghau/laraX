@@ -59,8 +59,16 @@ Route::group(['prefix' => 'api/v1','middleware' => ['api'], 'namespace' => 'App\
     Route::post('login', 'AuthController@login');
     Route::group(['middleware' => 'jwt-auth'], function () {
         Route::post('get_user_details', 'AuthController@get_user_details');
-        Route::resource('user', 'UserController@index');
+        Route::resource('user', 'UserController');
     });
 });
 
 /** API End**/
+
+Route::get('glide/{path}', function($path){
+    $server = \League\Glide\ServerFactory::create([
+      'source' => app('filesystem')->disk('public')->getDriver(),
+      'cache' => storage_path('glide'),
+    ]);
+    return $server->getImageResponse($path, Input::query());
+})->where('path', '.+');

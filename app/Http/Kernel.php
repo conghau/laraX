@@ -51,7 +51,7 @@ class Kernel extends HttpKernel
         'can' => \Illuminate\Foundation\Http\Middleware\Authorize::class,
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
-        'auth.admin' => \App\Http\Middleware\Admin::class,
+        'auth.admin' => \App\Http\Middleware\AdminAuthenticate::class,
         'setTheme' => \igaster\laravelTheme\Middleware\setTheme::class,
         'cors' => \App\Http\Middleware\CORS::class,
         'jwt-auth' => \App\Http\Middleware\AuthJWT::class,

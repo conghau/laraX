@@ -34,6 +34,8 @@ class BaseAdminController extends Controller {
     protected $data = [];
 
     public function __construct($currentMenuActive = '') {
+        $this->middleware('auth.admin',  ['except' => ['getLogin', 'postLogin']]);
+
         $this->adminPath = Config::get('app.admin_path');
         //$this->setMenuRepository(app(MenuRepositoryInterface::class));
         $this->currentMenuActive = $currentMenuActive;

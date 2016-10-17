@@ -118,7 +118,8 @@ class UserController extends BaseAdminController {
     $this->data['object'] = new \stdClass();
 
     if ($user_id !== 0) {
-      $this->data['object'] = $this->userRepository->getFirstBy('id',$user_id);
+      //$this->data['object'] = $this->userRepository->getFirstBy('id',$user_id);
+      $this->data['object'] = $this->userRepository->findById($user_id);
     }
 
     return view('admin.users.edit', $this->data);

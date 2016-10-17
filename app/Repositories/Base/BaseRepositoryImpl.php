@@ -51,7 +51,7 @@ abstract class BaseRepositoryImpl implements BaseRepositoryInterface {
     }
 
     public function findById($id, array $with = array(), $columns = array('*')) {
-        return $this->make($with)->find($id)->get($columns);
+        return $this->make($with)->find($id, $columns);
     }
 
     public function make(array $with = array()) {

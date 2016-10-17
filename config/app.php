@@ -160,6 +160,7 @@ return [
         igaster\laravelTheme\themeServiceProvider::class,
         Barryvdh\Debugbar\ServiceProvider::class,
         Tymon\JWTAuth\Providers\JWTAuthServiceProvider::class,
+        Barryvdh\Elfinder\ElfinderServiceProvider::class,
 
 
         //custom provider
