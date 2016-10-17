@@ -33,7 +33,8 @@ class Kernel extends HttpKernel
         ],
 
         'api' => [
-            'throttle:60,1',
+            'throttle:30,1',
+            'cors',
         ],
     ];
 
@@ -52,5 +53,8 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'auth.admin' => \App\Http\Middleware\Admin::class,
         'setTheme' => \igaster\laravelTheme\Middleware\setTheme::class,
+        'cors' => \App\Http\Middleware\CORS::class,
+        'jwt-auth' => \App\Http\Middleware\AuthJWT::class,
+
     ];
 }

@@ -159,6 +159,8 @@ return [
 
         igaster\laravelTheme\themeServiceProvider::class,
         Barryvdh\Debugbar\ServiceProvider::class,
+        Tymon\JWTAuth\Providers\JWTAuthServiceProvider::class,
+
 
         //custom provider
         App\Providers\RepositoryServiceProvider::class,
@@ -213,7 +215,8 @@ return [
         'Debugbar' => Barryvdh\Debugbar\Facade::class,
 
         'LaraXMenu' => App\Facades\TCHMenu::class,
-        'Carbon' => 'Carbon\Carbon'
+        'Carbon' => 'Carbon\Carbon',
+        'JWTAuth' => Tymon\JWTAuth\Facades\JWTAuth::class,
 
     ],
 

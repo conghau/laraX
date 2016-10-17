@@ -24,6 +24,8 @@ Route::get('/', function () {
 
 Route::group(['prefix' => 'cpadmin', 'middleware' => ['web'], 'namespace' => 'App\Http\Controllers\Admin'], function ($router) {
 
+    $router->get('/', 'DashboardController@getIndex');
+
     $router->controller('auth', 'AuthController');
 
     /*Settings*/
@@ -51,3 +53,14 @@ Route::group(['prefix' => 'cpadmin', 'middleware' => ['web'], 'namespace' => 'Ap
 //Event::listen('illuminate.query',function($query){
 //    var_dump($query);
 //});
+
+/** API Route */
+Route::group(['prefix' => 'api/v1','middleware' => ['api'], 'namespace' => 'App\Http\Controllers\Api'], function () {
+    Route::post('login', 'AuthController@login');
+    Route::group(['middleware' => 'jwt-auth'], function () {
+        Route::post('get_user_details', 'AuthController@get_user_details');
+        Route::resource('user', 'UserController@index');
+    });
+});
+
+/** API End**/
