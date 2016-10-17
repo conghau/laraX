@@ -74,7 +74,7 @@ interface BaseRepositoryInterface {
      *
      * @return mixed
      */
-    public function getById($id, array $with = array(), $columns = ['*']);
+    public function findById($id, array $with = array(), $columns = ['*']);
 
     /**
      * Make ...

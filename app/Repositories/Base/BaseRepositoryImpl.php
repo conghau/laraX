@@ -50,8 +50,8 @@ abstract class BaseRepositoryImpl implements BaseRepositoryInterface {
     public function delete($id) {
     }
 
-    public function getById($id, array $with = array(), $columns = array('*')) {
-        return $this->make($with)->find($id)->get($columns);
+    public function findById($id, array $with = array(), $columns = array('*')) {
+        return $this->make($with)->find($id, $columns);
     }
 
     public function make(array $with = array()) {
@@ -127,6 +127,9 @@ abstract class BaseRepositoryImpl implements BaseRepositoryInterface {
     }
 
     public function applyCondition(array $where) {
+        if(empty($where)) {
+            return;
+        }
         foreach ($where as $field => $value) {
             if (is_array($value)) {
                 list($field, $condition, $val) = $value;

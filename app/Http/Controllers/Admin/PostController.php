@@ -84,7 +84,7 @@ class PostController extends BaseAdminController {
       return;
     }
 
-    $item = $this->postRepo->getById($post_id);
+    $item = $this->postRepo->findById($post_id);
     if(!$item) {
       //todo set message no find post
     }

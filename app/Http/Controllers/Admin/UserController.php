@@ -22,21 +22,36 @@ class UserController extends BaseAdminController {
   public function __construct(UserRepositoryInterface $userRepository) {
     parent::__construct('users');
     $this->userRepository = $userRepository;
+    $this->routeLink = 'users';
   }
 
+  /**
+   * Init list user
+   *
+   * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+   */
   public function getIndex() {
     return view('admin.users.index');
   }
 
+  /**
+   * Get list user with request
+   *
+   * @param \Illuminate\Http\Request $request
+   * @return \Illuminate\Http\JsonResponse
+   */
   public function postIndex(Request $request) {
     $all = $request->all();
+
+    //get pagination
     $offset = $request->get('start', 0);
     $limit = $request->get('length', 10);
     $paged = ceil(($offset + $limit) / $limit);
+
     $target_like_filters = [
       'email',
       'first_name',
-      'last_name'
+      'last_name',
     ];
 
     $target_eq_filters = [
@@ -44,6 +59,7 @@ class UserController extends BaseAdminController {
     ];
 
     $target_orderBy = [
+      1 => 'id',
       2 => 'email',
       3 => 'first_name',
       4 => 'last_name',
@@ -52,6 +68,8 @@ class UserController extends BaseAdminController {
       7 => 'last_login_at'
     ];
     $conditions = [];
+
+    //build where condition
     foreach ($target_like_filters as $like_filter) {
       if ($fv = laraX_get_value($all, $like_filter, FALSE)) {
         $conditions[] = [$like_filter, 'LIKE', "%$fv%"];
@@ -64,10 +82,15 @@ class UserController extends BaseAdminController {
     };
 
     $order_by = [];
+    //build order by
     foreach ($items = laraX_get_value($all, 'order', []) as $item) {
       $order_by[array_key_exists($item['column'], $target_orderBy) ? $target_orderBy[$item['column']] : 'created_at'] = $item['dir'];
     };
+
+    //get result
     $result = $this->userRepository->findWhere($conditions, $paged, $limit, $order_by);
+
+    //prepare output
     $records = [];
     $records['data'] = [];
     foreach ($items = $result->items as $item) {
@@ -78,10 +101,11 @@ class UserController extends BaseAdminController {
         $item->first_name,
         $item->last_name,
         '<span class="label label-success label-sm label-{{$item->status}}">' . $item->status . '</span>',
-        $item->created_at->toDateTimeString(),
+        $item->created_at,
         $item->last_login_at,
-        '<a class="fast-edit" title="Fast edit">Fast edit</a>',
-        '<a href="' . '#lom' . '" class="btn btn-outline green btn-sm"><i class="icon-pencil"></i></a>' . '<button type="button" data-ajax="' . '#link' . '" data-method="DELETE" data-toggle="confirmation" class="btn btn-outline red-sunglo btn-sm ajax-link"><i class="fa fa-trash"></i></button>',
+        laraX_build_button_confirmation(laraX_build_url($this->routeLink . '/active/' . $item->id), 'Active User', 'blue', 'fa fa-check')
+        . laraX_build_button_confirmation(laraX_build_url($this->routeLink . '/disable/' . $item->id), 'Delete User', 'red-sunglo', 'fa fa-times')
+        . laraX_build_button(laraX_build_url($this->routeLink . '/edit/' . $item->id), 'edit', 'green', 'icon-pencil'),
       );
     }
     $records["sEcho"] = 'echo';
@@ -94,40 +118,42 @@ class UserController extends BaseAdminController {
     $this->data['object'] = new \stdClass();
 
     if ($user_id !== 0) {
+      //$this->data['object'] = $this->userRepository->getFirstBy('id',$user_id);
+      $this->data['object'] = $this->userRepository->findById($user_id);
     }
 
     return view('admin.users.edit', $this->data);
   }
 
   public function postEdit(Request $request, $user_id = 0) {
-    $data = $request->all();
-
-    $data['id'] = (int) $user_id;
-
-    if (isset($data['password'])) {
-      $data['password'] = bcrypt($data['password']);
-    }
-
-    if ($user_id != 0) {
-      //unset($data['email']);
-      //$result = $object->fastEdit($data, false, true);
-    }
-    else {
-      // $result = $object->fastEdit($data, true, false);
-    }
-    $result = $this->userRepository->create($data);
-    if (!$result) {
-      $this->setFlashMessages('Save is fail', 'error');
-      $this->showFlashMessages();
-      return redirect()->back();
-    }
-
-    $this->setFlashMessages('Save is success', 'success');
-    $this->showFlashMessages();
-
-    if ($user_id == 0) {
-      return redirect()->to(asset($this->adminPath . '/' . $this->routeLink . '/edit/' . $result['object']->id));
-    }
-    return redirect()->back();
+//    $data = $request->all();
+//
+//    $data['id'] = (int) $user_id;
+//
+//    if (isset($data['password'])) {
+//      $data['password'] = bcrypt($data['password']);
+//    }
+//
+//    if ($user_id != 0) {
+//      //unset($data['email']);
+//      //$result = $object->fastEdit($data, false, true);
+//    }
+//    else {
+//      // $result = $object->fastEdit($data, true, false);
+//    }
+//    $result = $this->userRepository->create($data);
+//    if (!$result) {
+//      $this->setFlashMessages('Save is fail', 'error');
+//      $this->showFlashMessages();
+//      return redirect()->back();
+//    }
+//
+//    $this->setFlashMessages('Save is success', 'success');
+//    $this->showFlashMessages();
+//
+//    if ($user_id == 0) {
+//      return redirect()->to(asset($this->adminPath . '/' . $this->routeLink . '/edit/' . $result['object']->id));
+//    }
+//    return redirect()->back();
   }
 }
