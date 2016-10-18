@@ -54,7 +54,7 @@
                     </div>
                     <div class="actions">
                         <div class="btn-group btn-group-devided">
-                            <a class="btn btn-transparent btn-success btn-circle btn-sm active" href="{{ asset($adminPath.'/users/edit/0') }}"><i class="fa fa-plus"></i> Create</a>
+                            <a class="btn btn-transparent btn-success btn-circle btn-sm active" href="{{ asset($adminPath.'/users/edit/0') }}"><i class="fa fa-plus"></i> @lang('laraX.button.create')</a>
                         </div>
                     </div>
                 </div>

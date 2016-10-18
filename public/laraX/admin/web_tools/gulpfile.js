@@ -7,7 +7,7 @@ var path = {
     coreAdminThirdParty: './../core/third_party/',
     themeAdminAssets: './../theme/assets/'
 };
-
+var elixir = require('laravel-elixir');
 var gulp = require("gulp");
 var sass = require("gulp-sass");
 var sourcemaps = require('gulp-sourcemaps');

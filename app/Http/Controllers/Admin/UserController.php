@@ -21,6 +21,7 @@ class UserController extends BaseAdminController {
 
   public function __construct(UserRepositoryInterface $userRepository) {
     parent::__construct('users');
+    $this->setPageTitle(trans('laraX.user.admin.list'));
     $this->userRepository = $userRepository;
     $this->routeLink = 'users';
   }
