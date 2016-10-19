@@ -37,8 +37,7 @@ Page Header
   padding: 0px;
   box-shadow: none;
   height: 46px;
-  min-height: 46px;
-  filter: none;
+  min-height: 46px;  filter: none;
   background-image: none;
   /* Fixed header */
   /* Header logo */

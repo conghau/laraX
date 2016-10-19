@@ -227,7 +227,7 @@
                                                           rows="3">{!! $object->description or '' !!}</textarea>
                                             </div>
                                             <div class="mar-top-10">
-                                                <button type="submit" class="btn green">Save Changes</button>
+                                                <button type="submit" class="btn green">@lang('laraX.button.save')</button>
                                             </div>
                                         </form>
                                     </div>
@@ -247,7 +247,7 @@
                                                 </div>
                                             </div>
                                             <div class="mar-top-10">
-                                                <button type="submit" class="btn green">Save Changes</button>
+                                                <button type="submit" class="btn green">@lang('laraX.button.save')</button>
                                             </div>
                                         </form>
                                     </div>
@@ -267,7 +267,7 @@
                                                 </div>
                                             </div>
                                             <div class="mar-top-10">
-                                                <button type="submit" class="btn green">Save Changes</button>
+                                                <button type="submit" class="btn green">@lang('laraX.button.save')</button>
                                             </div>
                                         </form>
                                     </div>
