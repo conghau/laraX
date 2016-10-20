@@ -79,7 +79,7 @@
                                 <th width="5%">
                                     #
                                 </th>
-                                <th width="40%">Title</th>
+                                <th width="40%">Name</th>
                                 <th width="20%">Slug</th>
                                 <th width="10%">Created at</th>
                                 <th width="10%">Fast edit</th>
@@ -89,7 +89,7 @@
                                 <td></td>
                                 <td></td>
                                 <td>
-                                    <input placeholder="Search..." type="text" class="form-control form-filter input-sm" name="title">
+                                    <input placeholder="Search..." type="text" class="form-control form-filter input-sm" name="name">
                                 </td>
                                 <td>
                                     <input placeholder="Search..." type="text" class="form-control form-filter input-sm" name="slug">

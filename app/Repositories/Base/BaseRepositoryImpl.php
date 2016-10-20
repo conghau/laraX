@@ -9,6 +9,7 @@
 namespace App\Repositories\Base;
 
 use Illuminate\Support\Collection;
+use TCH\LaraXConfig;
 
 /**
  * Class BaseRepositoryImpl
@@ -146,7 +147,15 @@ abstract class BaseRepositoryImpl implements BaseRepositoryInterface {
         }
     }
 
-    protected function buildResult($page = 1, $limit = 10, $columns = ['*']) {
+    protected function buildResult($page = LaraXConfig::PAGE_DEFAULT, $limit = LaraXConfig::LIMIT_DEFAULT, $columns = ['*']) {
+        if($limit < 1) {
+            $limit = LaraXConfig::LIMIT_DEFAULT;
+        }
+
+        if($page < 1) {
+            $page = LaraXConfig::PAGE_DEFAULT;
+        }
+
         $result = new \stdClass();
         $result->page = $page;
         $result->limit = $limit;

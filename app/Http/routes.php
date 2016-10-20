@@ -45,7 +45,7 @@ Route::group(['prefix' => 'cpadmin', 'middleware' => ['web'], 'namespace' => 'Ap
     /*File*/
     $router->controller('files', 'FileController');
     /*File*/
-    $router->controller('category', 'CategoryController');
+    $router->controller('categories', 'CategoryController');
 });
 
 /**

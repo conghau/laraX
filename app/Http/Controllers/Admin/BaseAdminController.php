@@ -34,7 +34,12 @@ class BaseAdminController extends Controller {
     protected $data = [];
 
     public function __construct($currentMenuActive = '') {
-        $this->middleware('auth.admin',  ['except' => ['getLogin', 'postLogin']]);
+        $this->middleware('auth.admin', [
+            'except' => [
+                'getLogin',
+                'postLogin'
+            ]
+        ]);
 
         $this->adminPath = Config::get('app.admin_path');
         //$this->setMenuRepository(app(MenuRepositoryInterface::class));
@@ -131,11 +136,45 @@ class BaseAdminController extends Controller {
         $expiresAt = Carbon::now()->addMinutes(30);
         if (Cache::has('cache_admin_menu')) {
             $data = Cache::get('cache_admin_menu');;
-        } else {
+        }
+        else {
             $data = $menu->getNavMenu1($menu->args);
             Cache::put('cache_admin_menu', $data, $expiresAt);
         }
 
         view()->share('CMSMenuHtml', $data);
+    }
+
+    /**
+     * Build condition
+     *
+     * @param $request
+     * @param array $target_eq_filters
+     * @param array $target_like_filters
+     *
+     * @return array $conditions
+     */
+    protected function buildCondition($request, array $target_eq_filters = [], array $target_like_filters = []) {
+        $conditions = [];
+        foreach ($target_like_filters as $like_filter) {
+            if ($fv = laraX_get_value($request, $like_filter, FALSE)) {
+                $conditions[] = [$like_filter, 'LIKE', "%$fv%"];
+            }
+        };
+        foreach ($target_eq_filters as $eq_filter) {
+            if ($fv = laraX_get_value($request, $eq_filter, FALSE)) {
+                $conditions[] = [$eq_filter, '=', $fv];
+            }
+        };
+        return $conditions;
+    }
+
+    protected function buildOrderBy($request, array $target_orderBy = []) {
+        $order_by = [];
+        //build order by
+        foreach ($items = laraX_get_value($request, 'order', []) as $item) {
+            $order_by[array_key_exists($item['column'], $target_orderBy) ? $target_orderBy[$item['column']] : 'created_at'] = $item['dir'];
+        };
+        return $order_by;
     }
 }
