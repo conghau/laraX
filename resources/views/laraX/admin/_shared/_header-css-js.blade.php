@@ -14,13 +14,13 @@
 <!-- END PAGE LEVEL PLUGINS -->
 
 <!-- BEGIN THEME GLOBAL STYLES -->
-{!!Theme::css('admin/theme/assets/global/css/components.min.css')!!}
+{!!Theme::css('admin/theme/assets/global/css/components.css')!!}
 {!!Theme::css('admin/theme/assets/global/css/plugins.min.css')!!}
 <!-- END THEME GLOBAL STYLES -->
 
 <!-- BEGIN THEME LAYOUT STYLES -->
 {!!Theme::css('admin/theme/assets/layouts/layout/css/layout.min.css')!!}
-{!!Theme::css('admin/theme/assets/layouts/layout/css/themes/darkblue.min.css')!!}
+{!!Theme::css('admin/theme/assets/layouts/layout/css/themes/default.min.css')!!}
 {!!Theme::css('admin/css/style.css')!!}
 <!-- END THEME LAYOUT STYLES -->
 

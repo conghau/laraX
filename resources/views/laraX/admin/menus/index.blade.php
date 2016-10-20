@@ -1,4 +1,4 @@
-@extends('admin._master')
+@extends('admin.master')
 
 @section('page-toolbar')
 
@@ -7,15 +7,14 @@
 @section('css')
 
 @endsection
-
 @section('js')
-    <script src="/admin/theme/assets/global/scripts/datatable.js"></script>
-    <script src="/admin/theme/assets/global/plugins/datatables/datatables.min.js"></script>
-    <script src="/admin/theme/assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js"></script>
+    {!! Theme::js('admin/theme/assets/global/scripts/datatable.js') !!}
+    {!! Theme::js('admin/theme/assets/global/plugins/datatables/datatables.min.js') !!}
+    {!! Theme::js('admin/theme/assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js') !!}
 @endsection
 
 @section('js-init')
-    <script src="/admin/dist/pages/table-datatables-ajax.js"></script>
+    {!! Theme::js('admin/dist/pages/table-datatables-ajax.js') !!}
     <script>
         $(document).ready(function(){
             TableDatatablesAjax.init({
@@ -50,11 +49,11 @@
                 <div class="portlet-title">
                     <div class="caption">
                         <i class="icon-layers font-dark"></i>
-                        <span class="caption-subject font-dark sbold uppercase">{{ $pageTitle }}</span>
+                        <span class="caption-subject font-dark sbold uppercase">{{ $pageTitle or 'Menu Management' }}</span>
                     </div>
                     <div class="actions">
                         <div class="btn-group btn-group-devided">
-                            <a class="btn btn-transparent btn-success btn-circle btn-sm" href="{{ asset($adminPath.'/menus/edit/0/'.$currentLanguageId) }}"><i class="fa fa-plus"></i> Create</a>
+                            <a class="btn btn-transparent btn-success btn-circle btn-sm" href="{{ asset($adminPath.'/menus/edit/0') }}"><i class="fa fa-plus"></i> Create</a>
                         </div>
                     </div>
                 </div>

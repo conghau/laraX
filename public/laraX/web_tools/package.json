@@ -1,5 +1,5 @@
 {
-  "name": "LaraWebEd",
+  "name": "larax",
   "version": "1.0.0",
   "description": "",
   "main": "Gruntfile.js",
@@ -26,5 +26,8 @@
     "gulp-sourcemaps": "^1.6.0",
     "gulp-uglify": "^1.2.0",
     "node-path": "^0.0.3"
+  },
+  "devDependencies": {
+    "es6-promise": "~4.0.5"
   }
 }
