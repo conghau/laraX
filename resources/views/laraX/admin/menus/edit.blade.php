@@ -5,16 +5,13 @@
 @endsection
 
 @section('css')
-    <link rel="stylesheet"
-          href="/admin/core/third_party/jquery-nestable/jquery.nestable.css">
-    <link rel="stylesheet" href="/admin/css/menu-nestable.css">
+    {!! Theme::css('admin/core/third_party/jquery-nestable/jquery.nestable.css') !!}
+    {!! Theme::css('admin/css/menu-nestable.css') !!}
 @endsection
 
 @section('js')
-    <script type="text/javascript"
-            src="/admin/core/third_party/jquery-nestable/jquery.nestable.js"></script>
-    <script type="text/javascript"
-            src="/admin/dist/pages/menu-nestable.js"></script>
+    {!! Theme::js('admin/core/third_party/jquery-nestable/jquery.nestable.js') !!}
+    {!! Theme::js('admin/dist/pages/menu-nestable.js') !!}
 @endsection
 
 @section('js-init')
@@ -99,14 +96,14 @@
                     </div>
                     <div class="portlet-body">
                         <div class="form-group">
-                            <label>Menu title</label>
-                            <input type="text" name="title"
+                            <label>Menu name</label>
+                            <input type="text" name="name"
                                    class="form-control the-object-title"
-                                   value="{{ $object->title or '' }}"
+                                   value="{{ $object->name or '' }}"
                                    autocomplete="off">
                         </div>
                         <div class="form-group">
-                            <label>Menu name</label>
+                            <label>Menu slug</label>
                             <input type="text" name="slug"
                                    class="form-control the-object-slug"
                                    value="{{ $object->slug or '' }}"

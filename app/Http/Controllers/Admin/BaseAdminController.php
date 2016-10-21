@@ -34,12 +34,12 @@ class BaseAdminController extends Controller {
     protected $data = [];
 
     public function __construct($currentMenuActive = '') {
-        $this->middleware('auth.admin', [
-            'except' => [
-                'getLogin',
-                'postLogin'
-            ]
-        ]);
+//        $this->middleware('auth.admin', [
+//            'except' => [
+//                'getLogin',
+//                'postLogin'
+//            ]
+//        ]);
 
         $this->adminPath = Config::get('app.admin_path');
         //$this->setMenuRepository(app(MenuRepositoryInterface::class));
@@ -169,6 +169,13 @@ class BaseAdminController extends Controller {
         return $conditions;
     }
 
+    /**
+     * Build order b
+     * 
+     * @param $request
+     * @param array $target_orderBy
+     * @return array
+     */
     protected function buildOrderBy($request, array $target_orderBy = []) {
         $order_by = [];
         //build order by

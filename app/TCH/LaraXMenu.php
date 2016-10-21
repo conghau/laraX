@@ -346,7 +346,7 @@ class LaraXMenu {
                             'compare' => '=',
                             'value' => $this->localeObj->id,
                         ],
-                    ]);
+                    ]); 
                     if ($cat) {
                         $title = ((trim($cat->title) != '') ? trim($cat->title) : trim($cat->global_title));
                     } else {

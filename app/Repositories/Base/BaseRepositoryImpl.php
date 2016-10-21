@@ -8,6 +8,7 @@
  */
 namespace App\Repositories\Base;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use TCH\LaraXConfig;
 
@@ -39,12 +40,26 @@ abstract class BaseRepositoryImpl implements BaseRepositoryInterface {
 
     }
 
-    public function create(array $data) {
-        return $this->model->fill($data)->save();
+    public function create(array $data, $model = NULL) {
+        try {
+            if ($model instanceof Model) {
+                return $model->fill($data)->save();
+            }
+            return $this->model->fill($data)->save();
+        } catch (\Exception $e) {
+            throw $e;
+        }
     }
 
-    public function update(array $data, $id) {
-        return $this->model->find($id)->fill($data)->save();
+    public function update(array $data, $id, $model = NULL) {
+        try {
+            if ($model instanceof Model) {
+                return $model->find($id)->fill($data)->save();
+            }
+            return $this->model->find($id)->fill($data)->save();
+        } catch (\Exception $e) {
+            throw $e;
+        }
     }
 
 
@@ -81,7 +96,10 @@ abstract class BaseRepositoryImpl implements BaseRepositoryInterface {
     }
 
     public function getFirstBy($key, $value, array $with = array(), $columns = array('*')) {
-        return $this->make($with)->where($key, '=', $value)->get($columns)->first();
+        return $this->make($with)
+            ->where($key, '=', $value)
+            ->get($columns)
+            ->first();
     }
 
     public function has($relation, array $with = array()) {
@@ -128,14 +146,15 @@ abstract class BaseRepositoryImpl implements BaseRepositoryInterface {
     }
 
     public function applyCondition(array $where) {
-        if(empty($where)) {
+        if (empty($where)) {
             return;
         }
         foreach ($where as $field => $value) {
             if (is_array($value)) {
                 list($field, $condition, $val) = $value;
                 $this->model = $this->model->where($field, $condition, $val);
-            } else {
+            }
+            else {
                 $this->model = $this->model->where($field, '=', $value);
             }
         }
@@ -147,12 +166,16 @@ abstract class BaseRepositoryImpl implements BaseRepositoryInterface {
         }
     }
 
+    public function firstOrNew(array $data) {
+        return $this->model->firstOrNew($data);
+    }
+
     protected function buildResult($page = LaraXConfig::PAGE_DEFAULT, $limit = LaraXConfig::LIMIT_DEFAULT, $columns = ['*']) {
-        if($limit < 1) {
+        if ($limit < 1) {
             $limit = LaraXConfig::LIMIT_DEFAULT;
         }
 
-        if($page < 1) {
+        if ($page < 1) {
             $page = LaraXConfig::PAGE_DEFAULT;
         }
 
@@ -162,20 +185,24 @@ abstract class BaseRepositoryImpl implements BaseRepositoryInterface {
         $result->totalItems = 0;
         $result->items = array();
         $result->totalItems = $this->model->count();
-        $result->items = $this->model->skip($limit * ($page - 1))->take($limit)->get($columns);;
+        $result->items = $this->model->skip($limit * ($page - 1))
+            ->take($limit)
+            ->get($columns);;
         return $result;
     }
 
-    public function createOrUpdate(array $data) {
+    public function createOrUpdate(array $data, $model = NULL) {
         //create
         $id = laraX_get_value($data, 'id', 0);
         try {
             if (0 === $id) {
-                return $this->create($data);
+                return $this->create($data, $model);
             }
             //update
-            return $this->update($data, $id);
-        } catch (\Exception $e) {
+            return $this->update($data, $id, $model);
+        }
+        catch (\Exception $e) {
+            throw $e;
         }
     }
 

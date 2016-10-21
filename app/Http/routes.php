@@ -21,31 +21,39 @@ Route::get('/', function () {
  * | Admin route - START
  * |--------------------------------------------------------------------------
  */
-
-Route::group(['prefix' => 'cpadmin', 'middleware' => ['web'], 'namespace' => 'App\Http\Controllers\Admin'], function ($router) {
-
-    $router->get('/', 'DashboardController@getIndex');
+Route::group([
+    'prefix' => 'cpadmin',
+    'middleware' => [],
+    'namespace' => 'App\Http\Controllers\Admin'
+], function ($router) {
 
     $router->controller('auth', 'AuthController');
 
-    /*Settings*/
-    $router->controller('settings', 'SettingController');
-    /*Menus*/
-    $router->controller('menus', 'MenuController');
-    /*Post*/
-    $router->controller('posts', 'PostController');
-    /*Dashboard*/
-    $router->controller('dashboard', 'DashboardController');
-    /*User*/
-    $router->controller('users', 'UserController');
-    /*AdminUser*/
-    $router->controller('admin-users', 'AdminUserController');
-    /*SubscribeEmail*/
-    $router->controller('subscribed-emails', 'SubscribeEmailController');
-    /*File*/
-    $router->controller('files', 'FileController');
-    /*File*/
-    $router->controller('categories', 'CategoryController');
+    $router->group([
+        'middleware' => ['auth_admin'],
+    ], function ($router) {
+
+        $router->get('/', 'DashboardController@getIndex');
+
+        /*Settings*/
+        $router->controller('settings', 'SettingController');
+        /*Menus*/
+        $router->controller('menus', 'MenuController');
+        /*Post*/
+        $router->controller('posts', 'PostController');
+        /*Dashboard*/
+        $router->controller('dashboard', 'DashboardController');
+        /*User*/
+        $router->controller('users', 'UserController');
+        /*AdminUser*/
+        $router->controller('admin-users', 'AdminUserController');
+        /*SubscribeEmail*/
+        $router->controller('subscribed-emails', 'SubscribeEmailController');
+        /*File*/
+        $router->controller('files', 'FileController');
+        /*File*/
+        $router->controller('categories', 'CategoryController');
+    });
 });
 
 /**
@@ -59,7 +67,11 @@ Route::group(['prefix' => 'cpadmin', 'middleware' => ['web'], 'namespace' => 'Ap
 //});
 
 /** API Route */
-Route::group(['prefix' => 'api/v1','middleware' => ['api'], 'namespace' => 'App\Http\Controllers\Api'], function () {
+Route::group([
+    'prefix' => 'api/v1',
+    'middleware' => ['api'],
+    'namespace' => 'App\Http\Controllers\Api'
+], function () {
     Route::post('login', 'AuthController@login');
     Route::group(['middleware' => 'jwt-auth'], function () {
         Route::post('get_user_details', 'AuthController@get_user_details');
@@ -69,10 +81,10 @@ Route::group(['prefix' => 'api/v1','middleware' => ['api'], 'namespace' => 'App\
 
 /** API End**/
 
-Route::get('glide/{path}', function($path){
+Route::get('glide/{path}', function ($path) {
     $server = \League\Glide\ServerFactory::create([
-      'source' => app('filesystem')->disk('public')->getDriver(),
-      'cache' => storage_path('glide'),
+        'source' => app('filesystem')->disk('public')->getDriver(),
+        'cache' => storage_path('glide'),
     ]);
     return $server->getImageResponse($path, Input::query());
 })->where('path', '.+');

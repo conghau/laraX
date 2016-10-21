@@ -10,6 +10,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Repositories\MenuRepositoryInterface;
 use Illuminate\Http\Request;
+use TCH\LaraXConfig;
 
 /**
  * Class MenuController
@@ -17,7 +18,7 @@ use Illuminate\Http\Request;
  */
 class MenuController extends BaseAdminController {
 
-    protected $menuRepo;
+    private $menuRepo;
 
     public function __construct(MenuRepositoryInterface $menuRepository) {
         parent::__construct();
@@ -83,7 +84,10 @@ class MenuController extends BaseAdminController {
         return response()->json($records);
     }
 
-    public function getEdit(Request $request, $id) {
+    public function getEdit(Request $request, $id = 0) {
+        $this->setFlashMessages(LaraXConfig::MESSAGE_TYPE_INFO, 'Go to edit menu');
+        $this->setFlashMessages(LaraXConfig::MESSAGE_TYPE_ERROR, 'Go to edit menu1');
+        $this->showFlashMessages();
         $this->data['object'] = new \stdClass();
         $oldInputs = old();
         if ($oldInputs && $id == 0) {
@@ -92,6 +96,11 @@ class MenuController extends BaseAdminController {
                 $oldObject->$key = $row;
             }
             $this->data['object'] = $oldObject;
+        }
+        $menu = new \stdClass();
+        if (0 !== $id) {
+            $menu = $this->menuRepo->findById($id);
+            $this->data['object'] = $menu;
         }
 
 //    $currentEditLanguage = Models\Language::getBy([
@@ -105,19 +114,18 @@ class MenuController extends BaseAdminController {
 //    }
         $this->data['currentEditLanguage'] = 1;
 
-        $this->data['rawUrlChangeLanguage'] = asset($this->adminPath . '/' . $this->routeLink . '/edit/' . $id) . '/';
+        $this->data['rawUrlChangeLanguage'] = asset($this->adminPath . '/' . $this->routeLink . '/edit/' . $id);
 
         $menuContent = NULL;
 //    $menu = $object->find($id);
-//    if (!$menu) {
-//      $menu = new Menu();
-//      $menuContent = null;
-//    } else {
-//      $menuContent = $objectContent->findByFieldsOrCreate([
-//        'menu_id' => $menu->id,
-//        'language_id' => $language,
-//      ]);
-//    }
+        if (!laraX_isNullOrEmpty($menu)) {
+            //$menuContent = $menu->menuContent;
+            $menuContent = $this->menuRepo->getMenuContentModel()->firstOrNew([
+                'menu_id' => $menu->id,
+                //'language_id' => 1,
+            ]);
+        }
+
 
 //    $this->setPageTitle('Menu', $menu->title);
 //
@@ -137,12 +145,60 @@ class MenuController extends BaseAdminController {
         return view('admin.menus.edit', $this->data);
     }
 
+    public function postEdit(Request $request, $id) {
+        $id = intval($id);
+        $menu = $this->menuRepo->firstOrNew(['id' => $id]);
+        $data = $request->only(['name', 'slug']);
+        $data['id'] = $id;
+        $data['slug'] = (isset($data['slug'])) ? str_slug($data['slug']) : str_slug($data['name']);
+
+        //$menuContent = $menu->menuContent;
+        $menuContent = $this->menuRepo->getMenuContentModel()->firstOrNew([
+            'menu_id' => $menu->id,
+            //'language_id' => 1,
+        ]);
+        if (!$menuContent) {
+//            $resultEditContent = $objectContent->fastEdit([
+//                'menu_id' => $menu->id,
+//                'language_id' => $language,
+//            ], true, true);
+//            if ($resultEditContent['error']) {
+//                $this->_setFlashMessage($resultEditContent['message'], 'error');
+//                $this->_showFlashMessages();
+//                return redirect()->back();
+//            }
+//            $menuContent = $resultEditContent['object'];
+        }
+
+        $menuNodesJson = json_decode($request->get('menu_nodes', NULL));
+
+        /*Deleted nodes*/
+        $deletedNodes = explode(' ', ltrim($request->get('deleted_nodes', '')));
+        // $this->menuRepo->getMenuNodes()->whereIn('id', $deletedNodes)->delete();
+        $message_err = '';
+        if($this->menuRepo->saveMenuNodes($menuNodesJson, $menuContent->id, 0, $message_err)) {
+            $this->setFlashMessages(LaraXConfig::MESSAGE_TYPE_SUCCESS, 'Save success');
+        } else {
+            $this->setFlashMessages(LaraXConfig::MESSAGE_TYPE_ERROR, 'Save fail');
+        }
+
+        $this->showFlashMessages();
+
+        if (!$id || $id == 0) {
+            return redirect()->to(asset($this->adminPath . '/' . $this->routeLink . '/edit/' . $menu->id));
+        }
+        $request->session()->flash('message', $message_err);
+        return redirect()->to(asset($this->adminPath . '/' . $this->routeLink . '/edit/' . $menu->id));
+        return redirect()->back();
+
+    }
+
     private function getNestableMenuSrc($menu, $parent_id) {
         if (!$menu) {
             return '';
         }
-
-        $menu_nodes = $this->menuRepo->getMenuNodes($menu->id, $parent_id);
+        $menu_nodes = $this->menuRepo->getMenuNodesToArray($menu->id);
+        //$menu_nodes = $this->menuRepo->getMenuNodes($menu->id, $parent_id);
         $html_src = view('admin._partials.menu._nestable-menu-src', [
             'menuNodes' => $menu_nodes,
         ])->render();

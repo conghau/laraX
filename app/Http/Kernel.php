@@ -31,6 +31,10 @@ class Kernel extends HttpKernel
             \App\Http\Middleware\VerifyCsrfToken::class,
             \App\Http\Middleware\LaraXMW::class,
         ],
+        'auth_admin' => [
+//            \Illuminate\Session\Middleware\StartSession::class,
+            \App\Http\Middleware\AdminAuthenticate::class,
+        ],
 
         'api' => [
             'throttle:30,1',
@@ -51,7 +55,7 @@ class Kernel extends HttpKernel
         'can' => \Illuminate\Foundation\Http\Middleware\Authorize::class,
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
-        'auth.admin' => \App\Http\Middleware\AdminAuthenticate::class,
+        //'auth.admin' => \App\Http\Middleware\AdminAuthenticate::class,
         'setTheme' => \igaster\laravelTheme\Middleware\setTheme::class,
         'cors' => \App\Http\Middleware\CORS::class,
         'jwt-auth' => \App\Http\Middleware\AuthJWT::class,

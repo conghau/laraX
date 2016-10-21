@@ -61,7 +61,13 @@
         <div class="page-content">
             <!-- BEGIN ACTUAL CONTENT -->
             @include('admin/_shared/_breadcrumb-and-page-title')
+            @if (session()->has('message'))
+                <div class="alert alert-info">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
 
+                    {!! session('message') !!}
+                </div>
+            @endif
             <div class="fade-in-up">
                 @yield('content')
             </div>
