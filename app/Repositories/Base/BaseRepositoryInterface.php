@@ -209,15 +209,22 @@ interface BaseRepositoryInterface {
      * Create Or Update
      *
      * @param array $data
-     * @return mixed
+     * @param null $model
+     * @param string $message_err
+     * @param bool $throw_ex
+     *
+     * @return id of record if save success otherwise return 0 or exception
      */
-    public function createOrUpdate(array $data);
+    public function createOrUpdate(array $data, $model = NULL, &$message_err = '', $throw_ex = FALSE);
 
     /**
      * First or New
      *
      * @param array $data
+     *
      * @return mixed
      */
     public function firstOrNew(array $data);
+
+    public function save(array $data);
 }

@@ -24,7 +24,6 @@ use Carbon;
 class BaseAdminController extends Controller {
 
     use Foundation\FlashMessage;
-
     protected $menuRepository;
     protected $adminPath;
     protected $routeLink;

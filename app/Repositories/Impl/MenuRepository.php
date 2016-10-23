@@ -61,7 +61,7 @@ class MenuRepository extends BaseRepositoryImpl implements MenuRepositoryInterfa
 
         $menu_after = array();
         foreach ($menu_parent as $item) {
-            $menu_after[$item['id']] = array('value' => (object) $item);
+            $menu_after[$item['id']] = array('value' => (object)$item);
         }
 
         $menu_child = $this->getMenuNodesChild($menu_content_id, 0, $columns)
@@ -89,7 +89,7 @@ class MenuRepository extends BaseRepositoryImpl implements MenuRepositoryInterfa
         return $this->menuNoteModel;
     }
 
-    public function saveMenuNode(array $item, $menu_content_id, $parent_id) {
+    public function saveMenuNode(array $item, $menu_content_id, $parent_id, &$message_err = '', $throw_ex = FALSE) {
         try {
             $target_string_field = [
                 'title',
@@ -118,24 +118,8 @@ class MenuRepository extends BaseRepositoryImpl implements MenuRepositoryInterfa
                     break;
             }
 
-            $result = $this->createOrUpdate($data, $this->menuNoteModel);
-            return laraX_get_value($result, 'id', 0);
-        }
-        catch (\Exception $e) {
-            throw  $e;
-        }
-    }
-
-    public function saveMenuNodes(array $items, $menu_content_id, $parent_id, &$message_err = '', $throw_ex = FALSE) {
-        try {
-            \DB::beginTransaction();
-            $this->recursiveSaveMenuNodes($items, $menu_content_id, $parent_id);
-            \DB::commit();
-            return TRUE;
-        }
-        catch (\Exception $e) {
-            \DB::rollback();
-            $message_err = $e;
+            return $this->createOrUpdate($data, $this->menuNoteModel, $message_err, $throw_ex);
+        } catch (\Exception $e) {
             if ($throw_ex) {
                 throw $e;
             }
@@ -143,17 +127,46 @@ class MenuRepository extends BaseRepositoryImpl implements MenuRepositoryInterfa
         }
     }
 
-    private function recursiveSaveMenuNodes(array $items, $menu_content_id, $parent_id) {
+    public function saveMenuNodes(array $items, $menu_content_id, $parent_id, &$message_err = '', $throw_ex = FALSE) {
+        try {
+            \DB::beginTransaction();
+            $result = $this->recursiveSaveMenuNodes($items, $menu_content_id, $parent_id, $message_err, $throw_ex);
+            if (!$result) {
+                throw new \Exception($message_err);
+            }
+            \DB::commit();
+            return TRUE;
+        } catch (\Exception $e) {
+            \DB::rollback();
+            if ($throw_ex) {
+                throw $e;
+            }
+            return FALSE;
+        }
+    }
+
+    private function recursiveSaveMenuNodes(array $items, $menu_content_id, $parent_id, &$message_err = '', $throw_ex = FALSE) {
         try {
             foreach ($items as $item) {
-                $parent = $this->saveMenuNode($item, $menu_content_id, $parent_id);
-                if ($parent !== 0 && !laraX_isNullOrEmpty($item->children)) {
-                    $this->recursiveSaveMenuNodes($item->children, $menu_content_id, $parent);
+                if (is_object($item)) {
+                    $item = (array)$item;
+                }
+                $parent = $this->saveMenuNode($item, $menu_content_id, $parent_id, $message_err, $throw_ex);
+                if (0 == $parent) {
+                    throw new \Exception($message_err);
+                }
+                if (isset($item['children']) && !laraX_isNullOrEmpty($item['children'])) {
+                    $this->recursiveSaveMenuNodes($item->children, $menu_content_id, $parent, $message_err, $throw_ex);
                 }
             }
-        }
-        catch (\Exception $e) {
-            throw $e;
+            return TRUE;
+        } catch (\Exception $e) {
+            $message_err = $e->getMessage();
+            if ($throw_ex) {
+                throw $e;
+            }
+            return FALSE;
+
         }
     }
 }

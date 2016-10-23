@@ -9,7 +9,7 @@ class UserSeeder extends Seeder {
      * @return void
      */
     public function run() {
-        for ($i = 0; $i < 50; $i++) {
+        for ($i = 0; $i < 20000; $i++) {
             DB::table('users')->insert([
                 'username' => str_random(10),
                 'email' => str_random(10) . '@gmail.com',

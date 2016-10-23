@@ -14,6 +14,7 @@ use TCH\LaraXConfig;
 
 /**
  * Class MenuController
+ *
  * @package App\Http\Controllers\Admin
  */
 class MenuController extends BaseAdminController {
@@ -86,7 +87,6 @@ class MenuController extends BaseAdminController {
 
     public function getEdit(Request $request, $id = 0) {
         $this->setFlashMessages(LaraXConfig::MESSAGE_TYPE_INFO, 'Go to edit menu');
-        $this->setFlashMessages(LaraXConfig::MESSAGE_TYPE_ERROR, 'Go to edit menu1');
         $this->showFlashMessages();
         $this->data['object'] = new \stdClass();
         $oldInputs = old();
@@ -176,7 +176,7 @@ class MenuController extends BaseAdminController {
         $deletedNodes = explode(' ', ltrim($request->get('deleted_nodes', '')));
         // $this->menuRepo->getMenuNodes()->whereIn('id', $deletedNodes)->delete();
         $message_err = '';
-        if($this->menuRepo->saveMenuNodes($menuNodesJson, $menuContent->id, 0, $message_err)) {
+        if ($this->menuRepo->saveMenuNodes($menuNodesJson, $menuContent->id, 0, $message_err, FALSE)) {
             $this->setFlashMessages(LaraXConfig::MESSAGE_TYPE_SUCCESS, 'Save success');
         } else {
             $this->setFlashMessages(LaraXConfig::MESSAGE_TYPE_ERROR, 'Save fail');

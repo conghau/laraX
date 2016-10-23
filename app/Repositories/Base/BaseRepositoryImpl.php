@@ -10,7 +10,9 @@ namespace App\Repositories\Base;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Log;
 use TCH\LaraXConfig;
+use TCH\LaraXException;
 
 /**
  * Class BaseRepositoryImpl
@@ -18,7 +20,6 @@ use TCH\LaraXConfig;
  * @package App\Repositories\Base
  */
 abstract class BaseRepositoryImpl implements BaseRepositoryInterface {
-
     protected $model;
     protected $criteria;
 
@@ -43,22 +44,29 @@ abstract class BaseRepositoryImpl implements BaseRepositoryInterface {
     public function create(array $data, $model = NULL) {
         try {
             if ($model instanceof Model) {
-                return $model->fill($data)->save();
+                $model->fill($data)->save();
+                return $model->id;
             }
             return $this->model->fill($data)->save();
-        } catch (\Exception $e) {
+        } catch (LaraXException $e) {
             throw $e;
         }
     }
 
     public function update(array $data, $id, $model = NULL) {
         try {
+//            if (isset($data['id'])) unset($data['id']);
             if ($model instanceof Model) {
-                return $model->find($id)->fill($data)->save();
+                $model->findOrFail($id)->update($data);
+                return $model->id;
             }
-            return $this->model->find($id)->fill($data)->save();
+
+            $this->model->findOrFail($id)->update($data);
+            return $this->model->id;
         } catch (\Exception $e) {
             throw $e;
+            //Log::error(json_encode(['action' => 'update', 'message' => $e->getMessage(), 'data' => $data]));
+            return 0;
         }
     }
 
@@ -153,8 +161,7 @@ abstract class BaseRepositoryImpl implements BaseRepositoryInterface {
             if (is_array($value)) {
                 list($field, $condition, $val) = $value;
                 $this->model = $this->model->where($field, $condition, $val);
-            }
-            else {
+            } else {
                 $this->model = $this->model->where($field, '=', $value);
             }
         }
@@ -168,6 +175,10 @@ abstract class BaseRepositoryImpl implements BaseRepositoryInterface {
 
     public function firstOrNew(array $data) {
         return $this->model->firstOrNew($data);
+    }
+
+    public function save(array $data) {
+        return '';
     }
 
     protected function buildResult($page = LaraXConfig::PAGE_DEFAULT, $limit = LaraXConfig::LIMIT_DEFAULT, $columns = ['*']) {
@@ -191,19 +202,42 @@ abstract class BaseRepositoryImpl implements BaseRepositoryInterface {
         return $result;
     }
 
-    public function createOrUpdate(array $data, $model = NULL) {
-        //create
+    /**
+     * Create Or Update
+     *
+     * @param array $data
+     * @param null $model
+     * @param string $message_err is ref
+     * @param bool $throw_ex
+     *
+     * @return id of record if save success otherwise return 0 or exception
+     */
+    public function createOrUpdate(array $data, $model = NULL, &$message_err = '', $throw_ex = FALSE) {
         $id = laraX_get_value($data, 'id', 0);
         try {
-            if (0 === $id) {
-                return $this->create($data, $model);
+            //case insert
+            if (0 == $id) {
+                if ($model instanceof Model) {
+                    $model->fill($data)->save();
+                    return $model->id;
+                }
+                $this->model->fill($data)->save();
+                return $this->model->id;
             }
-            //update
-            return $this->update($data, $id, $model);
-        }
-        catch (\Exception $e) {
-            throw $e;
+            //case update
+            if ($model instanceof Model) {
+                $model->findOrFail($id)->update($data);
+            } else {
+                $this->model->findOrFail($id)->update($data);
+            }
+            return $id;
+        } catch (\Exception $e) {
+            Log::error(json_encode(['action' => 'createOrUpdate', 'type' => get_class($e), 'message' => $e->getMessage(), 'data' => $data]));
+            $message_err = $e->getMessage();
+            if ($throw_ex) {
+                throw $e;
+            }
+            return 0;
         }
     }
-
 }
