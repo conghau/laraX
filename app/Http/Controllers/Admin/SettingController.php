@@ -7,6 +7,8 @@ use App\Repositories\MenuRepositoryInterface;
 use App\Repositories\SettingRepositoryInterface;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\Session;
+use TCH\LaraXConfig;
 
 class SettingController extends BaseAdminController {
     public $bodyClass = 'setting-controller', $routeLink = 'settings';
@@ -14,8 +16,8 @@ class SettingController extends BaseAdminController {
 
     public function __construct(SettingRepositoryInterface $repoSetting) {
         parent::__construct('settings');
-        
-      $this->repoSetting = $repoSetting;
+
+        $this->repoSetting = $repoSetting;
         $this->setPageTitle('Settings', 'manage website settings');
     }
 
@@ -32,11 +34,12 @@ class SettingController extends BaseAdminController {
         $data['construction_mode'] = ($request->has('construction_mode')) ? 1 : 0;
         $data['show_admin_bar'] = ($request->has('show_admin_bar')) ? 1 : 0;
         $result = $this->repoSetting->updateSetting($data);
-        if ($result['error']) {
-            $this->setFlashMessages($result['message'], 'error');
-            $this->setFlashMessages(implode(', ', $result['errors']), 'error');
-        } else {
-            $this->setFlashMessages($result['message'], 'success');
+        if (!$result) {
+            $this->setFlashMessages(LaraXConfig::MESSAGE_TYPE_ERROR, 'error');
+        }
+        else {
+            $this->setFlashMessages(LaraXConfig::MESSAGE_TYPE_SUCCESS, 'success');
+            Session::flush();
         }
         $this->showFlashMessages();
 
@@ -67,13 +70,13 @@ class SettingController extends BaseAdminController {
         $records["data"] = [];
 
         /*Group actions*/
-        if ($request->get('customActionType', null) == 'group_action') {
+        if ($request->get('customActionType', NULL) == 'group_action') {
             $records["customActionStatus"] = "danger";
             $records["customActionMessage"] = "Group action did not completed. Some error occurred.";
-            $ids = (array)$request->get('id', []);
+            $ids = (array) $request->get('id', []);
             $result = $object->updateMultiple($ids, [
                 'status' => $request->get('customActionValue', 0),
-            ], true);
+            ], TRUE);
             if (!$result['error']) {
                 $records["customActionStatus"] = "success";
                 $records["customActionMessage"] = "Group action has been completed.";
@@ -117,17 +120,26 @@ class SettingController extends BaseAdminController {
         $orderType = $request->get('order')[0]['dir'];
 
         $getByFields = [];
-        if ($request->get('language_name', null) != null) {
-            $getByFields['language_name'] = ['compare' => 'LIKE', 'value' => $request->get('language_name')];
+        if ($request->get('language_name', NULL) != NULL) {
+            $getByFields['language_name'] = [
+                'compare' => 'LIKE',
+                'value' => $request->get('language_name')
+            ];
         }
-        if ($request->get('language_code', null) != null) {
-            $getByFields['language_code'] = ['compare' => '=', 'value' => $request->get('language_code')];
+        if ($request->get('language_code', NULL) != NULL) {
+            $getByFields['language_code'] = [
+                'compare' => '=',
+                'value' => $request->get('language_code')
+            ];
         }
-        if ($request->get('status', null) != null) {
-            $getByFields['status'] = ['compare' => '=', 'value' => $request->get('status')];
+        if ($request->get('status', NULL) != NULL) {
+            $getByFields['status'] = [
+                'compare' => '=',
+                'value' => $request->get('status')
+            ];
         }
 
-        $items = $object->searchBy($getByFields, [$orderBy => $orderType], true, $limit);
+        $items = $object->searchBy($getByFields, [$orderBy => $orderType], TRUE, $limit);
 
         $iTotalRecords = $items->total();
         $sEcho = intval($request->get('sEcho'));
@@ -159,14 +171,14 @@ class SettingController extends BaseAdminController {
 
     public function postFastEditLanguages(Request $request, Models\Language $object) {
         $data = [
-            'id' => $request->get('args_0', null),
-            'language_name' => $request->get('args_1', null),
-            'language_code' => $request->get('args_2', null),
-            'default_locale' => $request->get('args_3', null),
-            'currency' => $request->get('args_4', null),
+            'id' => $request->get('args_0', NULL),
+            'language_name' => $request->get('args_1', NULL),
+            'language_code' => $request->get('args_2', NULL),
+            'default_locale' => $request->get('args_3', NULL),
+            'currency' => $request->get('args_4', NULL),
         ];
 
-        $result = $object->fastEdit($data, false, true);
+        $result = $object->fastEdit($data, FALSE, TRUE);
         return response()->json($result, $result['response_code']);
     }
 }

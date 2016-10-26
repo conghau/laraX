@@ -156,7 +156,7 @@ class MenuRepository extends BaseRepositoryImpl implements MenuRepositoryInterfa
                     throw new \Exception($message_err);
                 }
                 if (isset($item['children']) && !laraX_isNullOrEmpty($item['children'])) {
-                    $this->recursiveSaveMenuNodes($item->children, $menu_content_id, $parent, $message_err, $throw_ex);
+                    $this->recursiveSaveMenuNodes($item['children'], $menu_content_id, $parent, $message_err, $throw_ex);
                 }
             }
             return TRUE;
@@ -166,7 +166,6 @@ class MenuRepository extends BaseRepositoryImpl implements MenuRepositoryInterfa
                 throw $e;
             }
             return FALSE;
-
         }
     }
 }

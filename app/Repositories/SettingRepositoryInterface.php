@@ -17,4 +17,5 @@ use App\Repositories\Base\BaseRepositoryInterface;
 interface SettingRepositoryInterface extends BaseRepositoryInterface {
     public function getAllSetting();
     public function updateSetting(array $data = array());
+    public function getSetting($key);
 }

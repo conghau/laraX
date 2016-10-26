@@ -14,7 +14,7 @@
 
 @section('js-init')
     <script type="text/javascript">
-        $(document).ready(function(){
+        $(document).ready(function () {
             $('.js-tags-editor').tagsinput({
                 'tagClass': 'label label-default'
             });
@@ -23,8 +23,7 @@
                 errorClass: 'help-block help-block-error', // default input error message class
                 focusInvalid: false, // do not focus the last invalid input
                 ignore: "",  // validate all fields including form hidden input
-                messages: {
-                },
+                messages: {},
                 rules: {
                     'email_receives_feedback': {
                         required: true,
@@ -50,7 +49,8 @@
 @endsection
 
 @section('content')
-    <form accept-charset="utf-8" novalidate action="" method="POST" class="js-validate-form">
+    <form accept-charset="utf-8" novalidate action="" method="POST"
+          class="js-validate-form">
         {!! csrf_field() !!}
         <div class="portlet light form-fit bordered">
             <div class="portlet-title">
@@ -74,134 +74,178 @@
                             <label class="control-label col-md-3">Homepage</label>
                             <div class="col-md-7">
                                 {{--<select name="default_homepage" class="form-control">--}}
-                                    {{--@foreach($pages as $key => $row)--}}
-                                        {{--<option value="{{ $row->id }}" {{ (isset($settings['default_homepage']) && (int)$settings['default_homepage'] == $row->id) ? 'selected' : '' }}>{{ $row->global_title }}</option>--}}
-                                    {{--@endforeach--}}
+                                {{--@foreach($pages as $key => $row)--}}
+                                {{--<option value="{{ $row->id }}" {{ (isset($settings['default_homepage']) && (int)$settings['default_homepage'] == $row->id) ? 'selected' : '' }}>{{ $row->global_title }}</option>--}}
+                                {{--@endforeach--}}
                                 {{--</select>--}}
                                 <span class="help-block">Homepage of this website</span>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-md-3">Site title</label>
+                            <label class="control-label col-md-3">Site
+                                title</label>
                             <div class="col-md-7">
-                                <input type="text" class="form-control" value="{{ $settings['site_title'] or '' }}" name="site_title"/>
+                                <input type="text" class="form-control"
+                                       value="{{ $settings['site_title'] or '' }}"
+                                       name="site_title"/>
                                 <span class="help-block">Title of website.</span>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-md-3">Site logo</label>
+                            <label class="control-label col-md-3">Site
+                                logo</label>
                             <div class="col-md-7">
                                 <div class="select-media-box">
-                                    <button type="button" class="btn blue show-add-media-popup">Choose image</button>
+                                    <button type="button"
+                                            class="btn blue show-add-media-popup">
+                                        Choose image
+                                    </button>
                                     <div class="clearfix"></div>
-                                    <a title="" class="show-add-media-popup"><img src="{{ (isset($settings['site_logo']) && trim($settings['site_logo'] != '')) ? $settings['site_logo'] : '/admin/images/no-image.png' }}" alt="Thumbnail" class="img-responsive"></a>
-                                    <input type="hidden" name="site_logo" value="{{ $settings['site_logo'] or '' }}" class="input-file">
+                                    <a title=""
+                                       class="show-add-media-popup"><img
+                                                src="{{ (isset($settings['site_logo']) && trim($settings['site_logo'] != '')) ? $settings['site_logo'] : '/admin/images/no-image.png' }}"
+                                                alt="Thumbnail"
+                                                class="img-responsive"></a>
+                                    <input type="hidden" name="site_logo"
+                                           value="{{ $settings['site_logo'] or '' }}"
+                                           class="input-file">
                                     <a title="" class="remove-image"><span>&nbsp;</span></a>
                                 </div>
                                 <span class="help-block">Select logo for this site.</span>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-md-3">Site keywords</label>
+                            <label class="control-label col-md-3">Site
+                                keywords</label>
                             <div class="col-md-7">
-                                <input type="text" class="form-control js-tags-editor" value="{{ $settings['site_keywords'] or '' }}" name="site_keywords"/>
+                                <input type="text"
+                                       class="form-control js-tags-editor"
+                                       value="{{ $settings['site_keywords'] or '' }}"
+                                       name="site_keywords"/>
                                 <span class="help-block">Use for SEO.</span>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-md-3">Site description</label>
+                            <label class="control-label col-md-3">Site
+                                description</label>
                             <div class="col-md-7">
-                                <textarea name="site_description" class="form-control" rows="5">{{ $settings['site_description'] or '' }}</textarea>
+                                <textarea name="site_description"
+                                          class="form-control"
+                                          rows="5">{{ $settings['site_description'] or '' }}</textarea>
                                 <span class="help-block">Use for SEO.</span>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-md-3">Email receives feedback from clients</label>
+                            <label class="control-label col-md-3">Email receives
+                                feedback from clients</label>
                             <div class="col-md-7">
-                                <input type="text" class="form-control" value="{{ $settings['email_receives_feedback'] or '' }}" name="email_receives_feedback"/>
+                                <input type="text" class="form-control"
+                                       value="{{ $settings['email_receives_feedback'] or '' }}"
+                                       name="email_receives_feedback"/>
                                 <span class="help-block">Email receives feedback from clients</span>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-md-3">Default language</label>
+                            <label class="control-label col-md-3">Default
+                                language</label>
                             <div class="col-md-7">
                                 {{--<select name="default_language" class="form-control">--}}
-                                    {{--@foreach($activatedLanguages as $key => $row)--}}
-                                        {{--<option {{ (isset($settings['default_language']) && $row->id == (int)$settings['default_language']) ? 'selected' : '' }} value="{{ $row->id }}">{{ $row->language_name }}</option>--}}
-                                    {{--@endforeach--}}
+                                {{--@foreach($activatedLanguages as $key => $row)--}}
+                                {{--<option {{ (isset($settings['default_language']) && $row->id == (int)$settings['default_language']) ? 'selected' : '' }} value="{{ $row->id }}">{{ $row->language_name }}</option>--}}
+                                {{--@endforeach--}}
                                 {{--</select>--}}
                                 <span class="help-block">CMS default language</span>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-md-3">Dashboard language</label>
+                            <label class="control-label col-md-3">Dashboard
+                                language</label>
                             <div class="col-md-7">
                                 {{--<select name="dashboard_language" class="form-control">--}}
-                                    {{--@foreach($activatedLanguages as $key => $row)--}}
-                                        {{--<option {{ (isset($settings['dashboard_language']) && $row->id == (int)$settings['dashboard_language']) ? 'selected' : '' }} value="{{ $row->id }}">{{ $row->language_name }}</option>--}}
-                                    {{--@endforeach--}}
+                                {{--@foreach($activatedLanguages as $key => $row)--}}
+                                {{--<option {{ (isset($settings['dashboard_language']) && $row->id == (int)$settings['dashboard_language']) ? 'selected' : '' }} value="{{ $row->id }}">{{ $row->language_name }}</option>--}}
+                                {{--@endforeach--}}
                                 {{--</select>--}}
                                 <span class="help-block">CMS default language in dashboard</span>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-md-3">Google analytics code</label>
+                            <label class="control-label col-md-3">Google
+                                analytics code</label>
                             <div class="col-md-7">
-                                <textarea name="google_analytics" class="form-control" rows="5">{{ $settings['google_analytics'] or '' }}</textarea>
+                                <textarea name="google_analytics"
+                                          class="form-control"
+                                          rows="5">{{ $settings['google_analytics'] or '' }}</textarea>
                                 <span class="help-block">Add google analytics for site</span>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-md-3">Hot line</label>
+                            <label class="control-label col-md-3">Hot
+                                line</label>
                             <div class="col-md-7">
-                                <input type="text" class="form-control" value="{{ $settings['hot_line'] or '' }}" name="hot_line"/>
+                                <input type="text" class="form-control"
+                                       value="{{ $settings['hot_line'] or '' }}"
+                                       name="hot_line"/>
                                 <span class="help-block">Hot line.</span>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="control-label col-md-3">Facebook</label>
                             <div class="col-md-7">
-                                <input type="text" class="form-control" value="{{ $settings['facebook'] or '' }}" name="facebook"/>
+                                <input type="text" class="form-control"
+                                       value="{{ $settings['facebook'] or '' }}"
+                                       name="facebook"/>
                                 <span class="help-block">Facebook fanpage.</span>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="control-label col-md-3">Twitter</label>
                             <div class="col-md-7">
-                                <input type="text" class="form-control" value="{{ $settings['twitter'] or '' }}" name="twitter"/>
+                                <input type="text" class="form-control"
+                                       value="{{ $settings['twitter'] or '' }}"
+                                       name="twitter"/>
                                 <span class="help-block">Twitter.</span>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="control-label col-md-3">Youtube</label>
                             <div class="col-md-7">
-                                <input type="text" class="form-control" value="{{ $settings['youtube'] or '' }}" name="youtube"/>
+                                <input type="text" class="form-control"
+                                       value="{{ $settings['youtube'] or '' }}"
+                                       name="youtube"/>
                                 <span class="help-block">Youtube chanel.</span>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="control-label col-md-3">Instagram</label>
                             <div class="col-md-7">
-                                <input type="text" class="form-control" value="{{ $settings['instagram'] or '' }}" name="instagram"/>
+                                <input type="text" class="form-control"
+                                       value="{{ $settings['instagram'] or '' }}"
+                                       name="instagram"/>
                                 <span class="help-block">Instagram.</span>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="control-label col-md-3">Pinterest</label>
                             <div class="col-md-7">
-                                <input type="text" class="form-control" value="{{ $settings['pinterest'] or '' }}" name="pinterest"/>
+                                <input type="text" class="form-control"
+                                       value="{{ $settings['pinterest'] or '' }}"
+                                       name="pinterest"/>
                                 <span class="help-block">Pinterest.</span>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="control-label col-md-3">Github</label>
                             <div class="col-md-7">
-                                <input type="text" class="form-control" value="{{ $settings['github'] or '' }}" name="github"/>
+                                <input type="text" class="form-control"
+                                       value="{{ $settings['github'] or '' }}"
+                                       name="github"/>
                                 <span class="help-block">Github page.</span>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-md-3">Construction mode</label>
+                            <label class="control-label col-md-3">Construction
+                                mode</label>
                             <div class="col-md-7">
                                 <div class="md-checkbox">
                                     <input type="checkbox"
@@ -210,17 +254,20 @@
                                            name="construction_mode"
                                            {{ (isset($settings['construction_mode']) && (int)$settings['construction_mode'] == 1) ? 'checked' : '' }}
                                            class="md-radiobtn">
-                                    <label for="construction_mode" style="margin-bottom: 0;">
+                                    <label for="construction_mode"
+                                           style="margin-bottom: 0;">
                                         <span></span>
                                         <span class="check"></span>
-                                        <span class="box"></span> In construction mode
+                                        <span class="box"></span> In
+                                        construction mode
                                     </label>
                                 </div>
                                 <span class="help-block">Make the site is on construction mode.</span>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-md-3">Show admin bar</label>
+                            <label class="control-label col-md-3">Show admin
+                                bar</label>
                             <div class="col-md-7">
                                 <div class="md-checkbox">
                                     <input type="checkbox"
@@ -229,7 +276,8 @@
                                            name="show_admin_bar"
                                            {{ (isset($settings['show_admin_bar']) && (int)$settings['show_admin_bar'] == 1) ? 'checked' : '' }}
                                            class="md-radiobtn">
-                                    <label for="show_admin_bar" style="margin-bottom: 0;">
+                                    <label for="show_admin_bar"
+                                           style="margin-bottom: 0;">
                                         <span></span>
                                         <span class="check"></span>
                                         <span class="box"></span> Show admin bar
@@ -238,12 +286,26 @@
                                 <span class="help-block">When admin logged in, still show admin bar in website.</span>
                             </div>
                         </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3">Default
+                                skin</label>
+                            <div class="col-md-7">
+                                <select name="default_skin"
+                                        class="form-control">
+                                    @foreach($skins = ['default' => 'Default', 'blue' => 'Blue', 'darkblue' => 'Dark Blue', 'grey' => 'Grey' , 'light1' => 'Light1', 'light2' => 'Light2'] as $key => $value)
+                                        <option value="{{$key}}" {{laraX_get_value($settings, 'default_skin') == $key ? 'selected' : ''}}>{{$value}}</option>
+                                    @endforeach
+                                </select>
+                                <span class="help-block">CMS default skin</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <!-- END FORM-->
             </div>
             <div class="text-right" style="padding: 15px;">
-                <button type="submit" class="btn btn-circle green font-white btn-default">
+                <button type="submit"
+                        class="btn btn-circle green font-white btn-default">
                     <i class="fa fa-check"></i> Update
                 </button>
             </div>

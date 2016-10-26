@@ -10,8 +10,10 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Repositories\MenuRepositoryInterface;
+use App\Repositories\SettingRepositoryInterface;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Session;
 use TCH\LaraXMenu;
 use App\Http\Foundation;
 use Carbon;
@@ -31,23 +33,29 @@ class BaseAdminController extends Controller {
     protected $bodyClass;
     protected $currentMenuActive;
     protected $data = [];
+    protected $defaultSkin = 'default';
+    protected $settingRepository;
 
     public function __construct($currentMenuActive = '') {
-//        $this->middleware('auth.admin', [
-//            'except' => [
-//                'getLogin',
-//                'postLogin'
-//            ]
-//        ]);
-
         $this->adminPath = Config::get('app.admin_path');
-        //$this->setMenuRepository(app(MenuRepositoryInterface::class));
         $this->currentMenuActive = $currentMenuActive;
+        $this->bodyClass = '';
         $this->loadAdminMenu($currentMenuActive);
+        $this->setSettingRepository(app(SettingRepositoryInterface::class));
+
+        if (!Session::has('default_skin')) {
+            $this->defaultSkin = $this->getSettingConfig('default_skin', 'default');
+            Session::set('default_skin', $this->defaultSkin);
+        }
+        else {
+            $this->defaultSkin = Session::get('default_skin', 'default');
+        }
+
 
         view()->share([
             'adminPath' => $this->adminPath,
-            'defaultLanguageId' => 1
+            'defaultLanguageId' => 1,
+            'defaultSkin' => $this->defaultSkin,
         ]);
     }
 
@@ -103,6 +111,18 @@ class BaseAdminController extends Controller {
      */
     protected function setMenuRepository(MenuRepositoryInterface $_menuRepository) {
         return $this->menuRepository = $_menuRepository;
+    }
+
+    protected function setSettingRepository(SettingRepositoryInterface $settingRepository) {
+        return $this->settingRepository = $settingRepository;
+    }
+
+    protected function getSettingConfig($key, $default_value = '') {
+        $result = $this->settingRepository->getSetting($key);
+        if (laraX_isNullOrEmpty($result)) {
+            return $default_value;
+        }
+        return $result;
     }
 
     /**
@@ -170,7 +190,7 @@ class BaseAdminController extends Controller {
 
     /**
      * Build order b
-     * 
+     *
      * @param $request
      * @param array $target_orderBy
      * @return array

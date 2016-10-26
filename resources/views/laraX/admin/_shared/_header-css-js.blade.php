@@ -20,7 +20,7 @@
 
 <!-- BEGIN THEME LAYOUT STYLES -->
 {!!Theme::css('admin/theme/assets/layouts/layout/css/layout.min.css')!!}
-{!!Theme::css('admin/theme/assets/layouts/layout/css/themes/default.min.css')!!}
+{!!Theme::css('admin/theme/assets/layouts/layout/css/themes/'.$defaultSkin.'.min.css')!!}
 {!!Theme::css('admin/css/style.css')!!}
 <!-- END THEME LAYOUT STYLES -->
 
