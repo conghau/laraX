@@ -42,10 +42,10 @@
                 data-type="{{ $item->type or '' }}"
                 data-relatedid="{{ $item->related_id or '' }}"
                 data-title="{{ $item->title or '' }}"
-                data-class="{{ $item->css_class or '' }}"
+                data-css_class="{{ $item->css_class or '' }}"
                 data-id="{{ $item->id or '' }}"
-                data-customurl="{{ $item->url or '' }}"
-                data-iconfont="{{ $item->icon_font or '' }}">
+                data-url="{{ $item->url or '' }}"
+                data-icon_font="{{ $item->icon_font or '' }}">
                 <div class="dd-handle dd3-handle"></div>
                 <div class="dd3-content">
                     <span class="text pull-left"
@@ -65,18 +65,18 @@
                     </label>
                     <label class="pad-bot-5 dis-inline-block">
                         <span class="text pad-top-5"
-                              data-update="customurl">Url</span>
-                        <input type="text" name="customurl"
+                              data-update="url">Url</span>
+                        <input type="text" name="url"
                                value="{{ $item->url or '' }}" data-old="">
                     </label>
                     <label class="pad-bot-5 dis-inline-block">
-                        <span class="text pad-top-5" data-update="iconfont">Icon - font</span>
-                        <input type="text" name="iconfont"
+                        <span class="text pad-top-5" data-update="icon_font">Icon - font</span>
+                        <input type="text" name="icon_font"
                                value="{{ $item->icon_font or '' }}" data-old="">
                     </label>
                     <label class="pad-bot-10">
                         <span class="text pad-top-5 dis-inline-block">CSS class</span>
-                        <input type="text" name="class"
+                        <input type="text" name="css_class"
                                value="{{ $item->css_class or '' }}" data-old="">
                     </label>
                     <div class="text-right">

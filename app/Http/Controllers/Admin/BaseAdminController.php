@@ -36,7 +36,7 @@ class BaseAdminController extends Controller {
     protected $defaultSkin = 'default';
     protected $settingRepository;
 
-    public function __construct($currentMenuActive = '') {
+    public function __construct($currentMenuActive = 'dashboard') {
         $this->adminPath = Config::get('app.admin_path');
         $this->currentMenuActive = $currentMenuActive;
         $this->bodyClass = '';
@@ -132,35 +132,34 @@ class BaseAdminController extends Controller {
      */
     protected function loadAdminMenu($menuActive = '') {
         $menu = app(LaraXMenu::class);
-        $menu->args = array(
-            'languageId' => 1,
-            'menuName' => 'admin-menu',
-            'menuClass' => 'page-sidebar-menu page-header-fixed',
-            'container' => 'div',
-            'containerClass' => 'page-sidebar navbar-collapse collapse',
-            'containerId' => '',
-            'containerTag' => 'ul',
-            'childTag' => 'li',
-            'itemHasChildrenClass' => 'menu-item-has-children',
-            'subMenuClass' => 'sub-menu',
-            'menuActive' => [
-                'type' => 'custom-link',
-                'related_id' => $menuActive,
-            ],
-            'activeClass' => 'active',
-            'isAdminMenu' => TRUE,
-        );
+        $menu->setArgs([
+                'languageId' => 1,
+                'menuName' => 'admin-menu',
+                'menuClass' => 'page-sidebar-menu page-header-fixed',
+                'container' => 'div',
+                'containerClass' => 'page-sidebar navbar-collapse collapse',
+                'containerId' => '',
+                'containerTag' => 'ul',
+                'childTag' => 'li',
+                'itemHasChildrenClass' => 'menu-item-has-children',
+                'subMenuClass' => 'sub-menu',
+                'menuActive' => [
+                    'type' => 'custom-link',
+                    'related_id' => $menuActive,
+                ],
+                'activeClass' => 'active',
+                'isAdminMenu' => TRUE,
+            ]);
 
-        $data = '';
         $expiresAt = Carbon::now()->addMinutes(30);
         if (Cache::has('cache_admin_menu')) {
             $data = Cache::get('cache_admin_menu');;
         }
         else {
-            $data = $menu->getNavMenu1($menu->args);
+            $data = $menu->getNavMenu1();
             Cache::put('cache_admin_menu', $data, $expiresAt);
         }
-
+        $data = $menu->getNavMenu1();
         view()->share('CMSMenuHtml', $data);
     }
 

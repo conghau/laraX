@@ -72,6 +72,7 @@ abstract class BaseRepositoryImpl implements BaseRepositoryInterface {
 
 
     public function delete($id) {
+        $this->model->destroy($id);
     }
 
     public function findById($id, array $with = array(), $columns = array('*')) {
@@ -179,6 +180,10 @@ abstract class BaseRepositoryImpl implements BaseRepositoryInterface {
 
     public function save(array $data) {
         return '';
+    }
+
+    public function deletes(array $ids) {
+        $this->model->destroy($ids);
     }
 
     protected function buildResult($page = LaraXConfig::PAGE_DEFAULT, $limit = LaraXConfig::LIMIT_DEFAULT, $columns = ['*']) {

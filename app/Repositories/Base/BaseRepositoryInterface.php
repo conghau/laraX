@@ -227,4 +227,6 @@ interface BaseRepositoryInterface {
     public function firstOrNew(array $data);
 
     public function save(array $data);
+    
+    public function deletes(array $ids);
 }
