@@ -7,7 +7,7 @@ var path = {
     coreAdminThirdParty: './../core/third_party/',
     themeAdminAssets: './../theme/assets/'
 };
-
+require('es6-promise').polyfill();
 var gulp = require("gulp");
 var sass = require("gulp-sass");
 var sourcemaps = require('gulp-sourcemaps');
@@ -17,7 +17,7 @@ var concat = require('gulp-concat');
 var rename = require('gulp-rename');
 var plumber = require('gulp-plumber');
 var notify  = require('gulp-notify');
-
+var Promise = require('es6-promise').Promise;
 /*Min sass*/
 gulp.task("sass", function(){
     gulp.src(path.baseAdmin + 'scss/**/*.scss')

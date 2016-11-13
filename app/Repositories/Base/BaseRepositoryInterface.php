@@ -41,20 +41,22 @@ interface BaseRepositoryInterface {
      * Insert/create object
      *
      * @param array $data
+     * @param Model $model
      *
      * @return mixed
      */
-    public function create(array $data);
+    public function create(array $data, $model = NULL);
 
     /**
      * Update object by id
      *
      * @param array $data
      * @param $id
+     * @param Model $model
      *
      * @return mixed
      */
-    public function update(array $data, $id);
+    public function update(array $data, $id, $model = NULL);
 
     /**
      * Delete object by id
@@ -161,7 +163,7 @@ interface BaseRepositoryInterface {
      *
      * @return mixed
      */
-    public function findWhere(array $where, $page = 1, $limit = 10, array $order_by=['id' => 'asc'],$columns = ['*']);
+    public function findWhere(array $where, $page = 1, $limit = 10, array $order_by = ['id' => 'asc'], $columns = ['*']);
 
     /**
      * Get object with condition in
@@ -207,7 +209,24 @@ interface BaseRepositoryInterface {
      * Create Or Update
      *
      * @param array $data
+     * @param null $model
+     * @param string $message_err
+     * @param bool $throw_ex
+     *
+     * @return id of record if save success otherwise return 0 or exception
+     */
+    public function createOrUpdate(array $data, $model = NULL, &$message_err = '', $throw_ex = FALSE);
+
+    /**
+     * First or New
+     *
+     * @param array $data
+     *
      * @return mixed
      */
-    public function createOrUpdate(array $data);
+    public function firstOrNew(array $data);
+
+    public function save(array $data);
+    
+    public function deletes(array $ids);
 }

@@ -8,7 +8,11 @@
  */
 namespace App\Repositories\Base;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Log;
+use TCH\LaraXConfig;
+use TCH\LaraXException;
 
 /**
  * Class BaseRepositoryImpl
@@ -16,7 +20,6 @@ use Illuminate\Support\Collection;
  * @package App\Repositories\Base
  */
 abstract class BaseRepositoryImpl implements BaseRepositoryInterface {
-
     protected $model;
     protected $criteria;
 
@@ -38,16 +41,38 @@ abstract class BaseRepositoryImpl implements BaseRepositoryInterface {
 
     }
 
-    public function create(array $data) {
-        return $this->model->fill($data)->save();
+    public function create(array $data, $model = NULL) {
+        try {
+            if ($model instanceof Model) {
+                $model->fill($data)->save();
+                return $model->id;
+            }
+            return $this->model->fill($data)->save();
+        } catch (LaraXException $e) {
+            throw $e;
+        }
     }
 
-    public function update(array $data, $id) {
-        return $this->model->find($id)->fill($data)->save();
+    public function update(array $data, $id, $model = NULL) {
+        try {
+//            if (isset($data['id'])) unset($data['id']);
+            if ($model instanceof Model) {
+                $model->findOrFail($id)->update($data);
+                return $model->id;
+            }
+
+            $this->model->findOrFail($id)->update($data);
+            return $this->model->id;
+        } catch (\Exception $e) {
+            throw $e;
+            //Log::error(json_encode(['action' => 'update', 'message' => $e->getMessage(), 'data' => $data]));
+            return 0;
+        }
     }
 
 
     public function delete($id) {
+        $this->model->destroy($id);
     }
 
     public function findById($id, array $with = array(), $columns = array('*')) {
@@ -80,7 +105,10 @@ abstract class BaseRepositoryImpl implements BaseRepositoryInterface {
     }
 
     public function getFirstBy($key, $value, array $with = array(), $columns = array('*')) {
-        return $this->make($with)->where($key, '=', $value)->get($columns)->first();
+        return $this->make($with)
+            ->where($key, '=', $value)
+            ->get($columns)
+            ->first();
     }
 
     public function has($relation, array $with = array()) {
@@ -127,7 +155,7 @@ abstract class BaseRepositoryImpl implements BaseRepositoryInterface {
     }
 
     public function applyCondition(array $where) {
-        if(empty($where)) {
+        if (empty($where)) {
             return;
         }
         foreach ($where as $field => $value) {
@@ -146,28 +174,75 @@ abstract class BaseRepositoryImpl implements BaseRepositoryInterface {
         }
     }
 
-    protected function buildResult($page = 1, $limit = 10, $columns = ['*']) {
+    public function firstOrNew(array $data) {
+        return $this->model->firstOrNew($data);
+    }
+
+    public function save(array $data) {
+        return '';
+    }
+
+    public function deletes(array $ids) {
+        $this->model->destroy($ids);
+    }
+
+    protected function buildResult($page = LaraXConfig::PAGE_DEFAULT, $limit = LaraXConfig::LIMIT_DEFAULT, $columns = ['*']) {
+        if ($limit < 1) {
+            $limit = LaraXConfig::LIMIT_DEFAULT;
+        }
+
+        if ($page < 1) {
+            $page = LaraXConfig::PAGE_DEFAULT;
+        }
+
         $result = new \stdClass();
         $result->page = $page;
         $result->limit = $limit;
         $result->totalItems = 0;
         $result->items = array();
         $result->totalItems = $this->model->count();
-        $result->items = $this->model->skip($limit * ($page - 1))->take($limit)->get($columns);;
+        $result->items = $this->model->skip($limit * ($page - 1))
+            ->take($limit)
+            ->get($columns);;
         return $result;
     }
 
-    public function createOrUpdate(array $data) {
-        //create
+    /**
+     * Create Or Update
+     *
+     * @param array $data
+     * @param null $model
+     * @param string $message_err is ref
+     * @param bool $throw_ex
+     *
+     * @return id of record if save success otherwise return 0 or exception
+     */
+    public function createOrUpdate(array $data, $model = NULL, &$message_err = '', $throw_ex = FALSE) {
         $id = laraX_get_value($data, 'id', 0);
         try {
-            if (0 === $id) {
-                return $this->create($data);
+            //case insert
+            if (0 == $id) {
+                if ($model instanceof Model) {
+                    $model->fill($data)->save();
+                    return $model->id;
+                }
+                $this->model->fill($data)->save();
+                return $this->model->id;
             }
-            //update
-            return $this->update($data, $id);
+            //case update
+            if ($model instanceof Model) {
+                $model->findOrFail($id)->update($data);
+            } else {
+                $this->model->findOrFail($id)->update($data);
+            }
+            return $id;
         } catch (\Exception $e) {
+            Log::error(json_encode(['action' => 'createOrUpdate', 'type' => get_class($e), 'message' => $e->getMessage(), 'data' => $data]));
+            $message_err = $e->getMessage();
+            if ($throw_ex) {
+                throw $e;
+            }
+            return 0;
         }
     }
-
 }

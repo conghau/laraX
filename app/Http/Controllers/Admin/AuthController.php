@@ -36,7 +36,7 @@ class AuthController extends BaseAdminController {
      * @var string
      */
     protected $redirectTo = '/';
-    protected $username, $loginPath, $redirectPath, $redirectToLoginPage;
+    protected $username, $loginPath, $redirectPath, $redirectToLoginPage, $redirectAfterLogout;
     /**
      * Create a new authentication controller instance.
      *
@@ -50,6 +50,7 @@ class AuthController extends BaseAdminController {
         $this->redirectTo = '/' . $this->adminPath . '/dashboard';
         $this->redirectPath = '/' . $this->adminPath . '/dashboard';
         $this->redirectToLoginPage = '/' . $this->adminPath . '/auth/login';
+        $this->redirectAfterLogout = '/' . $this->adminPath . '/auth/login';
         //$this->middleware($this->guestMiddleware(), ['except' => 'logout']);
     }
 
@@ -62,7 +63,7 @@ class AuthController extends BaseAdminController {
     protected function validator(array $data) {
         return Validator::make($data, [
             'username' => 'required|max:255',
-            'email' => 'required|email|max:255|unique:users',
+            'email' => 'required|email|max:255|unique:admin_users',
             'password' => 'required|min:6|confirmed',
         ]);
     }
@@ -131,5 +132,11 @@ class AuthController extends BaseAdminController {
 
         return $this->sendFailedLoginResponse($request);
 
+    }
+    
+    public function getLogout() {
+        auth()->guard('admin')->logout();
+
+        return redirect(property_exists($this, 'redirectAfterLogout') ? $this->redirectAfterLogout : '/');
     }
 }

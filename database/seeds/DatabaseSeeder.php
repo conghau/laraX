@@ -11,13 +11,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-<<<<<<< HEAD
-        for($i=0; $i<50;$i++){
-            $this->call(UserTableSeeder::class);
-        }
-
-=======
-         $this->call(UserSeeder::class);
->>>>>>> 48ac3372410bffe21b248fdec3cab20391e85550
+        // $this->call(UserSeeder::class);
+        //$this->call(categoryTable::class);
     }
 }

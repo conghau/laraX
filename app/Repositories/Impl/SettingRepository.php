@@ -30,10 +30,22 @@ class SettingRepository extends BaseRepositoryImpl implements SettingRepositoryI
     }
 
     public function updateSetting(array $datas = array()) {
-        foreach ($datas as $k => $data) {
-            $r = $this->model->firstOrNew(['option_key' => $k]);
-            $r->option_value = $data;
-            $r->save();
+        try {
+            foreach ($datas as $k => $data) {
+                $r = $this->model->firstOrNew(['option_key' => $k]);
+                $r->option_value = $data;
+                $r->save();
+            }
+            return TRUE;
         }
+        catch (\Exception $e) {
+            return FALSE;
+        }
+    }
+
+    public function getSetting($key) {
+        $result = $this->getFirstBy('option_key', $key, [], ['option_value'])
+            ->toArray();
+        return $result['option_value'];
     }
 }

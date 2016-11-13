@@ -13,6 +13,7 @@ use App\Repositories\Base\BaseRepositoryInterface;
 
 /**
  * Interface MenuRepositoryInterface
+ *
  * @package App\Repositories
  */
 interface MenuRepositoryInterface extends BaseRepositoryInterface {
@@ -25,4 +26,15 @@ interface MenuRepositoryInterface extends BaseRepositoryInterface {
     public function getMenuNodesChild($menu_content_id, $parent_id = 0, $column = array('*'));
 
     public function getMenuNodesToArray($menu_content_id, $columns = array('*'));
+
+    public function getMenuContentModel();
+
+    public function getMenuNodeModel();
+
+    public function saveMenuNodes(array $data, $menu_content_id, $parent_id, &$message_err = '', $throw_ex = FALSE);
+
+    public function saveMenuNode(array $item, $menu_content_id, $parent_id, &$message_err = '', $throw_ex = FALSE);
+    
+    public function 
+
 }

@@ -19,9 +19,33 @@ class LaraXMenu {
     public $localeObj, $languageCode;
 
     protected $menuRepo;
+    protected $args;
 
     public function __construct(MenuRepositoryInterface $menuRepo) {
         $this->menuRepo = $menuRepo;
+        $this->args = [
+            'languageId' => 0,
+            'menuName' => 'admin-menu',
+            'menuClass' => 'my-menu',
+            'container' => 'nav',
+            'containerClass' => '',
+            'containerId' => '',
+            'containerTag' => 'ul',
+            'childTag' => 'li',
+            'itemHasChildrenClass' => 'menu-item-has-children',
+            'subMenuClass' => 'sub-menu',
+            'menuActive' => [
+                'type' => 'custom-link',
+                'related_id' => 0,
+            ],
+            'activeClass' => 'active',
+            'isAdminMenu' => FALSE,
+        ];
+
+    }
+
+    public function setArgs(array $args = []) {
+        $this->args = array_merge($this->args, $args);
     }
 
     public function generateMenu($slug = '', $parent_id = 0, $view = 'menu::partials.menu', $active = FALSE, $theme = FALSE, $options = []) {
@@ -70,47 +94,33 @@ class LaraXMenu {
         return TRUE;
     }
 
-    public $args = array(
-        'menuName' => '',
-        'menuClass' => '',
-        'container' => '',
-        'containerClass' => '',
-        'containerId' => '',
-        'containerTag' => 'ul',
-        'childTag' => 'li',
-        'itemHasChildrenClass' => '',
-        'subMenuClass' => 'sub-menu',
-        'menuActive' => [
-            'type' => 'custom-link',
-            'related_id' => 0,
-        ],
-        'activeClass' => 'active',
-        'isAdminMenu' => FALSE,
-    );
 
     public function getNavMenu1() {
-        $defaultArgs = array(
-            'languageId' => 0,
-            'menuName' => 'admin-menu',
-            'menuClass' => 'my-menu',
-            'container' => 'nav',
-            'containerClass' => '',
-            'containerId' => '',
-            'containerTag' => 'ul',
-            'childTag' => 'li',
-            'itemHasChildrenClass' => 'menu-item-has-children',
-            'subMenuClass' => 'sub-menu',
-            'menuActive' => [
-                'type' => 'custom-link',
-                'related_id' => 0,
-            ],
-            'activeClass' => 'active',
-            'isAdminMenu' => FALSE,
-        );
-        $defaultArgs = array_merge($defaultArgs, $this->args);
+//        $defaultArgs = array(
+//            'languageId' => 0,
+//            'menuName' => 'admin-menu',
+//            'menuClass' => 'my-menu',
+//            'container' => 'nav',
+//            'containerClass' => '',
+//            'containerId' => '',
+//            'containerTag' => 'ul',
+//            'childTag' => 'li',
+//            'itemHasChildrenClass' => 'menu-item-has-children',
+//            'subMenuClass' => 'sub-menu',
+//            'menuActive' => [
+//                'type' => 'custom-link',
+//                'related_id' => 0,
+//            ],
+//            'activeClass' => 'active',
+//            'isAdminMenu' => FALSE,
+//        );
+        $defaultArgs = $this->args;
 
         $output = '';
-        $menu = $this->menuRepo->getFirstBy('slug', $defaultArgs['menuName'], [], ['id', 'slug']);
+        $menu = $this->menuRepo->getFirstBy('slug', $defaultArgs['menuName'], [], [
+            'id',
+            'slug'
+        ]);
         if (!$menu) {
             return NULL;
         }
@@ -230,7 +240,8 @@ class LaraXMenu {
             if ($this->checkItemHasChildren($items)) {
                 $menu_icon .= $arrow;
             }
-        } else {
+        }
+        else {
             if ($items['value']->icon_font) {
                 $menu_icon = '<i class="' . $items['value']->icon_font . '"></i>' . $menu_icon;
             }
@@ -279,7 +290,7 @@ class LaraXMenu {
         if ($menuRelatedId !== $args['item']->related_id) {
             return '';
         }
-        return $defaultActiveClass;;
+        return $defaultActiveClass;
     }
 
     // Get item title
@@ -305,7 +316,8 @@ class LaraXMenu {
                         if ($pageContent) {
                             $title = ((trim($pageContent->title) != '') ? trim($pageContent->title) : trim($page->global_title));
                         }
-                    } else {
+                    }
+                    else {
                         $title = '';
                     }
                 }
@@ -327,7 +339,8 @@ class LaraXMenu {
                     ]);
                     if ($cat) {
                         $title = ((trim($cat->title) != '') ? trim($cat->title) : trim($cat->global_title));
-                    } else {
+                    }
+                    else {
                         $title = '';
                     }
                 }
@@ -349,7 +362,8 @@ class LaraXMenu {
                     ]);
                     if ($cat) {
                         $title = ((trim($cat->title) != '') ? trim($cat->title) : trim($cat->global_title));
-                    } else {
+                    }
+                    else {
                         $title = '';
                     }
                 }
@@ -414,7 +428,8 @@ class LaraXMenu {
             case 'custom-link': {
                 if ($isAdminMenu == TRUE) {
                     $result = asset(\Config::get('app.admin_path') . '/' . $item->url);
-                } else {
+                }
+                else {
                     $result = $item->url;
                 }
             }
@@ -422,7 +437,8 @@ class LaraXMenu {
             default: {
                 if ($isAdminMenu == TRUE) {
                     $result = asset(\Config::get('app.admin_path') . '/' . $item->url);
-                } else {
+                }
+                else {
                     $result = $item->url;
                 }
             }
